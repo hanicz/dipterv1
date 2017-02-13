@@ -11,16 +11,14 @@ app.register_blueprint(users_api, url_prefix='/users')
 app.register_blueprint(files_api, url_prefix='/files')
 
 
-@app.route('/wat')
+@app.route('/')
 def hello_world():
-    input_dict = {'user': None, 'Age': "^\d*$"}
-    print validate(request, input_dict)
     return 'Hello World!'
 
 
 @app.before_request
 def authenticate_before_each_request():
-    print request.path
+    print(request.path)
 
 
 if __name__ == '__main__':
