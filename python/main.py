@@ -1,11 +1,9 @@
 from flask import Flask
-
-from routes.usersAPI import users_api
-from routes.filesAPI import files_api
-
+from routes import users_api, files_api
+from utils import init_db
 
 app = Flask(__name__)
-
+init_db()
 app.register_blueprint(users_api, url_prefix='/users')
 app.register_blueprint(files_api, url_prefix='/files')
 
