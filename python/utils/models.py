@@ -9,8 +9,8 @@ class User(Base):
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False)
-    email = Column(String(250), nullable=False)
+    name = Column(String(250), nullable=False, unique=True)
+    email = Column(String(250), nullable=False, unique=True)
     password_hash = Column(BLOB, nullable=False)
     created = Column(DateTime, nullable=False)
 
@@ -23,10 +23,10 @@ class InactiveUser(Base):
     __tablename__ = 'inactive_users'
 
     id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False)
-    email = Column(String(250), nullable=False)
+    name = Column(String(250), nullable=False, unique=True)
+    email = Column(String(250), nullable=False, unique=True)
     password_hash = Column(BLOB, nullable=False)
-    activation_link = Column(BLOB, nullable=False)
+    activation_link = Column(BLOB, nullable=False, unique=True)
     created = Column(DateTime, nullable=False)
 
     def __repr__(self):
@@ -41,7 +41,7 @@ class File(Base):
     user_id = Column(Integer, ForeignKey('users.id'))
     user = relationship(User)
     file_name = Column(String(250), nullable=False)
-    path = Column(String(250), nullable=False)
+    path = Column(String(250), nullable=False, unique=True)
     created = Column(DateTime, nullable=False)
 
     def __repr__(self):
@@ -69,7 +69,7 @@ class Token(Base):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('users.id'))
     user = relationship(User)
-    token = Column(String(250), nullable=False)
+    token = Column(String(250), nullable=False, unique=True)
     valid = Column(DateTime, nullable=False)
 
     def __repr__(self):
@@ -97,7 +97,7 @@ class PublicLink(Base):
     id = Column(Integer, primary_key=True)
     file_id = Column(Integer, ForeignKey('files.id'))
     file = relationship(File)
-    link = Column(String(250), nullable=False)
+    link = Column(String(250), nullable=False, unique=True)
     created = Column(DateTime, nullable=False)
 
     def __repr__(self):
@@ -118,6 +118,18 @@ class FileShare(Base):
     def __repr__(self):
         return "Note: (id='%i', user_id='%i', file_id='%i', created='%s')" \
                % (self.id, self.user_id, self.file_id, str(self.created))
+
+
+class CredentialStore(Base):
+    __tablename__ = 'credential_store'
+
+    id = Column(Integer, primary_key=True)
+    environment = Column(String(250), nullable=False, unique=True)
+    code = Column(String(250), nullable=False)
+
+    def __repr__(self):
+        return "Note: (id='%i', user_id='%i', file_id='%i', created='%s')" \
+                % (self.id, self.user_id, self.file_id, str(self.created))
 
 '''    engine = create_engine('sqlite:///test.db', echo=True)
     Base.metadata.create_all(engine)
