@@ -21,7 +21,18 @@ def login():
 
 @users_api.route("/register")
 def register():
-    register_user('asd')
+    input_dictionary = {'user': None, 'password': None, 'email': "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$"}
+
+    if validate(request, input_dictionary):
+        register_user('asd')
+    else:
+        return "Invalid request", 400
+
+    return "ok", 200
+
+
+@users_api.route("/activate/<token>")
+def activate():
     input_dictionary = {'user': None, 'password': None, 'email': "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$"}
 
     if validate(request, input_dictionary):
