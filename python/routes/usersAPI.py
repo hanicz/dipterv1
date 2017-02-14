@@ -7,7 +7,7 @@ from models import login_user, register_user
 users_api = Blueprint('users_api', __name__)
 
 
-@users_api.route("/login")
+@users_api.route("/login", methods=['GET'])
 def login():
     input_dictionary = {'user': None, 'password': None}
 
@@ -19,7 +19,7 @@ def login():
     return "ok", 200
 
 
-@users_api.route("/register")
+@users_api.route("/register", methods=['POST'])
 def register():
     input_dictionary = {'user': None, 'password': None, 'email': "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$"}
 
@@ -31,7 +31,7 @@ def register():
     return "ok", 200
 
 
-@users_api.route("/activate/<token>")
+@users_api.route("/activate/<token>", methods=['POST'])
 def activate():
     input_dictionary = {'user': None, 'password': None, 'email': "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$"}
 
@@ -40,4 +40,19 @@ def activate():
     else:
         return "Invalid request", 400
 
+    return "ok", 200
+
+
+@users_api.route("/deleteUser", methods=['DELETE'])
+def delete():
+    return "ok", 200
+
+
+@users_api.route("/changeData", methods=['PUT'])
+def delete():
+    return "ok", 200
+
+
+@users_api.route("/logout", methods=['POST'])
+def delete():
     return "ok", 200

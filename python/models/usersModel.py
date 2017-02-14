@@ -3,9 +3,10 @@ import random
 import string
 
 from passlib.hash import pbkdf2_sha256
+from sqlalchemy import exc
+
 from models.models import InactiveUser
 from utils import DBSession
-from sqlalchemy import exc
 
 
 def login_user():
