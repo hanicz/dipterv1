@@ -41,10 +41,10 @@ def delete():
 
 
 @users_api.route("/changeData", methods=['PUT'])
-def delete():
+def change_data():
     return "ok", 200
 
 
 @users_api.route("/logout", methods=['POST'])
-def delete():
+def logout():
     return "ok", 200

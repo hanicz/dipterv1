@@ -19,10 +19,10 @@ def delete_note(id):
 
 
 @notes_api.route("/shareNote/<id>", methods=['PUT'])
-def delete_note(id):
+def share_note(id):
     return 'ok'
 
 
 @notes_api.route("/update_note/<id>", methods=['PUT'])
-def delete_note(id):
+def update_note(id):
     return 'ok'
