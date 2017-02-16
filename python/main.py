@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 from routes import users_api, files_api, notes_api, roles_api
-from utils import init_db
+from models import login_required, init_db
 
 app = Flask(__name__)
 init_db()
@@ -22,6 +22,7 @@ def teardown(exception):
 
 
 @app.before_request
+@login_required
 def authenticate_before_each_request():
     print('before')
 

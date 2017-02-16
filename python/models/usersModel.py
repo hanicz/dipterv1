@@ -4,9 +4,9 @@ import string
 
 from passlib.hash import pbkdf2_sha256
 from sqlalchemy import exc
-
-from models.models import InactiveUser
-from utils import DBSession
+from functools import wraps
+from .models import InactiveUser, DBSession
+from flask import request
 
 
 def login_user():
@@ -18,8 +18,8 @@ def check_password():
 
 
 def register_user(username, user_password, email):
-    password_hash = pbkdf2_sha256.using(salt_size=32).hash(user_password)
-    activation_link = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(8))
+    password_hash = pbkdf2_sha256.using(salt_size=16).hash(user_password)
+    activation_link = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
     session = DBSession()
 
     try:
@@ -38,3 +38,12 @@ def register_user(username, user_password, email):
 
 def send_activate_email(activation_link):
     return 'ok'
+
+
+def login_required(f):
+
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        return f(*args, **kwargs)
+
+    return decorated_function

@@ -1,6 +1,9 @@
-from sqlalchemy import Column, Integer, String, DateTime, BLOB, ForeignKey, TEXT
+from sqlalchemy import Column, Integer, String, DateTime, BLOB, ForeignKey, TEXT, create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, sessionmaker
+
+engine = create_engine('sqlite:///test.db', echo=True)
+DBSession = sessionmaker(bind=engine)
 
 Base = declarative_base()
 
@@ -143,3 +146,7 @@ class CredentialStore(Base):
     def __repr__(self):
         return "Credential Store: (id='%i', environment='%s', code='%s')" \
                 % (self.id, self.environment, self.code)
+
+
+def init_db():
+    Base.metadata.create_all(engine)
