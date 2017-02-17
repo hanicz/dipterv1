@@ -15,26 +15,22 @@ class User(Base):
     name = Column(String(250), nullable=False, unique=True)
     email = Column(String(250), nullable=False, unique=True)
     password_hash = Column(String(250), nullable=False)
+    activation_link = Column(String(250), nullable=True, unique=True)
     created = Column(DateTime, nullable=False)
+    failed_attempts = Column(Integer, nullable=False, default=0)
 
     def __repr__(self):
         return "User: (id='%i', name='%s', email='%s', password_hash='%s', created='%s')" \
                % (self.id, self.name, self.email, self.password_hash, str(self.created))
 
-
-class InactiveUser(Base):
-    __tablename__ = 'inactive_users'
-
-    id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False, unique=True)
-    email = Column(String(250), nullable=False, unique=True)
-    password_hash = Column(String(250), nullable=False)
-    activation_link = Column(String(250), nullable=False, unique=True)
-    created = Column(DateTime, nullable=False)
-
-    def __repr__(self):
-        return "Inactive User: (id='%i', name='%s', email='%s', activation_link='%s' password_hash='%s', created='%s')" \
-               % (self.id, self.name, self.email, self.activation_link, self.password_hash, str(self.created))
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'email': self.email,
+            'created': str(self.created),
+            'failed_attempts': self.failed_attempts
+        }
 
 
 class File(Base):

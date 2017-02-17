@@ -1,2 +1,2 @@
 from models.usersModel import *
-from models.models import *
+from models.db import *
