@@ -5,14 +5,16 @@ import { HttpModule }    from '@angular/http';
 
 import { AppComponent }  from './app.component';
 import { LoginComponent }  from './login/login.component';
-import { UserService} from './login/user.service'
+import { UserService} from './services/user.service';
+import { RegisterComponent }  from './register/register.component';
 
 @NgModule({
   imports:      [ BrowserModule,
                   AppRoutingModule,
                   HttpModule],
   declarations: [ AppComponent,
-                  LoginComponent],
+                  LoginComponent,
+                  RegisterComponent],
   bootstrap:    [ AppComponent ],
   providers: [ UserService ],
 })

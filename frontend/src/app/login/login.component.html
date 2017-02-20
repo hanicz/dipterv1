@@ -3,8 +3,8 @@
     <div class="login-form">
       <input #username type="text" placeholder="username"/>
       <input #password type="password" placeholder="password"/>
-      <button (click)="login()">Login</button>
-      <button>Register</button>
+      <button (click)="login(username.value,password.value); password.value=''; username.vaue='';">Login</button>
+      <button routerLink="/register">Register</button>
     </div>
   </div>
 </div>

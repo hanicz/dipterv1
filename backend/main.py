@@ -1,10 +1,12 @@
-from flask import Flask, request
+from flask import Flask
 from routes import users_api, files_api, notes_api, roles_api, default_api
 from models import init_db
 from models import login_required
-import datetime
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
+
 init_db()
 app.register_blueprint(default_api)
 app.register_blueprint(users_api, url_prefix='/users')
