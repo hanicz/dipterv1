@@ -1,11 +1,35 @@
-<div class="register-component">
-  <div class="form">
-    <div class="register-form">
-      <input #username type="text" placeholder="username"/>
-      <input #email type="text" placeholder="email"/>
-      <input #password type="password" placeholder="password"/>
-      <button (click)="register(username.value,password.value,email.value); email.value=''; username.value = ''; password.value=''; ">Register</button>
-      <button routerLink="/login">Back</button>
-    </div>
-  </div>
+<div class="container">
+    <form class="form" (ngSubmit)="register()" #registerForm="ngForm">
+      <div class="form-group">
+        <input type="text" class="form-control" id="username" placeholder="username"
+              required
+              [(ngModel)]="model.username" name="username"
+              #username="ngModel">
+      </div>
+      <div [hidden]="username.valid || username.pristine"
+             class="alert alert-danger">
+          Username is required
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" id="email" placeholder="email"
+              required
+              [(ngModel)]="model.email" name="email" #email="ngModel" pattern="[^@]+@[^@]+\.[a-zA-Z]{2,6}">
+
+      </div>
+      <div [hidden]="(email.valid || email.pristine)"
+             class="alert alert-danger">
+          Email is required
+      </div>
+      <div class="form-group">
+        <input type="password" class="form-control" id="password" placeholder="password"
+              required
+              [(ngModel)]="model.password" name="password" #password="ngModel">
+      </div>
+      <div [hidden]="password.valid || password.pristine"
+             class="alert alert-danger">
+          Password is required
+      </div>
+      <button type="submit" [disabled]="!registerForm.form.valid" click="registerForm.reset()">Register</button>
+      <p class="message">Already registered? <a routerLink="/login">Sign In</a></p>
+    </form>
 </div>

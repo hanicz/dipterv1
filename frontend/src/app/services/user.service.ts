@@ -7,6 +7,8 @@ import { CustomResponse } from '../utils/customResponse'
 
 import 'rxjs/add/operator/map';
 
+import { User } from '../utils/user'
+
 
 @Injectable()
 export class UserService {
@@ -29,15 +31,10 @@ export class UserService {
       .map((res: Response) => res.json());
   }
 
-  regist_user(username: string, password: string, email: string) {
-    let data = {
-      username : username,
-      password : password,
-      email : email
-    };
+  regist_user(user: User) {
 
     const url = `${this.userUrl}/register`;
-    return this.http.post(url,JSON.stringify(data),{headers:this.headers})
+    return this.http.post(url,JSON.stringify(user),{headers:this.headers})
       .map((res: Response) => res.json());
   }
 }

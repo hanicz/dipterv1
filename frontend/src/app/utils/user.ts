@@ -4,7 +4,10 @@
 import { Serializable } from '../utils/serializable'
 
 export class User extends Serializable{
-  id:number;
-  name:string;
-  email: string;
+    constructor(
+    public username: string,
+    public email: string,
+    public password: string
+  ) { super() }
+
 }

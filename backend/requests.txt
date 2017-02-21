@@ -1,4 +1,0 @@
-Request from: 127.0.0.1, path: /, Time:2017-02-18 00:05:24.225100 
-Request from: 127.0.0.1, Path: /users/register, Time:2017-02-18 00:10:23.355556 
-Request from: 127.0.0.1, Path: /users/register, Time:2017-02-18 00:10:38.144249 
-Request from: 127.0.0.1, Path: /users/register, Time:2017-02-18 00:15:59.066511 

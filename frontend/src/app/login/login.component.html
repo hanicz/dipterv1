@@ -1,10 +1,25 @@
-<div class="login-component">
-  <div class="form">
-    <div class="login-form">
-      <input #username type="text" placeholder="username"/>
-      <input #password type="password" placeholder="password"/>
-      <button (click)="login(username.value,password.value); password.value=''; username.vaue='';">Login</button>
-      <button routerLink="/register">Register</button>
-    </div>
-  </div>
+<div class="container">
+    <form class="form" (ngSubmit)="login()" #loginForm="ngForm">
+      <div class="form-group">
+        <input type="text" class="form-control" id="username" placeholder="username"
+              required
+              [(ngModel)]="model.username" name="username"
+              #username="ngModel">
+      </div>
+      <div [hidden]="username.valid || username.pristine"
+             class="alert alert-danger">
+          Username is required
+      </div>
+      <div class="form-group">
+        <input type="password" class="form-control" id="password" placeholder="password"
+              required
+              [(ngModel)]="model.password" name="password" #password="ngModel">
+      </div>
+      <div [hidden]="password.valid || password.pristine"
+             class="alert alert-danger">
+          Password is required
+      </div>
+      <button type="submit" [disabled]="!loginForm.form.valid">Login</button>
+      <p class="message">Not registered? <a routerLink="/register">Create an account</a></p>
+    </form>
 </div>

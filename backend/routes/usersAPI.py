@@ -25,7 +25,6 @@ def login():
 def register():
     payload = request.get_json()
     input_dictionary = {'username': None, 'password': None, 'email': "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$"}
-    print(payload['username'])
     if validate(payload, input_dictionary):
         data = register_user(payload['username'], payload['password'], payload['email'])
         if data is not None:

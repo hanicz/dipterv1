@@ -15,22 +15,21 @@ import { User } from '../utils/user'
 })
 export class RegisterComponent{
 
-  user: User;
-
   constructor(
     private userService: UserService
   ){}
 
-  register(username: string, password: string, email: string): void {
+  register(): void {
     this.userService
-      .regist_user(username,password,email)
+      .regist_user(this.model)
       .subscribe(
         (json: Object) => {
-            this.user = new User().fromJSON(json);
-            console.log(this.user.name);
+            this.model = new User("","","").fromJSON(json);
+            console.log(this.model.username);
         },
         error => console.error('Error: ' + error)
         );
   }
 
+  model = new User('','','');
 }

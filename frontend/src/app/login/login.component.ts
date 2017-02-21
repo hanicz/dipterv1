@@ -6,6 +6,7 @@ import { Headers, Http, URLSearchParams  } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { UserService } from '../services/user.service'
 import { CustomResponse } from '../utils/customResponse'
+import { User } from '../utils/user'
 
 @Component({
   moduleId: module.id,
@@ -15,15 +16,16 @@ import { CustomResponse } from '../utils/customResponse'
 })
 export class LoginComponent {
 
+  model = new User("","","");
   custResp: CustomResponse;
 
   constructor(
     private userService: UserService
   ){}
 
-  login(username: string, password: string): void {
+  login(): void {
     this.userService
-      .login_user(username,password)
+      .login_user(this.model.username,this.model.password)
       .subscribe(
         (json: Object) => {
             this.custResp = new CustomResponse().fromJSON(json);

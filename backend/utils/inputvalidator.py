@@ -4,8 +4,10 @@ import re
 
 def validate(value_dict, input_dict):
     for key, value in input_dict.items():
-
-        if value_dict[key] is None:
+        try:
+            if value_dict[key] is None:
+                return False
+        except KeyError as e:
             return False
 
         if value is not None:
