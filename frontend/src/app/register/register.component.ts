@@ -21,15 +21,15 @@ export class RegisterComponent{
 
   register(): void {
     this.userService
-      .regist_user(this.model)
+      .register_user(this.model)
       .subscribe(
         (json: Object) => {
-            this.model = new User("","","").fromJSON(json);
+            this.model = new User().fromJSON(json);
             console.log(this.model.username);
         },
         error => console.error('Error: ' + error)
         );
   }
 
-  model = new User('','','');
+  model = new User();
 }

@@ -2,8 +2,6 @@
  * Created by Hanicz on 2/19/2017.
  */
 import { Component } from '@angular/core';
-import { Headers, Http, URLSearchParams  } from '@angular/http';
-import 'rxjs/add/operator/toPromise';
 import { UserService } from '../services/user.service'
 import { CustomResponse } from '../utils/customResponse'
 import { User } from '../utils/user'
@@ -16,7 +14,7 @@ import { User } from '../utils/user'
 })
 export class LoginComponent {
 
-  model = new User("","","");
+  model = new User();
   custResp: CustomResponse;
 
   constructor(

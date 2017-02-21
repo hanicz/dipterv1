@@ -27,9 +27,7 @@ class User(Base):
         return {
             'id': self.id,
             'name': self.name,
-            'email': self.email,
-            'created': str(self.created),
-            'failed_attempts': self.failed_attempts
+            'email': self.email
         }
 
 
@@ -137,6 +135,7 @@ class CredentialStore(Base):
 
     id = Column(Integer, primary_key=True)
     environment = Column(String(250), nullable=False, unique=True)
+    user = Column(String(250), nullable=False)
     code = Column(String(250), nullable=False)
 
     def __repr__(self):

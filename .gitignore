@@ -1,2 +1,10 @@
 backend/**/*.pyc
 backend/**/*.db
+
+backend/.idea/**/workspace.xml
+backend/.idea/**/tasks.xml
+backend/.idea/dictionaries
+
+frontend/.idea/**/workspace.xml
+frontend/.idea/**/tasks.xml
+frontend/.idea/dictionaries

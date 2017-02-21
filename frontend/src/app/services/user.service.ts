@@ -13,7 +13,8 @@ import { User } from '../utils/user'
 @Injectable()
 export class UserService {
 
-  private headers = new Headers({'Content-Type': 'application/json'});
+  private headers = new Headers({'Content-Type': 'application/json',
+                                  'Accept': 'application/json'});
   private userUrl = 'http://localhost:5000/users';
 
   constructor(private http: Http) { }
@@ -31,10 +32,16 @@ export class UserService {
       .map((res: Response) => res.json());
   }
 
-  regist_user(user: User) {
+  register_user(user: User) {
 
     const url = `${this.userUrl}/register`;
     return this.http.post(url,JSON.stringify(user),{headers:this.headers})
+      .map((res: Response) => res.json());
+  }
+
+  activate_user(token: String){
+    const url = `${this.userUrl}/activate/${token}`;
+    return this.http.put(url,{headers:this.headers})
       .map((res: Response) => res.json());
   }
 }

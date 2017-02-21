@@ -23,6 +23,7 @@ def login_user(username, password):
     except exc.SQLAlchemyError as e:
         print(e.__context__)
         session.rollback()
+        return False
     finally:
         session.close()
 
@@ -43,9 +44,10 @@ def register_user(username, user_password, email):
 
     try:
         new_user = User(name=username, password_hash=password_hash, failed_attempts=0,
-                                         email=email, activation_link=None, created=datetime.datetime.now())
+                                         email=email, activation_link=activation_link, created=datetime.datetime.now())
         session.add(new_user)
         session.commit()
+        send_activate_email(new_user)
         return new_user.serialize()
     except exc.SQLAlchemyError as e:
         print(e.__context__)
@@ -55,7 +57,25 @@ def register_user(username, user_password, email):
         session.close()
 
 
-def send_activate_email(activation_link):
+def activate_user(token):
+    session = DBSession()
+
+    try:
+        user = session.query(User).filter((User.activation_link == token)).first()
+        if user is not None:
+            user.activation_link = None
+            session.commit()
+            return True
+        return False
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return False
+    finally:
+        session.close()
+
+
+def send_activate_email(user):
     return 'ok'
 
 
