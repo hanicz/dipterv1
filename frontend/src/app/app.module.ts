@@ -9,6 +9,7 @@ import { LoginComponent }  from './login/login.component';
 import { UserService} from './services/user.service';
 import { RegisterComponent }  from './register/register.component';
 import { ActivateComponent }  from './activate/activate.component';
+import { NotFoundComponent }  from './notfound/not-found.component';
 
 @NgModule({
   imports:      [ BrowserModule,
@@ -18,7 +19,8 @@ import { ActivateComponent }  from './activate/activate.component';
   declarations: [ AppComponent,
                   LoginComponent,
                   RegisterComponent,
-                  ActivateComponent],
+                  ActivateComponent,
+                  NotFoundComponent],
   bootstrap:    [ AppComponent ],
   providers: [ UserService ],
 })
