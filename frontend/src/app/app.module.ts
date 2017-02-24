@@ -10,6 +10,7 @@ import { UserService} from './services/user.service';
 import { RegisterComponent }  from './register/register.component';
 import { ActivateComponent }  from './activate/activate.component';
 import { NotFoundComponent }  from './notfound/not-found.component';
+import { ResetComponent }  from './reset/reset.component';
 
 @NgModule({
   imports:      [ BrowserModule,
@@ -20,7 +21,8 @@ import { NotFoundComponent }  from './notfound/not-found.component';
                   LoginComponent,
                   RegisterComponent,
                   ActivateComponent,
-                  NotFoundComponent],
+                  NotFoundComponent,
+                  ResetComponent],
   bootstrap:    [ AppComponent ],
   providers: [ UserService ],
 })

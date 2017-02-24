@@ -16,6 +16,8 @@ def login_user(username, password):
         user = session.query(User).filter((User.activation_link == None) & (User.name == username)).first()
         if user is not None:
             if pbkdf2_sha256.verify(password, user.password_hash):
+                user.failed_attempts = 0
+                session.commit()
                 return True
             increment_bad_password(user)
             session.commit()
@@ -61,9 +63,27 @@ def activate_user(token):
     session = DBSession()
 
     try:
-        user = session.query(User).filter((User.activation_link == token)).first()
+        user = session.query(User).filter((User.activation_link == token) & (User.failed_attempts == 2)).first()
         if user is not None:
             user.activation_link = None
+            session.commit()
+            return True
+        return False
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return False
+    finally:
+        session.close()
+
+
+def reset_user(token):
+    session = DBSession()
+
+    try:
+        user = session.query(User).filter((User.activation_link == token)).first()
+        if user is not None:
+
             session.commit()
             return True
         return False

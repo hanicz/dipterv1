@@ -7,12 +7,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent }  from './login/login.component';
 import { RegisterComponent }  from './register/register.component';
 import { ActivateComponent }  from './activate/activate.component';
+import { ResetComponent }  from './reset/reset.component';
 import { NotFoundComponent }  from './notfound/not-found.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login',  component: LoginComponent },
   { path: 'register',  component: RegisterComponent },
+  { path: 'reset/:token',  component: ResetComponent },
   { path: 'activate/:token', component: ActivateComponent },
   { path: 'not-found', component: NotFoundComponent },
   {path: '**', redirectTo: '/not-found'}

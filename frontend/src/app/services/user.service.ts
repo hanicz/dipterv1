@@ -8,6 +8,7 @@ import { CustomResponse } from '../utils/customResponse'
 import 'rxjs/add/operator/map';
 
 import { User } from '../utils/user'
+import { ResetUser } from '../entities/reset-user'
 
 
 @Injectable()
@@ -41,6 +42,12 @@ export class UserService {
 
   activate_user(token: String){
     const url = `${this.userUrl}/activate/${token}`;
+    return this.http.put(url,{headers:this.headers})
+      .map((res: Response) => res.json());
+  }
+
+  reset_user(user: ResetUser){
+    const url = `${this.userUrl}/reset`;
     return this.http.put(url,{headers:this.headers})
       .map((res: Response) => res.json());
   }

@@ -1,8 +1,7 @@
 from flask import Blueprint, request, jsonify, session
 
 from utils import validate, HTTP_OK, HTTP_BAD_REQUEST, HTTP_UNAUTHORIZED, HTTP_CREATED, HTTP_CONFLICT
-from models import login_user, register_user, activate_user
-from utils import crossdomain
+from models import login_user, register_user, activate_user, reset_user
 
 users_api = Blueprint('users_api', __name__)
 
@@ -40,6 +39,19 @@ def activate(token):
     if activate_user(token):
         return jsonify({'Response': 'Activation successful'}), HTTP_OK
     return jsonify({'Response': 'Activation failed'}), HTTP_UNAUTHORIZED
+
+
+@users_api.route("/reset", methods=['PUT'])
+def reset_password():
+    input_dictionary = request.get_json()
+    validation_dictionary = {'token': None, 'password': None,
+                             'repassword': None}
+    if validate(input_dictionary, validation_dictionary):
+        if reset_user(token):
+            return jsonify({'Response': 'Activation successful'}), HTTP_OK
+        return jsonify({'Response': 'Activation failed'}), HTTP_UNAUTHORIZED
+    else:
+        return jsonify({'Response': 'Bad request'}), HTTP_BAD_REQUEST
 
 
 @users_api.route("/deleteUser", methods=['DELETE'])
