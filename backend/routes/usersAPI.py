@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify, session
 
 from utils import validate, HTTP_OK, HTTP_BAD_REQUEST, HTTP_UNAUTHORIZED, HTTP_CREATED, HTTP_CONFLICT
-from models import login_user, register_user, activate_user, reset_user
+from models import login_user, register_user, activate_user, reset_user, login_required
 
 users_api = Blueprint('users_api', __name__)
 
@@ -44,26 +44,29 @@ def activate(token):
 @users_api.route("/reset", methods=['PUT'])
 def reset_password():
     input_dictionary = request.get_json()
-    validation_dictionary = {'token': None, 'password': None,
-                             'repassword': None}
-    if validate(input_dictionary, validation_dictionary):
-        if reset_user(token):
-            return jsonify({'Response': 'Activation successful'}), HTTP_OK
-        return jsonify({'Response': 'Activation failed'}), HTTP_UNAUTHORIZED
+    validation_dictionary = {'token': None, 'repassword': None,
+                             'password': None}
+    if validate(input_dictionary, validation_dictionary) and input_dictionary['password'] == input_dictionary['repassword']:
+        if reset_user(input_dictionary['token'], input_dictionary['password']):
+            return jsonify({'Response': 'Reset successful'}), HTTP_OK
+        return jsonify({'Response': 'Reset failed'}), HTTP_UNAUTHORIZED
     else:
         return jsonify({'Response': 'Bad request'}), HTTP_BAD_REQUEST
 
 
 @users_api.route("/deleteUser", methods=['DELETE'])
+@login_required
 def delete():
     return "ok", HTTP_OK
 
 
 @users_api.route("/changeData", methods=['PUT'])
+@login_required
 def change_data():
     return "ok", HTTP_OK
 
 
 @users_api.route("/logout", methods=['POST'])
+@login_required
 def logout():
     return "ok", HTTP_OK

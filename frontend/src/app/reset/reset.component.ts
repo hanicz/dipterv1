@@ -1,9 +1,8 @@
 /**
  * Created by Hanicz on 2/21/2017.
  */
-import { Component, OnInit} from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import 'rxjs/add/operator/switchMap';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { UserService } from '../services/user.service'
 import { CustomResponse } from '../utils/customResponse'
 import { ResetUser } from '../entities/reset-user'
@@ -20,13 +19,13 @@ export class ResetComponent implements OnInit{
 
   constructor(
     private userService: UserService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
   }
 
   ngOnInit(): void {
-      this.route.params
-      .switchMap((params: Params) => this.model.token = params['token']);
+      this.route.params.subscribe((params: Params) => this.model.token = params['token']);
   }
 
   reset_user(){
@@ -34,7 +33,7 @@ export class ResetComponent implements OnInit{
       .subscribe(
         (json: Object) => {
           this.custResp = new CustomResponse().fromJSON(json);
-          console.log(this.custResp.Response);
+          this.router.navigate(['/login'])
         },
         error => {this.custResp.Response = 'Activation failed'}
       );

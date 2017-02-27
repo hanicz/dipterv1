@@ -48,7 +48,7 @@ export class UserService {
 
   reset_user(user: ResetUser){
     const url = `${this.userUrl}/reset`;
-    return this.http.put(url,{headers:this.headers})
+    return this.http.put(url,JSON.stringify(user),{headers:this.headers})
       .map((res: Response) => res.json());
   }
 }
