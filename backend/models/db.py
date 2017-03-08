@@ -135,7 +135,6 @@ class CredentialStore(Base):
 
     id = Column(Integer, primary_key=True)
     environment = Column(String(250), nullable=False, unique=True)
-    user = Column(String(250), nullable=False)
     code = Column(String(250), nullable=False)
 
     def __repr__(self):

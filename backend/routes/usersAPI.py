@@ -1,4 +1,5 @@
-from flask import Blueprint, request, jsonify, session
+from flask import Blueprint, request, jsonify, session, make_response
+import jwt
 
 from utils import validate, HTTP_OK, HTTP_BAD_REQUEST, HTTP_UNAUTHORIZED, HTTP_CREATED, HTTP_CONFLICT
 from models import login_user, register_user, activate_user, reset_user, login_required
@@ -12,8 +13,11 @@ def login():
     input_dictionary = {'username': request.args.get('username'), 'password': request.args.get('password')}
 
     if validate(input_dictionary, validation_dictionary):
-        if login_user(request.args.get('username'), request.args.get('password')):
-            return jsonify({'Response': 'Login successful'}), HTTP_OK
+        token = login_user(request.args.get('username'), request.args.get('password'))
+        if token is not None:
+            response = make_response(jsonify({'Response': 'Login successful'}), HTTP_OK)
+            response.set_cookie('token', token.decode())
+            return response
         else:
             return jsonify({'Response': 'Login failed'}), HTTP_UNAUTHORIZED
     else:

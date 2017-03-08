@@ -2,3 +2,4 @@ flask
 passlib
 sqlalchemy
 flask_cors
+pyjwt

@@ -1,11 +1,13 @@
 import datetime
 import random
 import string
+import jwt
 
 from passlib.hash import pbkdf2_sha256
 from sqlalchemy import exc
 from functools import wraps
 from .db import DBSession, User
+from .tokensModel import encode_token
 
 
 def login_user(username, password):
@@ -16,7 +18,7 @@ def login_user(username, password):
             if pbkdf2_sha256.verify(password, user.password_hash):
                 user.failed_attempts = 0
                 session.commit()
-                return True
+                return encode_token(user.id)
             increment_bad_password(user)
             session.commit()
             return False
@@ -91,7 +93,7 @@ def reset_user(token,password):
         session.close()
 
 
-def send_activate_email():
+def send_activate_email(user):
     return 'ok'
 
 

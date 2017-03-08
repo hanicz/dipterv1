@@ -1,12 +1,16 @@
+import os
+
 from flask import Flask
 from routes import users_api, files_api, notes_api, roles_api
 from models import init_db, login_required
+from models import get_secret_key
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
 
 init_db()
+os.environ['SECRET_KEY'] = get_secret_key()
 
 
 app.register_blueprint(users_api, url_prefix='/users')
