@@ -71,6 +71,6 @@ def change_data():
 
 
 @users_api.route("/logout", methods=['POST'])
-@login_required
 def logout():
+    print(request.cookies.get('token'))
     return "ok", HTTP_OK

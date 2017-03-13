@@ -7,7 +7,7 @@ from models import get_secret_key
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)
+CORS(app,supports_credentials=True)
 
 init_db()
 os.environ['SECRET_KEY'] = get_secret_key()
@@ -25,5 +25,4 @@ def before_request():
     print('before')
 
 if __name__ == '__main__':
-    app.secret_key = 'asd'
     app.run()

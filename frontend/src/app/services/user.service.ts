@@ -28,7 +28,8 @@ export class UserService {
 
     const url = `${this.userUrl}/login`;
     return this.http.get(url,{
-        search: params
+        search: params,
+        withCredentials: true
       })
       .map((res: Response) => res.json());
   }
@@ -42,13 +43,19 @@ export class UserService {
 
   activate_user(token: String){
     const url = `${this.userUrl}/activate/${token}`;
-    return this.http.put(url,{headers:this.headers})
+    return this.http.put(url,'',{headers:this.headers})
       .map((res: Response) => res.json());
   }
 
   reset_user(user: ResetUser){
     const url = `${this.userUrl}/reset`;
     return this.http.put(url,JSON.stringify(user),{headers:this.headers})
+      .map((res: Response) => res.json());
+  }
+
+  logout_user(){
+    const url = `${this.userUrl}/logout`;
+    return this.http.post(url,'',{headers:this.headers, withCredentials: true})
       .map((res: Response) => res.json());
   }
 }
