@@ -1,0 +1,6 @@
+<div class="container">
+    <form class="form" (ngSubmit)="upload()" #uploadForm="ngForm">
+        <input type="file" (change)="onChange($event)" placeholder="Upload file">
+        <button type="submit">Upload</button>
+    </form>
+</div>

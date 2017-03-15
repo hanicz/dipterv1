@@ -8,7 +8,7 @@ def encode_token(id):
         payload = {
             'expiration': (datetime.datetime.now() + datetime.timedelta(days=0, seconds=5)).strftime("%Y-%m-%d %H:%M:%S"),
             'init': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            'user': 100
+            'user': id
         }
 
         return jwt.encode(

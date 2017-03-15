@@ -7,7 +7,9 @@ import { FormsModule }   from '@angular/forms';
 import { AppComponent }  from './app.component';
 import { LoginComponent }  from './login/login.component';
 import { UserService} from './services/user.service';
+import { FileService} from './services/file.service';
 import { RegisterComponent }  from './register/register.component';
+import { UploadComponent }  from './upload/upload.component';
 import { ActivateComponent }  from './activate/activate.component';
 import { NotFoundComponent }  from './notfound/not-found.component';
 import { ResetComponent }  from './reset/reset.component';
@@ -22,8 +24,10 @@ import { ResetComponent }  from './reset/reset.component';
                   RegisterComponent,
                   ActivateComponent,
                   NotFoundComponent,
-                  ResetComponent],
+                  ResetComponent,
+                  UploadComponent],
   bootstrap:    [ AppComponent ],
-  providers: [ UserService ],
+  providers: [ UserService,
+                FileService ],
 })
 export class AppModule { }

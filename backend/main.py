@@ -12,7 +12,6 @@ CORS(app,supports_credentials=True)
 init_db()
 os.environ['SECRET_KEY'] = get_secret_key()
 
-
 app.register_blueprint(users_api, url_prefix='/users')
 app.register_blueprint(files_api, url_prefix='/files')
 app.register_blueprint(notes_api, url_prefix='/notes')
@@ -25,4 +24,4 @@ def before_request():
     print('before')
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')

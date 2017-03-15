@@ -6,6 +6,7 @@ import { Headers, Http, URLSearchParams  } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { UserService } from '../services/user.service'
 import { User } from '../utils/user'
+import { Router } from '@angular/router';
 
 @Component({
   moduleId: module.id,
@@ -16,7 +17,7 @@ import { User } from '../utils/user'
 export class RegisterComponent{
 
   constructor(
-    private userService: UserService
+    private userService: UserService,private router: Router
   ){}
 
   register(): void {
@@ -26,6 +27,7 @@ export class RegisterComponent{
         (json: Object) => {
             this.model = new User().fromJSON(json);
             console.log(this.model.username);
+            this.router.navigate(["/login"]);
         },
         error => console.error('Error: ' + error)
         );

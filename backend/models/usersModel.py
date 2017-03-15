@@ -1,7 +1,6 @@
 import datetime
 import random
 import string
-import jwt
 
 from passlib.hash import pbkdf2_sha256
 from sqlalchemy import exc

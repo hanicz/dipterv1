@@ -9,6 +9,8 @@ import { RegisterComponent }  from './register/register.component';
 import { ActivateComponent }  from './activate/activate.component';
 import { ResetComponent }  from './reset/reset.component';
 import { NotFoundComponent }  from './notfound/not-found.component';
+import { UploadComponent }  from './upload/upload.component';
+
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -17,6 +19,7 @@ const routes: Routes = [
   { path: 'reset/:token',  component: ResetComponent },
   { path: 'activate/:token', component: ActivateComponent },
   { path: 'not-found', component: NotFoundComponent },
+  { path: 'upload', component: UploadComponent },
   {path: '**', redirectTo: '/not-found'}
 ];
 

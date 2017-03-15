@@ -8,5 +8,7 @@ HTTP_NOT_FOUND = 404
 HTTP_CONFLICT = 409
 HTTP_INT_ERROR = 500
 
+UPLOAD_FOLDER = 'C:/'
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif','mkv', 'iso'])
 
 secure_paths = ['/users/login', '/users/register']
