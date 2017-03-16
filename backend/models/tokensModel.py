@@ -1,13 +1,15 @@
 import datetime
 import jwt
 import os
+from flask import request, jsonify
+from functools import wraps
+from utils import HTTP_UNAUTHORIZED, secure_paths
 
 
 def encode_token(id):
     try:
         payload = {
-            'expiration': (datetime.datetime.now() + datetime.timedelta(days=0, seconds=5)).strftime("%Y-%m-%d %H:%M:%S"),
-            'init': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
             'user': id
         }
 
@@ -25,7 +27,23 @@ def decode_token(token):
     try:
         payload = jwt.decode(token, os.getenv('SECRET_KEY'))
         return payload['user']
-    except jwt.ExpiredSignatureError:
-        return 'Signature expired. Please log in again.'
-    except jwt.InvalidTokenError:
-        return 'Invalid token. Please log in again.'
+    except jwt.ExpiredSignatureError as e:
+        raise jwt.ExpiredSignatureError
+    except jwt.InvalidTokenError as e:
+        raise jwt.InvalidTokenError
+
+
+def login_required(f):
+    @wraps(f)
+    def authenticate(*args, **kwargs):
+        print('Authenticating user')
+
+        if request.path in secure_paths:
+            return f(*args, **kwargs)
+
+        try:
+            user = decode_token(request.cookies.get('token'))
+        except Exception as e:
+            return jsonify({'Response': 'Login failed'}), HTTP_UNAUTHORIZED
+        return f(*args, **kwargs)
+    return authenticate

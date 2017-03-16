@@ -40,11 +40,18 @@ class File(Base):
     file_name = Column(String(250), nullable=False)
     path = Column(String(250), nullable=False, unique=True)
     created = Column(DateTime, nullable=False)
+    public_link = Column(String(250), nullable=True, unique=True)
+    content = Column(TEXT, nullable=True)
 
     def __repr__(self):
-        return "File: (id='%i', user_id='%i', file_name='%s', path='%s', created='%s')" \
-               % (self.id, self.user_id, self.file_name, self.path,  str(self.created))
+        return "File: (id='%i', user_id='%i', file_name='%s', path='%s', created='%s', public_link='%s', content='%s')" \
+               % (self.id, self.user_id, self.file_name, self.path,  str(self.created), self.public_link, self.content)
 
+    def serialize(self):
+        return{
+            'fileName': self.file_name,
+            'created': self.created
+        }
 
 class Log(Base):
     __tablename__ = 'my_logger'

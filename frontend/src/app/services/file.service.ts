@@ -28,7 +28,18 @@ export class FileService {
     // }
 
     const url = `${this.userUrl}/file`;
-    return this.http.post(url,formData,{headers:this.headers, withCredentials: true})
+    return this.http.post(url,formData,{withCredentials: true})
+      .map((res: Response) => res.json());
+  }
+
+  get_files(){
+    let headers = new Headers({'Content-Type': 'application/json',
+                                  'Accept': 'application/json'});
+
+    const url = `${this.userUrl}/userFiles`;
+    return this.http.get(url,{
+        withCredentials: true
+      })
       .map((res: Response) => res.json());
   }
 

@@ -1,7 +1,8 @@
 from flask import Blueprint, request, jsonify, session, make_response
 import jwt
+from logger import log_message
 
-from utils import validate, HTTP_OK, HTTP_BAD_REQUEST, HTTP_UNAUTHORIZED, HTTP_CREATED, HTTP_CONFLICT
+from utils import validate, HTTP_OK, HTTP_BAD_REQUEST, HTTP_UNAUTHORIZED, HTTP_CREATED, HTTP_CONFLICT, LEVEL
 from models import login_user, register_user, activate_user, reset_user, login_required
 
 users_api = Blueprint('users_api', __name__)

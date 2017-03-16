@@ -4,7 +4,6 @@ import string
 
 from passlib.hash import pbkdf2_sha256
 from sqlalchemy import exc
-from functools import wraps
 from .db import DBSession, User
 from .tokensModel import encode_token
 
@@ -99,14 +98,3 @@ def send_activate_email(user):
 def reset_password_email(user):
     return 'ok'
 
-
-def login_required(f):
-
-    @wraps(f)
-    def authenticate(*args, **kwargs):
-
-
-
-        return f(*args, **kwargs)
-
-    return authenticate

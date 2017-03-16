@@ -1,7 +1,7 @@
 /**
  * Created by Hanicz on 2/19/2017.
  */
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FileService} from '../services/file.service';
 import { CustomResponse } from '../utils/customResponse';
 
@@ -19,6 +19,14 @@ export class UploadComponent {
   constructor(
     private fileService: FileService
   ){}
+
+  ngOnInit(): void {
+      this.fileService.get_files().subscribe((json: Object) => {
+            console.log(json);
+        },
+        error => console.error('Error: ' + error)
+        );
+  }
 
   upload(): void {
     this.fileService.upload_file(this.file).subscribe((json: Object) => {

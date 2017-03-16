@@ -1,5 +1,16 @@
-DB_ECHO = True
+from enum import Enum
 
+
+class LEVEL(Enum):
+    INFO = 1
+    WARNING = 2
+    ERROR = 3
+
+#Dev environment
+DB_ECHO = True
+log_level = LEVEL.INFO
+
+#HTTP response
 HTTP_OK = 200
 HTTP_CREATED = 201
 HTTP_BAD_REQUEST = 400
@@ -8,7 +19,10 @@ HTTP_NOT_FOUND = 404
 HTTP_CONFLICT = 409
 HTTP_INT_ERROR = 500
 
-UPLOAD_FOLDER = 'C:/'
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif','mkv', 'iso'])
+#File upload
+UPLOAD_FOLDER = 'C:/temp/'
+NOT_ALLOWED_EXTENSIONS = set(['php'])
 
-secure_paths = ['/users/login', '/users/register']
+
+#Authentication
+secure_paths = ['/users/login', '/users/register', '/users/reset', '/users/activate']
