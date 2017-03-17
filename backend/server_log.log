@@ -13,3 +13,8 @@ Unhandled exception
 2017-03-16 17:35:28.739802 Unhandled Exception: aaaaaaaaaaaa
 2017-03-16 17:35:28.987508 Unhandled Exception: aaaaaaaaaaaa
 2017-03-16 17:35:29.048671 Unhandled Exception: aaaaaaaaaaaa
+2017-03-17 11:19:35.590208 Unhandled Exception: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2017-03-17 11:36:18.585678 Unhandled Exception: send_activate_email() missing 1 required positional argument: 'to_address'
+2017-03-17 11:36:58.544913 Unhandled Exception: list index out of range
+Sending activation email for: test6@test.hu
+Failed to send email for: test6@test.hu Exception: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond

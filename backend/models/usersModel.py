@@ -6,6 +6,7 @@ from passlib.hash import pbkdf2_sha256
 from sqlalchemy import exc
 from .db import DBSession, User
 from .tokensModel import encode_token
+from utils import send_activate_email, reset_password_email
 
 
 def login_user(username, password):
@@ -33,7 +34,7 @@ def increment_bad_password(user):
         user.failed_attempts += 1
         return
     user.activation_link = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
-    reset_password_email(user)
+    reset_password_email(user.email,user.activation_link)
 
 
 def register_user(username, user_password, email):
@@ -44,10 +45,14 @@ def register_user(username, user_password, email):
         new_user = User(name=username, password_hash=password_hash, failed_attempts=0,
                                          email=email, activation_link=activation_link, created=datetime.datetime.now())
         session.add(new_user)
+        send_activate_email(email,activation_link)
         session.commit()
-        send_activate_email(new_user)
         return new_user.serialize()
     except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return None
+    except Exception as e:
         print(e.__context__)
         session.rollback()
         return None
@@ -89,12 +94,3 @@ def reset_user(token,password):
         return False
     finally:
         session.close()
-
-
-def send_activate_email(user):
-    return 'ok'
-
-
-def reset_password_email(user):
-    return 'ok'
-
