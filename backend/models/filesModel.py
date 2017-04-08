@@ -1,8 +1,11 @@
 import os
 import flask
-import psutil
+import shutil
 import werkzeug
 import datetime
+import random
+import string
+
 from utils import NOT_ALLOWED_EXTENSIONS,UPLOAD_FOLDER
 from .db import DBSession, File
 from sqlalchemy import exc
@@ -52,10 +55,101 @@ def upload_file(user):
 def create_file(user,path,filename):
     session = DBSession()
     try:
-        new_file = File(path=path, user_id=user, file_name=filename, created=datetime.datetime.now())
+        new_file = File(path=path, user_id=user, file_name=filename, created=datetime.datetime.now(), folder=0)
         session.add(new_file)
         session.commit()
         return True
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return False
+    finally:
+        session.close()
+
+
+def remove_file(user, fileid):
+    session = DBSession()
+    try:
+        file = session.query(File).filter((File.user_id == user) & (File.id == fileid) & (File.folder == 0)).first()
+        if file is not None:
+            os.remove(os.path.join(file.path, file.file_name))
+            session.delete(file)
+            session.commit()
+            return True
+        return False
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return False
+    finally:
+        session.close()
+
+
+def remove_folder(user, folderid):
+    session = DBSession()
+    try:
+        folder = session.query(File).filter((File.user_id == user) & (File.id == folderid) & (File.folder == 1)).first()
+        if folder is not None:
+            shutil.rmtree(os.path.join(folder.path, folder.file_name))
+            session.delete(folder)
+            deleted_files = session.query(File).filter((File.user_id == user) &
+                                                       (File.path.startswith(os.path.join(folder.path, folder.file_name))))
+            for f in deleted_files:
+                session.delete(f)
+            session.commit()
+            return True
+        return False
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return False
+    finally:
+        session.close()
+
+
+def crt_folder(user,path,folder_name):
+    session = DBSession()
+    try:
+        new_folder = File(path=path, user_id=user, file_name=folder_name, created=datetime.datetime.now(), folder=1)
+        session.add(new_folder)
+        session.commit()
+        return True
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return False
+    finally:
+        session.close()
+
+
+def public_file(user, id):
+    session = DBSession()
+    try:
+        file = session.query(File).filter((File.user_id == user) & (File.id == id) & (File.folder == 0)).first()
+        if file is not None:
+            public_link = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
+            file.public_link = public_link
+            session.commit()
+            return public_link
+        return False
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return False
+    finally:
+        session.close()
+
+def share_file(to_user,from_user,file_id,role_id):
+    session = DBSession()
+    try:
+        file = session.query(File).filter((File.user_id == user) & (File.id == id) & (File.folder == 0)).first()
+        if file is not None:
+            public_link = ''.join(
+                random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
+            file.public_link = public_link
+            session.commit()
+            return public_link
+        return False
     except exc.SQLAlchemyError as e:
         print(e.__context__)
         session.rollback()

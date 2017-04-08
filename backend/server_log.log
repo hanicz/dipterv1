@@ -18,3 +18,8 @@ Unhandled exception
 2017-03-17 11:36:58.544913 Unhandled Exception: list index out of range
 Sending activation email for: test6@test.hu
 Failed to send email for: test6@test.hu Exception: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+Sending activation email for: test@test.hu
+Failed to send email for: test@test.hu Exception: (535, b'5.7.8 Username and Password not accepted. Learn more at\n5.7.8  https://support.google.com/mail/?p=BadCredentials k63sm2044146wmf.9 - gsmtp')
+2017-04-08 11:27:35.989249 Unhandled Exception: delete_file() takes 1 positional argument but 2 were given
+2017-04-08 11:28:54.723713 Unhandled Exception: delete_file() takes 1 positional argument but 2 were given
+2017-04-08 11:30:03.921393 Unhandled Exception: 'Query' object has no attribute 'file_name'

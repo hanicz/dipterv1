@@ -3,7 +3,7 @@ import jwt
 import os
 from flask import request, jsonify
 from functools import wraps
-from utils import HTTP_UNAUTHORIZED, secure_paths
+from utils import HTTP_UNAUTHORIZED, secure_paths, auth
 
 
 def encode_token(id):
@@ -38,12 +38,14 @@ def login_required(f):
     def authenticate(*args, **kwargs):
         print('Authenticating user')
 
-        if request.path in secure_paths:
-            return f(*args, **kwargs)
+        if auth:
 
-        try:
-            user = decode_token(request.cookies.get('token'))
-        except Exception as e:
-            return jsonify({'Response': 'Login failed'}), HTTP_UNAUTHORIZED
+            if request.path in secure_paths:
+                return f(*args, **kwargs)
+
+            try:
+                user = decode_token(request.cookies.get('token'))
+            except Exception as e:
+                return jsonify({'Response': 'Login failed'}), HTTP_UNAUTHORIZED
         return f(*args, **kwargs)
     return authenticate

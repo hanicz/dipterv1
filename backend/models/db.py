@@ -42,6 +42,7 @@ class File(Base):
     created = Column(DateTime, nullable=False)
     public_link = Column(String(250), nullable=True, unique=True)
     content = Column(TEXT, nullable=True)
+    folder = Column(Integer(1), nullable=False)
 
     def __repr__(self):
         return "File: (id='%i', user_id='%i', file_name='%s', path='%s', created='%s', public_link='%s', content='%s')" \
@@ -49,9 +50,29 @@ class File(Base):
 
     def serialize(self):
         return{
+            'id': self.id,
             'fileName': self.file_name,
             'created': self.created
         }
+
+
+class Role(Base):
+    __tablename__ = 'roles'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable=False, unique=True)
+    priority = Column(Integer ,nullable=False)
+
+    def __repr__(self):
+        return "Role: (id='%i', name='%s,', priority='%i')" \
+                % (self.id, self.name, self.priority)
+
+    def serialize(self):
+        return{
+            'id': self.id,
+            'name': self.name
+        }
+
 
 class Log(Base):
     __tablename__ = 'my_logger'
@@ -107,18 +128,6 @@ class PublicLink(Base):
     def __repr__(self):
         return "Public Link: (id='%i', file_id='%i', link='%s', created='%s')" \
                % (self.id, self.file_id, self.link,  str(self.created))
-
-
-class Role(Base):
-    __tablename__ = 'roles'
-
-    id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False, unique=True)
-
-    def __repr__(self):
-        return "Role: (id='%i', name='%s')" \
-                % (self.id, self.name)
-
 
 class FileShare(Base):
     __tablename__ = 'file_share'
