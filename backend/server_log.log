@@ -23,3 +23,25 @@ Failed to send email for: test@test.hu Exception: (535, b'5.7.8 Username and Pas
 2017-04-08 11:27:35.989249 Unhandled Exception: delete_file() takes 1 positional argument but 2 were given
 2017-04-08 11:28:54.723713 Unhandled Exception: delete_file() takes 1 positional argument but 2 were given
 2017-04-08 11:30:03.921393 Unhandled Exception: 'Query' object has no attribute 'file_name'
+Sending activation email for: test@test.hu
+Failed to send email for: test@test.hu Exception: (534, b'5.7.14 <https://accounts.google.com/signin/continue?sarp=1&scc=1&plt=AKgnsbv4\n5.7.14 CyMUYHxPTLzBVx7rkdbiThVcM8JX66-HzeXfHJfTD3Ih4qLe4VZYrv1-gGT_ccom82TBKm\n5.7.14 8PVwSjbFzl0oAjSfobSfAhMC7PIdTbm-ZpaEJoqFeWtnF4a859npIEEUWHdiDRXI569x_N\n5.7.14 lFIEa5I1hAxhzY8Z2OZnt9xhzjKj_BSMfn0Hen07G3fhEYF2WyQxurOOz5S4453ZjoNPG8\n5.7.14 gyB49AHUCPxsh427eJ62Jw67jnaDE> Please log in via your web browser and\n5.7.14 then try again.\n5.7.14  Learn more at\n5.7.14  https://support.google.com/mail/answer/78754 n6sm18119684wrb.62 - gsmtp')
+Sending activation email for: hanicz20@gmail.com
+Failed to send email for: hanicz20@gmail.com Exception: (534, b'5.7.14 <https://accounts.google.com/signin/continue?sarp=1&scc=1&plt=AKgnsbsy\n5.7.14 Ni_ZBQu0xxbvU1QD-KwzabRvF2fAHqeK0qLQlM9NThuj6Kqu8vhKIgCEYDYjQnZfLOp3Ph\n5.7.14 MjSjo-g8zKgrYuLYpfDoLpt0MoOQEWIdNDW7UaG2kY_BkKtQdrizO4IBIBDSZ6ZPp0glul\n5.7.14 7rczjboYirCPHlJunQ_7IvPuaClzPi2lUEE3f4tPJSD55pz8ZKQvW2EOfWyDdR4H8sVajT\n5.7.14 8KV8dLIucQbAPZ7JsfOv4ZLQblfsY> Please log in via your web browser and\n5.7.14 then try again.\n5.7.14  Learn more at\n5.7.14  https://support.google.com/mail/answer/78754 o77sm3290769wrc.38 - gsmtp')
+Sending activation email for: hanicz20@gmail.com
+Sending activation email for: hanicz20@gmail.com
+Message: http://localhost:3000/activate/Y5Y9YMCQY92QZD56
+Sending activation email for: hanicz20@gmail.com
+Failed to send email for: hanicz20@gmail.com Exception: must be str, not MIMEText
+Sending activation email for: hanicz20@gmail.com
+Message: http://localhost:3000/activate/QQ67FO2U3PXQFWJN
+Failed to send email for: hanicz20@gmail.com Exception: SMTP AUTH extension not supported by server.
+Sending activation email for: hanicz20@gmail.com
+Message: http://localhost:3000/activate/GLMLC3UNVBEXD2CI
+Sending activation email for: hanicz20@gmail.com
+2017-04-10 19:15:58.092826 Unhandled Exception: 'bool' object has no attribute 'decode'
+2017-04-10 19:16:04.025851 Unhandled Exception: 'bool' object has no attribute 'decode'
+Sending reset email for: hanicz20@gmail.com
+2017-04-10 19:16:08.141126 Unhandled Exception: 'bool' object has no attribute 'decode'
+Sending activation email for: hanicz20@gmail.com
+2017-04-10 19:17:59.530071 Unhandled Exception: 'bool' object has no attribute 'decode'
+Sending reset email for: hanicz20@gmail.com

@@ -22,11 +22,11 @@ def login_user(username, password):
                 return encode_token(user.id)
             increment_bad_password(user)
             session.commit()
-            return False
+            return None
     except exc.SQLAlchemyError as e:
         print(e.__context__)
         session.rollback()
-        return False
+        return None
     finally:
         session.close()
 
@@ -47,7 +47,7 @@ def register_user(username, user_password, email):
         new_user = User(name=username, password_hash=password_hash, failed_attempts=0,
                                          email=email, activation_link=activation_link, created=datetime.datetime.now())
         session.add(new_user)
-        send_activate_email(email,activation_link)
+        send_activate_email(email, activation_link)
         session.commit()
         return new_user.serialize()
     except exc.SQLAlchemyError as e:

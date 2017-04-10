@@ -1,4 +1,4 @@
-from .db import DBSession, CredentialStore
+from .db import DBSession, CredentialStore, User
 from sqlalchemy import exc
 
 

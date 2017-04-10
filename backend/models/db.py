@@ -19,6 +19,10 @@ class User(Base):
     created = Column(DateTime, nullable=False)
     failed_attempts = Column(Integer, nullable=False, default=0)
 
+    files = relationship("File", cascade="all, delete-orphan")
+    logs = relationship("Log", cascade="all, delete-orphan")
+    fileShares = relationship("FileShare", cascade="all, delete-orphan")
+
     def __repr__(self):
         return "User: (id='%i', name='%s', email='%s', password_hash='%s', created='%s')" \
                % (self.id, self.name, self.email, self.password_hash, str(self.created))
@@ -35,15 +39,17 @@ class File(Base):
     __tablename__ = 'files'
 
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('users.id'), cascade="all, delete-orphan")
+    user_id = Column(Integer, ForeignKey('users.id'))
     user = relationship(User)
     file_name = Column(String(250), nullable=False)
     path = Column(String(250), nullable=False, unique=True)
     created = Column(DateTime, nullable=False)
     public_link = Column(String(250), nullable=True, unique=True)
     content = Column(TEXT, nullable=True)
-    folder = Column(Integer(1), nullable=False)
+    folder = Column(Integer, nullable=False)
     delete_date = Column(DateTime, nullable=True)
+
+    fileShares = relationship("FileShare", cascade="all, delete-orphan")
 
     def __repr__(self):
         return "File: (id='%i', user_id='%i', file_name='%s', path='%s', created='%s', public_link='%s', content='%s', folder='%i', delete_date='%s')" \
@@ -63,7 +69,9 @@ class Role(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False, unique=True)
-    priority = Column(Integer ,nullable=False)
+    priority = Column(Integer, nullable=False)
+
+    fileShares = relationship("FileShare", cascade="all, delete-orphan")
 
     def __repr__(self):
         return "Role: (id='%i', name='%s,', priority='%i')" \
@@ -90,29 +98,15 @@ class Log(Base):
                % (self.id, self.user_id, self.text,  str(self.created))
 
 
-class Note(Base):
-    __tablename__ = 'notes'
-
-    id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('users.id'), cascade="all, delete-orphan")
-    user = relationship(User)
-    content = Column(TEXT, nullable=False)
-    created = Column(DateTime, nullable=False)
-
-    def __repr__(self):
-        return "Note: (id='%i', user_id='%i', content='%s', created='%s')" \
-               % (self.id, self.user_id, self.content,  str(self.created))
-
-
 class FileShare(Base):
     __tablename__ = 'file_share'
 
     id = Column(Integer, primary_key=True)
-    file_id = Column(Integer, ForeignKey('files.id'), cascade="all, delete-orphan")
+    file_id = Column(Integer, ForeignKey('files.id'))
     file = relationship(File)
-    user_id = Column(Integer, ForeignKey('users.id'), cascade="all, delete-orphan")
+    user_id = Column(Integer, ForeignKey('users.id'))
     user = relationship(User)
-    role_id = Column(Integer, ForeignKey('roles.id'), cascade="all, delete-orphan")
+    role_id = Column(Integer, ForeignKey('roles.id'))
     role = relationship(Role)
     created = Column(DateTime, nullable=False)
 
