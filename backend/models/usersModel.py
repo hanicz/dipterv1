@@ -1,12 +1,14 @@
 import datetime
 import random
 import string
+import shutil
+import os
 
 from passlib.hash import pbkdf2_sha256
 from sqlalchemy import exc
-from .db import DBSession, User
+from .db import DBSession, User, File
 from .tokensModel import encode_token
-from utils import send_activate_email, reset_password_email
+from utils import send_activate_email, reset_password_email, UPLOAD_FOLDER
 
 
 def login_user(username, password):
@@ -85,6 +87,24 @@ def reset_user(token,password):
             user.password_hash = pbkdf2_sha256.using(salt_size=16).hash(password)
             user.failed_attempts = 0
             user.activation_link = None
+            session.commit()
+            return True
+        return False
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return False
+    finally:
+        session.close()
+
+
+def delete_user(user_id):
+    session = DBSession()
+    try:
+        user = session.query(User).filter((User.activation_link == None) & (User.id == user_id)).first()
+        if user is not None:
+            shutil.rmtree(os.path.join(UPLOAD_FOLDER, user_id))
+            session.delete(user)
             session.commit()
             return True
         return False

@@ -7,7 +7,7 @@ import random
 import string
 
 from utils import NOT_ALLOWED_EXTENSIONS,UPLOAD_FOLDER
-from .db import DBSession, File
+from .db import DBSession, File, FileShare, Role, User
 from sqlalchemy import exc
 from werkzeug.utils import secure_filename
 from exception import InvalidFileException
@@ -20,7 +20,7 @@ def allowed_file(filename):
 def get_all_files(user):
     session = DBSession()
     try:
-        files = session.query(File).filter((File.user_id == user))
+        files = session.query(File).filter((File.user_id == user) & (File.delete_date == None))
         if files is not None:
             return [f.serialize() for f in files]
     except exc.SQLAlchemyError as e:
@@ -72,8 +72,8 @@ def remove_file(user, fileid):
     try:
         file = session.query(File).filter((File.user_id == user) & (File.id == fileid) & (File.folder == 0)).first()
         if file is not None:
-            os.remove(os.path.join(file.path, file.file_name))
-            session.delete(file)
+            file.delete_date=datetime.datetime.now()
+            delete_share(user,file.id)
             session.commit()
             return True
         return False
@@ -90,12 +90,31 @@ def remove_folder(user, folderid):
     try:
         folder = session.query(File).filter((File.user_id == user) & (File.id == folderid) & (File.folder == 1)).first()
         if folder is not None:
-            shutil.rmtree(os.path.join(folder.path, folder.file_name))
-            session.delete(folder)
+            folder.delete_date=datetime.datetime.now()
             deleted_files = session.query(File).filter((File.user_id == user) &
                                                        (File.path.startswith(os.path.join(folder.path, folder.file_name))))
             for f in deleted_files:
-                session.delete(f)
+                f.delete_date=datetime.datetime.now()
+                delete_share(user, f.id)
+            session.commit()
+            return True
+        return False
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return False
+    finally:
+        session.close()
+
+
+def delete_share(user,file_id):
+    session = DBSession()
+    try:
+        file = session.query(File).filter((File.user_id == user) & (File.id == file_id) & (File.folder == 0)).first()
+        if file is not None:
+            delete_shares = session.query(FileShare).filter((FileShare.file_id == file.id))
+            for s in delete_shares:
+                session.delete(s)
             session.commit()
             return True
         return False
@@ -139,16 +158,18 @@ def public_file(user, id):
     finally:
         session.close()
 
-def share_file(to_user,from_user,file_id,role_id):
+
+def share_file(input_dictionary):
     session = DBSession()
     try:
-        file = session.query(File).filter((File.user_id == user) & (File.id == id) & (File.folder == 0)).first()
-        if file is not None:
-            public_link = ''.join(
-                random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
-            file.public_link = public_link
+        file = session.query(File).filter((File.user_id == input_dictionary['from_user']) & (File.id == input_dictionary['file_id']) & (File.folder == 0)).first()
+        role = session.query(Role).filter(Role.id == input_dictionary['role_id']).first()
+        user = session.query(User).filter(User.email == input_dictionary['to_user']).first()
+        if file is not None and role is not None and user is not None:
+            fs = FileShare(file_id=file.id, role_id=role.id, user_id=user.id, created=datetime.datetime.now())
+            session.add(fs)
             session.commit()
-            return public_link
+            return True
         return False
     except exc.SQLAlchemyError as e:
         print(e.__context__)

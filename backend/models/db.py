@@ -35,7 +35,7 @@ class File(Base):
     __tablename__ = 'files'
 
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('users.id'))
+    user_id = Column(Integer, ForeignKey('users.id'), cascade="all, delete-orphan")
     user = relationship(User)
     file_name = Column(String(250), nullable=False)
     path = Column(String(250), nullable=False, unique=True)
@@ -43,16 +43,18 @@ class File(Base):
     public_link = Column(String(250), nullable=True, unique=True)
     content = Column(TEXT, nullable=True)
     folder = Column(Integer(1), nullable=False)
+    delete_date = Column(DateTime, nullable=True)
 
     def __repr__(self):
-        return "File: (id='%i', user_id='%i', file_name='%s', path='%s', created='%s', public_link='%s', content='%s')" \
-               % (self.id, self.user_id, self.file_name, self.path,  str(self.created), self.public_link, self.content)
+        return "File: (id='%i', user_id='%i', file_name='%s', path='%s', created='%s', public_link='%s', content='%s', folder='%i', delete_date='%s')" \
+               % (self.id, self.user_id, self.file_name, self.path,  str(self.created), self.public_link, self.content, self.folder, str(self.delete_date))
 
     def serialize(self):
         return{
             'id': self.id,
             'fileName': self.file_name,
-            'created': self.created
+            'created': self.created,
+            'folder:': self.folder
         }
 
 
@@ -88,25 +90,11 @@ class Log(Base):
                % (self.id, self.user_id, self.text,  str(self.created))
 
 
-class Token(Base):
-    __tablename__ = 'tokens'
-
-    id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('users.id'))
-    user = relationship(User)
-    token = Column(String(250), nullable=False, unique=True)
-    valid = Column(DateTime, nullable=False)
-
-    def __repr__(self):
-        return "Token: (id='%i', user_id='%i', token='%s', valid='%s')" \
-               % (self.id, self.user_id, self.token,  str(self.valid))
-
-
 class Note(Base):
     __tablename__ = 'notes'
 
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('users.id'))
+    user_id = Column(Integer, ForeignKey('users.id'), cascade="all, delete-orphan")
     user = relationship(User)
     content = Column(TEXT, nullable=False)
     created = Column(DateTime, nullable=False)
@@ -116,28 +104,15 @@ class Note(Base):
                % (self.id, self.user_id, self.content,  str(self.created))
 
 
-class PublicLink(Base):
-    __tablename__ = 'public_links'
-
-    id = Column(Integer, primary_key=True)
-    file_id = Column(Integer, ForeignKey('files.id'))
-    file = relationship(File)
-    link = Column(String(250), nullable=False, unique=True)
-    created = Column(DateTime, nullable=False)
-
-    def __repr__(self):
-        return "Public Link: (id='%i', file_id='%i', link='%s', created='%s')" \
-               % (self.id, self.file_id, self.link,  str(self.created))
-
 class FileShare(Base):
     __tablename__ = 'file_share'
 
     id = Column(Integer, primary_key=True)
-    file_id = Column(Integer, ForeignKey('files.id'))
+    file_id = Column(Integer, ForeignKey('files.id'), cascade="all, delete-orphan")
     file = relationship(File)
-    user_id = Column(Integer, ForeignKey('users.id'))
+    user_id = Column(Integer, ForeignKey('users.id'), cascade="all, delete-orphan")
     user = relationship(User)
-    role_id = Column(Integer, ForeignKey('roles.id'))
+    role_id = Column(Integer, ForeignKey('roles.id'), cascade="all, delete-orphan")
     role = relationship(Role)
     created = Column(DateTime, nullable=False)
 
