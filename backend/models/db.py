@@ -42,7 +42,7 @@ class File(Base):
     user_id = Column(Integer, ForeignKey('users.id'))
     user = relationship(User)
     file_name = Column(String(250), nullable=False)
-    path = Column(String(250), nullable=False, unique=True)
+    path = Column(String(250), nullable=False)
     created = Column(DateTime, nullable=False)
     public_link = Column(String(250), nullable=True, unique=True)
     content = Column(TEXT, nullable=True)

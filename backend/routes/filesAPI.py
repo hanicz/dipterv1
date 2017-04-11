@@ -15,14 +15,23 @@ def get_file(id):
 
 @files_api.route("/userFiles", methods=['GET'])
 def get_user_files():
-    files = get_all_files(decode_token(request.cookies.get('token')))
+    if request.cookies.get('token') is None:
+        user_id = 1
+    else:
+        user_id = decode_token(request.cookies.get('token'))
+    files = get_all_files(user_id)
     return jsonify(files), HTTP_OK
 
 
 @files_api.route("/file/<id>", methods=['DELETE'])
 def delete_file(id):
+    if request.cookies.get('token') is None:
+        user_id = 1
+    else:
+        user_id = decode_token(request.cookies.get('token'))
+
     try:
-        if remove_file(decode_token(request.cookies.get('token')), id):
+        if remove_file(user_id, id):
             return jsonify({'Response': 'File deleted successfully'}), HTTP_OK
         else:
             return jsonify({'Response': 'Error deleting file'}), HTTP_BAD_REQUEST
@@ -30,10 +39,15 @@ def delete_file(id):
         return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
 
 
-@files_api.route("/folder/<id>", methods=['DELETE'])
-def delete_folder(id):
+@files_api.route("/removeFolder/<folder_id>", methods=['DELETE'])
+def delete_folder(folder_id):
+    if request.cookies.get('token') is None:
+        user_id = 1
+    else:
+        user_id = decode_token(request.cookies.get('token'))
+
     try:
-        if remove_folder(decode_token(request.cookies.get('token')), id):
+        if remove_folder(user_id, folder_id):
             return jsonify({'Response': 'File deleted successfully'}), HTTP_OK
         else:
             return jsonify({'Response': 'Error deleting file'}), HTTP_BAD_REQUEST
@@ -50,10 +64,17 @@ def create_file():
     return jsonify({'Response': 'File uploaded successfully'}), HTTP_OK
 
 
-@files_api.route("/file", methods=['POST'])
+@files_api.route("/createFolder", methods=['POST'])
 def create_folder():
+    if request.cookies.get('token') is None:
+        user_id = 1
+    else:
+        user_id = decode_token(request.cookies.get('token'))
+
+    input_dictionary = request.get_json()
+    validation_dictionary = {'folder_name': None}
     try:
-        crt_folder(decode_token(request.cookies.get('token')))
+        crt_folder(user_id, input_dictionary)
     except InvalidFileException as e:
         return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
     return jsonify({'Response': 'File uploaded successfully'}), HTTP_OK

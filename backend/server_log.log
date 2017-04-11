@@ -45,3 +45,36 @@ Sending reset email for: hanicz20@gmail.com
 Sending activation email for: hanicz20@gmail.com
 2017-04-10 19:17:59.530071 Unhandled Exception: 'bool' object has no attribute 'decode'
 Sending reset email for: hanicz20@gmail.com
+2017-04-11 19:19:21.952700 Unhandled Exception: 
+2017-04-11 19:19:51.289387 Unhandled Exception: 
+2017-04-11 19:20:05.803117 Unhandled Exception: 
+2017-04-11 19:20:19.613697 Unhandled Exception: 
+2017-04-11 19:21:35.915379 Unhandled Exception: 
+Sending activation email for: hanicz20@gmail.com
+Sending activation email for: awd@asd.hu
+2017-04-11 19:52:19.689192 Unhandled Exception: 'NoneType' object is not subscriptable
+2017-04-11 19:53:14.993972 Unhandled Exception: 'NoneType' object is not subscriptable
+2017-04-11 19:53:20.182474 Unhandled Exception: 'NoneType' object is not subscriptable
+2017-04-11 19:53:33.178499 Unhandled Exception: 'NoneType' object is not subscriptable
+2017-04-11 19:54:33.366709 Unhandled Exception: 'NoneType' object is not subscriptable
+2017-04-11 19:55:06.328836 Unhandled Exception: 'NoneType' object is not subscriptable
+2017-04-11 19:55:18.590617 Unhandled Exception: 'NoneType' object is not subscriptable
+Sending activation email for: asdawd@awdawdbihawduawd.hu
+2017-04-11 19:57:03.807434 Unhandled Exception: 'NoneType' object is not subscriptable
+2017-04-11 19:59:24.615696 Unhandled Exception: 'NoneType' object is not subscriptable
+2017-04-11 19:59:42.457392 Unhandled Exception: 'NoneType' object is not subscriptable
+2017-04-11 20:00:24.028275 Unhandled Exception: 'NoneType' object is not subscriptable
+Sending activation email for: awd@asd.hu
+2017-04-11 20:02:03.398361 Unhandled Exception: 'path'
+2017-04-11 20:02:03.399866 Unhandled Exception: 'path'
+2017-04-11 20:02:10.527090 Unhandled Exception: 'path'
+2017-04-11 20:02:25.781377 Unhandled Exception: 'path'
+2017-04-11 20:02:29.630971 Unhandled Exception: 'path'
+2017-04-11 20:20:39.042156 Unhandled Exception: must be str, not int
+2017-04-11 20:22:12.669107 Unhandled Exception: must be str, not int
+2017-04-11 20:24:42.779574 Unhandled Exception: [WinError 183] Cannot create a file when that file already exists: 'C:/temp//1test2'
+2017-04-11 20:25:02.949964 Unhandled Exception: [WinError 183] Cannot create a file when that file already exists: 'C:/temp//1test2'
+2017-04-11 20:25:50.727079 Unhandled Exception: [WinError 183] Cannot create a file when that file already exists: 'C:/temp/1/test2'
+2017-04-11 20:37:57.758591 Unhandled Exception: [WinError 183] Cannot create a file when that file already exists: 'C:/temp/1/test2/test2'
+Sending activation email for: hancz12@citromail.hu
+Sending activation email for: hancz12@citromail.hu

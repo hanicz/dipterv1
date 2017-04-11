@@ -123,13 +123,31 @@ def delete_share(user,file_id):
         session.close()
 
 
-def crt_folder(user,path,folder_name):
+def crt_folder(user, input_dictionary):
     session = DBSession()
     try:
-        new_folder = File(path=path, user_id=user, file_name=folder_name, created=datetime.datetime.now(), folder=1)
-        session.add(new_folder)
-        session.commit()
-        return True
+        try:
+            if input_dictionary['path']:
+                new_folder_path = UPLOAD_FOLDER + str(user) + '/' + input_dictionary['path']
+                exist_path = session.query(File).filter(
+                    (File.folder == 1) & (File.path + File.file_name == new_folder_path)).first()
+                if exist_path is not None:
+                    new_folder = File(path=new_folder_path, user_id=user, file_name=input_dictionary['folder_name'],
+                                      created=datetime.datetime.now(), folder=1)
+                    session.add(new_folder)
+                    os.makedirs(new_folder_path + '/' + input_dictionary['folder_name'])
+                    session.commit()
+                    return True
+        except KeyError as e:
+            new_folder_path = UPLOAD_FOLDER + str(user) + '/'
+            new_folder = File(path=new_folder_path, user_id=user, file_name=input_dictionary['folder_name'],
+                              created=datetime.datetime.now(), folder=1)
+            session.add(new_folder)
+            os.makedirs(new_folder_path + input_dictionary['folder_name'])
+            session.commit()
+            return True
+
+        return False
     except exc.SQLAlchemyError as e:
         print(e.__context__)
         session.rollback()
