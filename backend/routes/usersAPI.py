@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, session, make_response
+from flask import Blueprint, request, jsonify, session, make_response, session
 import jwt
 from logger import log_message
 
@@ -19,6 +19,7 @@ def login():
         if token is not None:
             response = make_response(jsonify({'Response': 'Login successful'}), HTTP_OK)
             response.set_cookie('token', token.decode())
+            session[token.decode()] = request.args.get('username')
             return response
         else:
             return jsonify({'Response': 'Login failed'}), HTTP_UNAUTHORIZED
@@ -61,7 +62,6 @@ def reset_password():
 
 
 @users_api.route("/deleteUser", methods=['DELETE'])
-@login_required
 def delete():
     try:
         if delete_user(decode_token(request.cookies.get('token')), id):
@@ -73,7 +73,6 @@ def delete():
 
 
 @users_api.route("/changeData", methods=['PUT'])
-@login_required
 def change_data():
     input_dictionary = request.get_json()
     validation_dictionary = {'email': "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$", 'new_password': None,
@@ -86,7 +85,7 @@ def change_data():
         return jsonify({'Response': 'Bad request'}), HTTP_BAD_REQUEST
 
 
-@users_api.route("/logout", methods=['POST'])
+@users_api.route("/logout", methods=['PUT'])
 def logout():
-    print(request.cookies.get('token'))
-    return "ok", HTTP_OK
+    session.pop(request.cookies.get('token'))
+    return jsonify({'Response': 'Logged out'}), HTTP_OK

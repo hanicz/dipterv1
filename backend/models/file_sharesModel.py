@@ -6,10 +6,10 @@ from .db import DBSession, File, FileShare, Role, User
 from sqlalchemy import exc
 
 
-def public_file(user, id):
+def public_file(user_id, file_id):
     session = DBSession()
     try:
-        file = session.query(File).filter((File.user_id == user) & (File.id == id) & (File.folder == 0)).first()
+        file = session.query(File).filter((File.user_id == user_id) & (File.id == file_id) & (File.folder == 0)).first()
         if file is not None:
             public_link = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
             file.public_link = public_link
@@ -24,15 +24,36 @@ def public_file(user, id):
         session.close()
 
 
+def revoke_public(user_id, file_id):
+    session = DBSession()
+    try:
+        file = session.query(File).filter((File.user_id == user_id) & (File.id == file_id) & (File.folder == 0) & (File.public_link != None)).first()
+        if file is not None:
+            file.public_link = None
+            session.commit()
+            return True
+        return False
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return False
+    finally:
+        session.close()
+
+
 def share_file(user_id,input_dictionary):
     session = DBSession()
     try:
-        file = session.query(File).filter((File.user_id == user_id) & (File.id == input_dictionary['file_id']) & (File.folder == 0)).first()
+        file = session.query(File).filter((File.user_id == user_id) & (File.id == input_dictionary['file_id']) & (File.folder == 0) & (File.public_link == None)).first()
         role = session.query(Role).filter(Role.id == input_dictionary['role_id']).first()
         user = session.query(User).filter(User.email == input_dictionary['to_user']).first()
         if file is not None and role is not None and user is not None:
-            fs = FileShare(file_id=file.id, role_id=role.id, user_id=user.id, created=datetime.datetime.now())
-            session.add(fs)
+            exist_fs = session.query(FileShare).filter((FileShare.file_id == input_dictionary['file_id']) & (FileShare.user_id == user_id)).first()
+            if exist_fs is not None:
+                exist_fs.role_id = input_dictionary['role_id']
+            else:
+                fs = FileShare(file_id=file.id, role_id=role.id, user_id=user.id, created=datetime.datetime.now())
+                session.add(fs)
             session.commit()
             return True
         return False
@@ -47,7 +68,12 @@ def share_file(user_id,input_dictionary):
 def delete_share(user_id,input_dictionary):
     session = DBSession()
     try:
-        file_shares = session.query(FileShare).filter((FileShare.file_id == input_dictionary['file_id']) & (FileShare.file.user_id == user_id))
+        user = session.query(User).filter(User.email == input_dictionary['to_user']).first()
+        if user is not None:
+            file_share = session.query(FileShare).join(File, FileShare.file).\
+                filter((FileShare.file_id == input_dictionary['file_id']) & (FileShare.user_id == user.id) & (File.user_id == user_id))
+            if file_share is not None:
+                session.delete(file_share)
         return False
     except exc.SQLAlchemyError as e:
         print(e.__context__)

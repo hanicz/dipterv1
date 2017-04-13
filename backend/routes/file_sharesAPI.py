@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from utils import HTTP_OK, HTTP_BAD_REQUEST, validate
-from models import decode_token, public_file, share_file, delete_share
+from models import decode_token, public_file, share_file, delete_share, revoke_public
 from exception import InvalidFileException
 
 
@@ -9,34 +9,40 @@ file_shares_api = Blueprint('file_shares_api', __name__)
 
 @file_shares_api.route("/shareFile", methods=['POST'])
 def share():
-    if request.cookies.get('token') is None:
-        user_id = 1
-    else:
-        user_id = decode_token(request.cookies.get('token'))
-
     try:
         input_dictionary = request.get_json()
         validation_dictionary = {'file_id': "^[0-9]*$",
                                  'role_id': "^[0-9]*$", 'to_user': "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$"}
         if validate(input_dictionary, validation_dictionary):
-            if share_file(user_id, input_dictionary):
+            if share_file(decode_token(request.cookies.get('token')), input_dictionary):
                 return jsonify({'Response': 'File shared successfully'}), HTTP_OK
         return jsonify({'Response': 'File share failed'}), HTTP_BAD_REQUEST
     except InvalidFileException as e:
         return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
 
 
-@file_shares_api.route("/makePublic/<id>", methods=['PUT'])
-def make_public(id):
+@file_shares_api.route("/makePublic/<file_id>", methods=['PUT'])
+def make_public(file_id):
     if request.cookies.get('token') is None:
         user_id = 1
     else:
         user_id = decode_token(request.cookies.get('token'))
 
     try:
-        public_link = public_file(user_id, id)
+        public_link = public_file(user_id, file_id)
         if public_link:
             return jsonify({'Response': 'File made public'}), HTTP_OK
+        else:
+            return jsonify({'Response': 'exc'}), HTTP_BAD_REQUEST
+    except InvalidFileException as e:
+        return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
+
+
+@file_shares_api.route("/revokePublic/<file_id>", methods=['PUT'])
+def un_public(file_id):
+    try:
+        if revoke_public(decode_token(request.cookies.get('token')),file_id):
+            return jsonify({'Response': "File isn't public anymore"}), HTTP_OK
         else:
             return jsonify({'Response': 'exc'}), HTTP_BAD_REQUEST
     except InvalidFileException as e:
@@ -47,7 +53,7 @@ def make_public(id):
 def delete():
     try:
         input_dictionary = request.get_json()
-        validation_dictionary = {'file_id': "^[0-9]*$"}
+        validation_dictionary = {'file_id': "^[0-9]*$", 'to_user': "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$"}
         if validate(input_dictionary, validation_dictionary):
             if delete_share(decode_token(request.cookies.get('token')), input_dictionary):
                 return jsonify({'Response': 'File share revoked successfully'}), HTTP_OK

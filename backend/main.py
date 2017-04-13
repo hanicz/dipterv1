@@ -1,5 +1,6 @@
 import os
 import datetime
+import unittest
 
 from flask import Flask, request, jsonify
 from routes import users_api, files_api, notes_api, roles_api, file_shares_api
@@ -42,5 +43,7 @@ def unhandled_exception(e):
     log_message(LEVEL.ERROR, message)
     return jsonify({'Response': 'Something went wrong'}), HTTP_INT_ERROR
 
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
+    app.secret_key = os.getenv('SECRET_KEY')

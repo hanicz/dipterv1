@@ -2,6 +2,8 @@ import os
 import flask
 import werkzeug
 import datetime
+import random
+import string
 
 from utils import NOT_ALLOWED_EXTENSIONS,UPLOAD_FOLDER
 from .db import DBSession, File, FileShare
@@ -44,15 +46,17 @@ def upload_file(user):
                                                               stream_factory=custom_stream)
 
     for fil in files.values():
-        create_file(user,path,secure_filename(fil.filename))
+        system_fname = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
+        create_file(user, path, secure_filename(fil.filename), system_fname)
         print(
             " ".join(["saved form name", fil.name, "submitted as", fil.filename, "to temporary file", fil.stream.name]))
 
 
-def create_file(user,path,filename):
+def create_file(user, path, filename, sys_fname):
     session = DBSession()
     try:
-        new_file = File(path=path, user_id=user, file_name=filename, created=datetime.datetime.now(), folder=0)
+        new_file = File(path=path, user_id=user, file_name=filename, created=datetime.datetime.now(),
+                        folder=0, system_file_name=sys_fname)
         session.add(new_file)
         session.commit()
         return True
@@ -69,8 +73,8 @@ def remove_file(user, fileid):
     try:
         file = session.query(File).filter((File.user_id == user) & (File.id == fileid) & (File.folder == 0)).first()
         if file is not None:
-            file.delete_date=datetime.datetime.now()
-            delete_share(user,file.id)
+            file.delete_date = datetime.datetime.now()
+            delete_shares(user, file.id)
             session.commit()
             return True
         return False
@@ -92,7 +96,7 @@ def remove_folder(user, folderid):
                                                        (File.path.startswith(os.path.join(folder.path, folder.file_name))))
             for f in deleted_files:
                 f.delete_date=datetime.datetime.now()
-                delete_share(user, f.id)
+                delete_shares(user, f.id)
             session.commit()
             return True
         return False
@@ -104,13 +108,13 @@ def remove_folder(user, folderid):
         session.close()
 
 
-def delete_share(user,file_id):
+def delete_shares(user,file_id):
     session = DBSession()
     try:
         file = session.query(File).filter((File.user_id == user) & (File.id == file_id) & (File.folder == 0)).first()
         if file is not None:
-            delete_shares = session.query(FileShare).filter((FileShare.file_id == file.id))
-            for s in delete_shares:
+            delete_sh = session.query(FileShare).filter((FileShare.file_id == file.id))
+            for s in delete_sh:
                 session.delete(s)
             session.commit()
             return True

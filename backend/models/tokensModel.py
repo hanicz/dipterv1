@@ -1,7 +1,7 @@
 import datetime
 import jwt
 import os
-from flask import request, jsonify
+from flask import request, jsonify, session
 from functools import wraps
 from utils import HTTP_UNAUTHORIZED, secure_paths, auth
 
@@ -44,8 +44,12 @@ def login_required(f):
                 return f(*args, **kwargs)
 
             try:
-                user = decode_token(request.cookies.get('token'))
+                if request.cookies.get('token') in session:
+                    user = decode_token(request.cookies.get('token'))
+                else:
+                    return jsonify({'Response': 'Login failed'}), HTTP_UNAUTHORIZED
             except Exception as e:
+                session.pop(request.cookies.get('token'), None)
                 return jsonify({'Response': 'Login failed'}), HTTP_UNAUTHORIZED
         return f(*args, **kwargs)
     return authenticate

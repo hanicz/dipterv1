@@ -5,3 +5,4 @@ from models.credentialStoreModel import *
 from models.filesModel import *
 from models.rolesModel import *
 from models.file_sharesModel import *
+from models.noteModel import *

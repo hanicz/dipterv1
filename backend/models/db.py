@@ -9,7 +9,7 @@ Base = declarative_base()
 
 
 class User(Base):
-    __tablename__ = 'users'
+    __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False, unique=True)
@@ -22,6 +22,7 @@ class User(Base):
     files = relationship("File", cascade="all, delete-orphan")
     logs = relationship("Log", cascade="all, delete-orphan")
     fileShares = relationship("FileShare", cascade="all, delete-orphan")
+    folders = relationship("Folder", cascade="all, delete-orphan")
 
     def __repr__(self):
         return "User: (id='%i', name='%s', email='%s', password_hash='%s', created='%s')" \
@@ -36,13 +37,14 @@ class User(Base):
 
 
 class File(Base):
-    __tablename__ = 'files'
+    __tablename__ = 'file'
 
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('users.id'))
     user = relationship(User)
-    file_name = Column(String(250), nullable=False)
-    path = Column(String(250), nullable=False)
+    file_name = Column(String(250), nullable=True)
+    system_file_name = Column(String(250), nullable=True)
+    path = Column(String(250), nullable=True)
     created = Column(DateTime, nullable=False)
     public_link = Column(String(250), nullable=True, unique=True)
     content = Column(TEXT, nullable=True)
@@ -52,20 +54,52 @@ class File(Base):
     fileShares = relationship("FileShare", cascade="all, delete-orphan")
 
     def __repr__(self):
-        return "File: (id='%i', user_id='%i', file_name='%s', path='%s', created='%s', public_link='%s', content='%s', folder='%i', delete_date='%s')" \
-               % (self.id, self.user_id, self.file_name, self.path,  str(self.created), self.public_link, self.content, self.folder, str(self.delete_date))
+        return "File: (id='%i', user_id='%i', file_name='%s', path='%s', created='%s', public_link='%s', " \
+               "content='%s', folder='%i', delete_date='%s', system_file_name='%s')" \
+               % (self.id, self.user_id, self.file_name, self.path,  str(self.created), self.public_link, self.content,
+                  self.folder, str(self.delete_date), self.system_file_name)
 
     def serialize(self):
         return{
             'id': self.id,
             'fileName': self.file_name,
             'created': self.created,
-            'folder:': self.folder
+            'folder:': self.folder,
+            'content' : self.content
+        }
+
+
+class Folder(Base):
+    __tablename__ = 'folder'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.id'))
+    user = relationship(User)
+    parent_folder = Column(Integer, ForeignKey('folder.id'))
+    folder = relationship('Folder', remote_side=[id])
+    folder_name = Column(String(250), nullable=True)
+    path = Column(String(250), nullable=True)
+    created = Column(DateTime, nullable=False)
+    delete_date = Column(DateTime, nullable=True)
+
+    #files = relationship("File", cascade="all, delete-orphan")
+
+    def __repr__(self):
+        return "File: (id='%i', user_id='%i', file_name='%s', path='%s', created='%s', public_link='%s', " \
+               "content='%s', folder='%i', delete_date='%s', system_file_name='%s')" \
+               % (self.id, self.user_id, self.file_name, self.path,  str(self.created), self.public_link, self.content,
+                  self.folder, str(self.delete_date), self.system_file_name)
+
+    def serialize(self):
+        return{
+            'id': self.id,
+            'created': self.created,
+            'folder:': self.folder_name
         }
 
 
 class Role(Base):
-    __tablename__ = 'roles'
+    __tablename__ = 'role'
 
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False, unique=True)
