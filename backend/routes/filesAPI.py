@@ -57,8 +57,13 @@ def delete_folder(folder_id):
 
 @files_api.route("/file", methods=['POST'])
 def create_file():
+    input_dictionary = request.get_json()
+    validation_dictionary = {'folder_id': "^[0-9]*$"}
     try:
-        upload_file(decode_token(request.cookies.get('token')))
+        if validate(input_dictionary, validation_dictionary):
+            upload_file(decode_token(request.cookies.get('token')), input_dictionary['folder_id'])
+        else:
+            return jsonify({'Response': 'Creating file failed.'}), HTTP_BAD_REQUEST
     except InvalidFileException as e:
         return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
     return jsonify({'Response': 'File uploaded successfully'}), HTTP_OK
@@ -72,7 +77,7 @@ def create_folder():
         user_id = decode_token(request.cookies.get('token'))
 
     input_dictionary = request.get_json()
-    validation_dictionary = {'folder_name': None}
+    validation_dictionary = {'folder_name': None, 'parent_id': "^[0-9]*$"}
     try:
         crt_folder(user_id, input_dictionary)
     except InvalidFileException as e:

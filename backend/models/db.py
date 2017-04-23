@@ -40,7 +40,7 @@ class File(Base):
     __tablename__ = 'file'
 
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('users.id'))
+    user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
     file_name = Column(String(250), nullable=True)
     system_file_name = Column(String(250), nullable=True)
@@ -48,7 +48,7 @@ class File(Base):
     created = Column(DateTime, nullable=False)
     public_link = Column(String(250), nullable=True, unique=True)
     content = Column(TEXT, nullable=True)
-    folder = Column(Integer, nullable=False)
+    folder_id = Column(Integer, ForeignKey('folder.id'))
     delete_date = Column(DateTime, nullable=True)
 
     fileShares = relationship("FileShare", cascade="all, delete-orphan")
@@ -73,7 +73,7 @@ class Folder(Base):
     __tablename__ = 'folder'
 
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('users.id'))
+    user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
     parent_folder = Column(Integer, ForeignKey('folder.id'))
     folder = relationship('Folder', remote_side=[id])
@@ -82,13 +82,13 @@ class Folder(Base):
     created = Column(DateTime, nullable=False)
     delete_date = Column(DateTime, nullable=True)
 
-    #files = relationship("File", cascade="all, delete-orphan")
+    files = relationship("File", cascade="all, delete-orphan")
 
     def __repr__(self):
-        return "File: (id='%i', user_id='%i', file_name='%s', path='%s', created='%s', public_link='%s', " \
-               "content='%s', folder='%i', delete_date='%s', system_file_name='%s')" \
-               % (self.id, self.user_id, self.file_name, self.path,  str(self.created), self.public_link, self.content,
-                  self.folder, str(self.delete_date), self.system_file_name)
+        return "Folder: (id='%i', user_id='%i', parent_folder='%i', path='%s', created='%s', folder_name='%s', " \
+               "delete_date='%s')" \
+               % (self.id, self.user_id, self.parent_folder, self.path,  str(self.created), self.folder_name,
+                  str(self.delete_date))
 
     def serialize(self):
         return{
@@ -122,7 +122,7 @@ class Log(Base):
     __tablename__ = 'my_logger'
 
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('users.id'))
+    user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
     trace = Column(TEXT, nullable=False)
     created = Column(DateTime, nullable=False)
@@ -136,11 +136,11 @@ class FileShare(Base):
     __tablename__ = 'file_share'
 
     id = Column(Integer, primary_key=True)
-    file_id = Column(Integer, ForeignKey('files.id'))
+    file_id = Column(Integer, ForeignKey('file.id'))
     file = relationship(File)
-    user_id = Column(Integer, ForeignKey('users.id'))
+    user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
-    role_id = Column(Integer, ForeignKey('roles.id'))
+    role_id = Column(Integer, ForeignKey('role.id'))
     role = relationship(Role)
     created = Column(DateTime, nullable=False)
 

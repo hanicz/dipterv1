@@ -6,7 +6,7 @@ import os
 
 from passlib.hash import pbkdf2_sha256
 from sqlalchemy import exc
-from .db import DBSession, User, File
+from .db import DBSession, User, Folder
 from .tokensModel import encode_token
 from utils import send_activate_email, reset_password_email, UPLOAD_FOLDER
 
@@ -67,6 +67,11 @@ def activate_user(token):
     try:
         user = session.query(User).filter((User.activation_link == token)).first()
         if user is not None:
+            path = UPLOAD_FOLDER + user.id + '/'
+            new_folder = Folder(user_id=user, folder_name=user.id, created=datetime.datetime.now(),
+                                path=path)
+            os.makedirs(path)
+            session.add(new_folder)
             user.activation_link = None
             session.commit()
             return True

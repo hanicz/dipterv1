@@ -6,7 +6,7 @@ import random
 import string
 
 from utils import NOT_ALLOWED_EXTENSIONS,UPLOAD_FOLDER
-from .db import DBSession, File, FileShare
+from .db import DBSession, File, FileShare, Folder
 from sqlalchemy import exc
 from werkzeug.utils import secure_filename
 from exception import InvalidFileException
@@ -30,13 +30,26 @@ def get_all_files(user):
         session.close()
 
 
-def upload_file(user):
-    path = UPLOAD_FOLDER + str(user) + '/'
+def upload_file(user, folder_id):
+    path = ''
+    session = DBSession()
+
+    try:
+        session = DBSession()
+        folder = session.query(Folder).filter((Folder.user_id == user) & (Folder.id == folder_id)).first()
+        if folder is None:
+            return False
+        path = folder.path + folder.folder_name + '/'
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return False
+    finally:
+        session.close()
 
     def custom_stream(total_content_length, content_type, fname, content_length=None):
         if fname != '' and allowed_file(fname):
             filename = secure_filename(fname)
-            os.makedirs(os.path.dirname(path), exist_ok=True)
             file = open(os.path.join(path, filename), 'wb+')
             return file
         else:
@@ -71,7 +84,7 @@ def create_file(user, path, filename, sys_fname):
 def remove_file(user, fileid):
     session = DBSession()
     try:
-        file = session.query(File).filter((File.user_id == user) & (File.id == fileid) & (File.folder == 0)).first()
+        file = session.query(File).filter((File.user_id == user) & (File.id == fileid)).first()
         if file is not None:
             file.delete_date = datetime.datetime.now()
             delete_shares(user, file.id)
@@ -86,14 +99,14 @@ def remove_file(user, fileid):
         session.close()
 
 
-def remove_folder(user, folderid):
+def remove_folder(user, folder_id):
     session = DBSession()
     try:
-        folder = session.query(File).filter((File.user_id == user) & (File.id == folderid) & (File.folder == 1)).first()
+        folder = session.query(Folder).filter((Folder.user_id == user) & (Folder.id == folder_id)).first()
         if folder is not None:
             folder.delete_date=datetime.datetime.now()
             deleted_files = session.query(File).filter((File.user_id == user) &
-                                                       (File.path.startswith(os.path.join(folder.path, folder.file_name))))
+                                                       (File.folder_id == folder.id))
             for f in deleted_files:
                 f.delete_date=datetime.datetime.now()
                 delete_shares(user, f.id)
@@ -111,7 +124,7 @@ def remove_folder(user, folderid):
 def delete_shares(user,file_id):
     session = DBSession()
     try:
-        file = session.query(File).filter((File.user_id == user) & (File.id == file_id) & (File.folder == 0)).first()
+        file = session.query(File).filter((File.user_id == user) & (File.id == file_id)).first()
         if file is not None:
             delete_sh = session.query(FileShare).filter((FileShare.file_id == file.id))
             for s in delete_sh:
@@ -130,24 +143,17 @@ def delete_shares(user,file_id):
 def crt_folder(user, input_dictionary):
     session = DBSession()
     try:
-        try:
-            if input_dictionary['path']:
-                new_folder_path = UPLOAD_FOLDER + str(user) + '/' + input_dictionary['path']
-                exist_path = session.query(File).filter(
-                    (File.folder == 1) & (File.path + File.file_name == new_folder_path)).first()
-                if exist_path is not None:
-                    new_folder = File(path=new_folder_path, user_id=user, file_name=input_dictionary['folder_name'],
-                                      created=datetime.datetime.now(), folder=1)
-                    session.add(new_folder)
-                    os.makedirs(new_folder_path + '/' + input_dictionary['folder_name'])
-                    session.commit()
-                    return True
-        except KeyError as e:
-            new_folder_path = UPLOAD_FOLDER + str(user) + '/'
-            new_folder = File(path=new_folder_path, user_id=user, file_name=input_dictionary['folder_name'],
-                              created=datetime.datetime.now(), folder=1)
+
+        folder = session.query(Folder).filter(
+            (Folder.user_id == user) & (Folder.id == input_dictionary['parent_id'])).first()
+
+        if folder is not None and secure_filename(input_dictionary['folder_name']) != "":
+            new_folder_path = folder.path + Folder.folder_name + '/'
+            new_folder = Folder(user_id=user, folder_name=secure_filename(input_dictionary['folder_name']),
+                                created=datetime.datetime.now(), path=new_folder_path, parent_folder=Folder.id)
+
             session.add(new_folder)
-            os.makedirs(new_folder_path + input_dictionary['folder_name'])
+            os.makedirs(new_folder_path + new_folder.folder_name)
             session.commit()
             return True
 
