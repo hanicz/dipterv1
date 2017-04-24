@@ -49,6 +49,7 @@ class File(Base):
     content = Column(TEXT, nullable=True)
     folder_id = Column(Integer, ForeignKey('folder.id'))
     delete_date = Column(DateTime, nullable=True)
+    version = Column(Integer, nullable=False)
 
     fileShares = relationship("FileShare", cascade="all, delete-orphan")
 
@@ -64,8 +65,9 @@ class File(Base):
             'fileName': self.file_name,
             'created': self.created,
             'folder:': self.folder_id,
-            'content' : self.content,
-            'deleted' : self.delete_date
+            'content': self.content,
+            'deleted': self.delete_date,
+            'version': self.version
         }
 
 

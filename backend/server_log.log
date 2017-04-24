@@ -80,3 +80,9 @@ Sending activation email for: hancz12@citromail.hu
 Sending activation email for: hancz12@citromail.hu
 Sending activation email for: test@131421qdwad.hu
 Sending activation email for: test@131421qdwad.hu
+Sending activation email for: asd@asd31123532152135312.hu
+Sending activation email for: hanicz20@gmail.com
+Failed to send email for: hanicz20@gmail.com Exception: (535, b'5.7.8 Username and Password not accepted. Learn more at\n5.7.8  https://support.google.com/mail/?p=BadCredentials u7sm233420wmg.19 - gsmtp')
+2017-04-24 21:55:27.850443 Unhandled Exception: must be str, not int
+Sending activation email for: asdawd@awdawd2123adaw.hu
+Failed to send email for: asdawd@awdawd2123adaw.hu Exception: (535, b'5.7.8 Username and Password not accepted. Learn more at\n5.7.8  https://support.google.com/mail/?p=BadCredentials y190sm402481wmy.15 - gsmtp')

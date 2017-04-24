@@ -68,9 +68,9 @@ def activate_user(token):
     try:
         user = session.query(User).filter((User.activation_link == token)).first()
         if user is not None:
-            path = UPLOAD_FOLDER + user.id + '/'
-            new_folder = Folder(user_id=user, folder_name=user.id, created=datetime.datetime.now(),
-                                path=path)
+            path = UPLOAD_FOLDER + str(user.id) + '/'
+            new_folder = Folder(user_id=user.id, folder_name=str(user.id), created=datetime.datetime.now(),
+                                path=UPLOAD_FOLDER + '/')
             os.makedirs(path)
             session.add(new_folder)
             user.activation_link = None

@@ -8,6 +8,7 @@ import string
 from utils import NOT_ALLOWED_EXTENSIONS,UPLOAD_FOLDER
 from .db import DBSession, File, FileShare, Folder
 from sqlalchemy import exc
+from sqlalchemy.sql.expression import func
 from werkzeug.utils import secure_filename
 from exception import InvalidFileException
 
@@ -63,8 +64,13 @@ def upload_file(user, folder_id):
 
     def custom_stream(total_content_length, content_type, fname, content_length=None):
         if fname != '' and allowed_file(fname):
+
             filename = secure_filename(fname)
-            file = open(os.path.join(path, filename), 'wb+')
+            system_file_name = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
+            file = open(os.path.join(path, system_file_name), 'wb+')
+
+            create_file(user, filename, system_file_name, folder_id)
+
             return file
         else:
             raise InvalidFileException('Invalid extension or filename')
@@ -72,18 +78,16 @@ def upload_file(user, folder_id):
     stream, form, files = werkzeug.formparser.parse_form_data(flask.request.environ,
                                                               stream_factory=custom_stream)
 
-    for fil in files.values():
-        system_fname = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
-        create_file(user, secure_filename(fil.filename), system_fname)
-        print(
-            " ".join(["saved form name", fil.name, "submitted as", fil.filename, "to temporary file", fil.stream.name]))
 
-
-def create_file(user, filename, sys_fname):
+def create_file(user_id, filename, sys_fname, folder_id):
     session = DBSession()
     try:
-        new_file = File(user_id=user, file_name=filename, created=datetime.datetime.now(),
-                        folder=0, system_file_name=sys_fname)
+        max_versioned_file = session.query(File).filter((File.user_id == user_id) & (File.file_name == filename) & func.max(File.version) & (File.folder_id == folder_id)).first()
+
+        if max_versioned_file is None:
+            new_file = File(user_id=user_id, file_name=filename, created=datetime.datetime.now(), system_file_name=sys_fname, folder_id=folder_id, version=0)
+        else:
+            new_file = File(user_id=user_id, file_name=filename, created=datetime.datetime.now(), system_file_name=sys_fname, folder_id=folder_id, version=max_versioned_file.version + 1)
         session.add(new_file)
         session.commit()
         return True
@@ -249,21 +253,24 @@ def move_folder(user_id, input_dictionary):
         session.close()
 
 
-'''def move_file(user_id, input_dictionary):
+def move_file(user_id, input_dictionary):
     session = DBSession()
     try:
         file = session.query(File).filter(
             (File.user_id == user_id) & (File.id == input_dictionary['file_id'])).first()
-        parent_folder = session.query(Folder).filter(
-            (Folder.user_id == user_id) & (Folder.id == input_dictionary['parent_id'])).first()
-        if folder is not None and parent_folder is not None:
-            folder.parent_folder = parent_folder.id
+        new_folder = session.query(Folder).filter(
+            (Folder.user_id == user_id) & (Folder.id == input_dictionary['new_folder_id'])).first()
+        if file is not None and new_folder is not None:
+            max_versioned_file = session.query(File).filter((File.user_id == user_id) & (File.file_name == file.file_name)
+                                                            & func.max(File.version) & (File.folder_id == new_folder.id)).first()
+            os.rename('', '')
+            file.parent_folder = new_folder.id
             session.commit()
-            return folder.serialize()
+            return file.serialize()
         return None
     except exc.SQLAlchemyError as e:
         print(e.__context__)
         session.rollback()
         return None
     finally:
-        session.close()'''
+        session.close()

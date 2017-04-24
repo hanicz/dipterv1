@@ -29,7 +29,7 @@ app.register_blueprint(file_shares_api, url_prefix='/shares')
 def before_request():
     print(request.path)
 
-
+'''
 @app.errorhandler(500)
 def internal_server_error(error):
     message = str('%s Server Error: %s' % (datetime.datetime.now(), error))
@@ -41,9 +41,9 @@ def internal_server_error(error):
 def unhandled_exception(e):
     message = ('%s Unhandled Exception: %s'% (datetime.datetime.now(), e))
     log_message(LEVEL.ERROR, message)
-    return jsonify({'Response': 'Something went wrong'}), HTTP_INT_ERROR
+    return jsonify({'Response': 'Something went wrong'}), HTTP_INT_ERROR'''
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
     app.secret_key = os.getenv('SECRET_KEY')
+    app.run(host='0.0.0.0')
