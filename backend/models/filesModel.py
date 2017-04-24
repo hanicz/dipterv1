@@ -16,10 +16,24 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() not in NOT_ALLOWED_EXTENSIONS
 
 
-def get_all_files(user):
+def get_all_files(user_id, folder_id):
     session = DBSession()
     try:
-        files = session.query(File).filter((File.user_id == user) & (File.delete_date == None))
+        files = session.query(File).filter((File.user_id == user_id) & (File.delete_date == None) & (File.folder_id == folder_id))
+        if files is not None:
+            return [f.serialize() for f in files]
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return False
+    finally:
+        session.close()
+
+
+def get_all_deleted_files(user_id):
+    session = DBSession()
+    try:
+        files = session.query(File).filter((File.user_id == user_id) & (File.delete_date != None))
         if files is not None:
             return [f.serialize() for f in files]
     except exc.SQLAlchemyError as e:
@@ -60,15 +74,15 @@ def upload_file(user, folder_id):
 
     for fil in files.values():
         system_fname = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
-        create_file(user, path, secure_filename(fil.filename), system_fname)
+        create_file(user, secure_filename(fil.filename), system_fname)
         print(
             " ".join(["saved form name", fil.name, "submitted as", fil.filename, "to temporary file", fil.stream.name]))
 
 
-def create_file(user, path, filename, sys_fname):
+def create_file(user, filename, sys_fname):
     session = DBSession()
     try:
-        new_file = File(path=path, user_id=user, file_name=filename, created=datetime.datetime.now(),
+        new_file = File(user_id=user, file_name=filename, created=datetime.datetime.now(),
                         folder=0, system_file_name=sys_fname)
         session.add(new_file)
         session.commit()
@@ -110,6 +124,18 @@ def remove_folder(user, folder_id):
             for f in deleted_files:
                 f.delete_date=datetime.datetime.now()
                 delete_shares(user, f.id)
+
+            deleted_folders = session.query(Folder).filter((Folder.user_id == user) &
+                                                       (Folder.path.startswith(folder.path + folder.folder_name)))
+            for f in deleted_folders:
+                f.delete_date=datetime.datetime.now()
+
+                deleted_files = session.query(File).filter((File.user_id == user) &
+                                                           (File.folder_id == f.id))
+                for files in deleted_files:
+                    files.delete_date = datetime.datetime.now()
+                    delete_shares(user, files.id)
+
             session.commit()
             return True
         return False
@@ -140,16 +166,16 @@ def delete_shares(user,file_id):
         session.close()
 
 
-def crt_folder(user, input_dictionary):
+def crt_folder(user_id, input_dictionary):
     session = DBSession()
     try:
 
         folder = session.query(Folder).filter(
-            (Folder.user_id == user) & (Folder.id == input_dictionary['parent_id'])).first()
+            (Folder.user_id == user_id) & (Folder.id == input_dictionary['parent_id'])).first()
 
         if folder is not None and secure_filename(input_dictionary['folder_name']) != "":
             new_folder_path = folder.path + Folder.folder_name + '/'
-            new_folder = Folder(user_id=user, folder_name=secure_filename(input_dictionary['folder_name']),
+            new_folder = Folder(user_id=user_id, folder_name=secure_filename(input_dictionary['folder_name']),
                                 created=datetime.datetime.now(), path=new_folder_path, parent_folder=Folder.id)
 
             session.add(new_folder)
@@ -164,3 +190,80 @@ def crt_folder(user, input_dictionary):
         return False
     finally:
         session.close()
+
+
+def rename_file(user_id, input_dictionary):
+    session = DBSession()
+    try:
+        file = session.query(File).filter(
+            (File.user_id == user_id) & (File.id == input_dictionary['file_id'])).first()
+        if file is not None:
+            file.file_name = input_dictionary['file_name']
+            session.commit()
+            return file.serialize()
+        return None
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return None
+    finally:
+        session.close()
+
+
+def rename_folder(user_id, input_dictionary):
+    session = DBSession()
+    try:
+        folder = session.query(Folder).filter(
+            (Folder.user_id == user_id) & (Folder.id == input_dictionary['folder_id'])).first()
+        if folder is not None:
+            folder.folder_name = input_dictionary['folder_name']
+            session.commit()
+            return folder.serialize()
+        return None
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return None
+    finally:
+        session.close()
+
+
+def move_folder(user_id, input_dictionary):
+    session = DBSession()
+    try:
+        folder = session.query(Folder).filter(
+            (Folder.user_id == user_id) & (Folder.id == input_dictionary['folder_id'])).first()
+        parent_folder = session.query(Folder).filter(
+            (Folder.user_id == user_id) & (Folder.id == input_dictionary['parent_id'])).first()
+        if folder is not None and parent_folder is not None:
+            folder.parent_folder = parent_folder.id
+            folder.path = parent_folder.path + parent_folder.folder_name + '/'
+            session.commit()
+            return folder.serialize()
+        return None
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return None
+    finally:
+        session.close()
+
+
+'''def move_file(user_id, input_dictionary):
+    session = DBSession()
+    try:
+        file = session.query(File).filter(
+            (File.user_id == user_id) & (File.id == input_dictionary['file_id'])).first()
+        parent_folder = session.query(Folder).filter(
+            (Folder.user_id == user_id) & (Folder.id == input_dictionary['parent_id'])).first()
+        if folder is not None and parent_folder is not None:
+            folder.parent_folder = parent_folder.id
+            session.commit()
+            return folder.serialize()
+        return None
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return None
+    finally:
+        session.close()'''

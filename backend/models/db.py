@@ -44,7 +44,6 @@ class File(Base):
     user = relationship(User)
     file_name = Column(String(250), nullable=True)
     system_file_name = Column(String(250), nullable=True)
-    path = Column(String(250), nullable=True)
     created = Column(DateTime, nullable=False)
     public_link = Column(String(250), nullable=True, unique=True)
     content = Column(TEXT, nullable=True)
@@ -54,9 +53,9 @@ class File(Base):
     fileShares = relationship("FileShare", cascade="all, delete-orphan")
 
     def __repr__(self):
-        return "File: (id='%i', user_id='%i', file_name='%s', path='%s', created='%s', public_link='%s', " \
+        return "File: (id='%i', user_id='%i', file_name='%s', created='%s', public_link='%s', " \
                "content='%s', folder='%i', delete_date='%s', system_file_name='%s')" \
-               % (self.id, self.user_id, self.file_name, self.path,  str(self.created), self.public_link, self.content,
+               % (self.id, self.user_id, self.file_name, str(self.created), self.public_link, self.content,
                   self.folder, str(self.delete_date), self.system_file_name)
 
     def serialize(self):
@@ -64,8 +63,9 @@ class File(Base):
             'id': self.id,
             'fileName': self.file_name,
             'created': self.created,
-            'folder:': self.folder,
-            'content' : self.content
+            'folder:': self.folder_id,
+            'content' : self.content,
+            'deleted' : self.delete_date
         }
 
 
@@ -94,7 +94,8 @@ class Folder(Base):
         return{
             'id': self.id,
             'created': self.created,
-            'folder:': self.folder_name
+            'folder:': self.folder_name,
+            'parent': self.parent_folder
         }
 
 

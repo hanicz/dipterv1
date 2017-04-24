@@ -3,6 +3,7 @@ import random
 import string
 import shutil
 import os
+import re
 
 from passlib.hash import pbkdf2_sha256
 from sqlalchemy import exc
@@ -117,5 +118,37 @@ def delete_user(user_id):
         print(e.__context__)
         session.rollback()
         return False
+    finally:
+        session.close()
+
+
+def change_user_data(user_id, input_dictionary):
+    new_password = None
+    new_email = None
+
+    session = DBSession()
+
+    if 'new_email' in input_dictionary and re.match("^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$", input_dictionary['new_email']):
+        new_email = input_dictionary['new_email']
+
+    if 'new_password' in input_dictionary and input_dictionary['new_password'] == input_dictionary['old_password']:
+        new_password = input_dictionary['new_password']
+
+    try:
+        user = session.query(User).filter((User.id == user_id)).first()
+        if user is not None:
+            if pbkdf2_sha256.verify(input_dictionary['old_password'], user.password_hash):
+                if new_email is not None:
+                    user.email = new_email
+                if new_password is not None:
+                    password_hash = pbkdf2_sha256.using(salt_size=16).hash(new_password)
+                    user.password_hash = password_hash
+                session.commit()
+                return user.serialize()
+        return None
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return None
     finally:
         session.close()

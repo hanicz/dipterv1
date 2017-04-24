@@ -75,14 +75,10 @@ def delete():
 @users_api.route("/changeData", methods=['PUT'])
 def change_data():
     input_dictionary = request.get_json()
-    validation_dictionary = {'email': "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$", 'new_password': None,
-                             'old_password': None}
-    if validate(input_dictionary, validation_dictionary):
-        if reset_user(input_dictionary['token'], input_dictionary['password']):
-            return jsonify({'Response': 'Reset successful'}), HTTP_OK
-        return jsonify({'Response': 'Reset failed'}), HTTP_UNAUTHORIZED
-    else:
-        return jsonify({'Response': 'Bad request'}), HTTP_BAD_REQUEST
+    validation_dictionary = {'old_password': None}
+    if reset_user(input_dictionary['token'], input_dictionary['password']):
+        return jsonify({'Response': 'Reset successful'}), HTTP_OK
+    return jsonify({'Response': 'Reset failed'}), HTTP_UNAUTHORIZED
 
 
 @users_api.route("/logout", methods=['PUT'])
