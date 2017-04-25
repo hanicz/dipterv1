@@ -3,7 +3,7 @@ import jwt
 from logger import log_message
 
 from utils import validate, HTTP_OK, HTTP_BAD_REQUEST, HTTP_UNAUTHORIZED, HTTP_CREATED, HTTP_CONFLICT, LEVEL
-from models import login_user, register_user, activate_user, reset_user, login_required, delete_user, decode_token
+from models import login_user, register_user, activate_user, reset_user, delete_user, decode_token, change_user_data
 from exception import InvalidFileException
 
 users_api = Blueprint('users_api', __name__)
@@ -64,7 +64,7 @@ def reset_password():
 @users_api.route("/deleteUser", methods=['DELETE'])
 def delete():
     try:
-        if delete_user(decode_token(request.cookies.get('token')), id):
+        if delete_user(decode_token(request.cookies.get('token'))):
             return jsonify({'Response': 'User deleted successfully'}), HTTP_OK
         else:
             return jsonify({'Response': 'Error deleting user'}), HTTP_BAD_REQUEST
@@ -76,9 +76,10 @@ def delete():
 def change_data():
     input_dictionary = request.get_json()
     validation_dictionary = {'old_password': None}
-    if reset_user(input_dictionary['token'], input_dictionary['password']):
-        return jsonify({'Response': 'Reset successful'}), HTTP_OK
-    return jsonify({'Response': 'Reset failed'}), HTTP_UNAUTHORIZED
+    if validate(input_dictionary, validation_dictionary):
+        if change_user_data(decode_token(request.cookies.get('token')), input_dictionary):
+            return jsonify({'Response': 'Reset successful'}), HTTP_OK
+    return jsonify({'Response': 'Reset failed'}), HTTP_BAD_REQUEST
 
 
 @users_api.route("/logout", methods=['PUT'])
