@@ -151,10 +151,10 @@ def remove_folder(user, folder_id):
         session.close()
 
 
-def delete_shares(user,file_id):
+def delete_shares(user_id, file_id):
     session = DBSession()
     try:
-        file = session.query(File).filter((File.user_id == user) & (File.id == file_id)).first()
+        file = session.query(File).filter((File.user_id == user_id) & (File.id == file_id)).first()
         if file is not None:
             delete_sh = session.query(FileShare).filter((FileShare.file_id == file.id))
             for s in delete_sh:

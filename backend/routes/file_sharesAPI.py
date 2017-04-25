@@ -23,13 +23,9 @@ def share():
 
 @file_shares_api.route("/makePublic/<file_id>", methods=['PUT'])
 def make_public(file_id):
-    if request.cookies.get('token') is None:
-        user_id = 1
-    else:
-        user_id = decode_token(request.cookies.get('token'))
 
     try:
-        public_link = public_file(user_id, file_id)
+        public_link = public_file(decode_token(request.cookies.get('token')), file_id)
         if public_link:
             return jsonify({'Response': 'File made public'}), HTTP_OK
         else:

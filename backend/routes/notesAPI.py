@@ -7,7 +7,7 @@ notes_api = Blueprint('notes_api', __name__)
 
 @notes_api.route("/note/<note_id>", methods=['GET'])
 def get_notes(note_id):
-    data = create_note(decode_token(request.cookies.get('token')), note_id)
+    data = get_note(decode_token(request.cookies.get('token')), note_id)
     if data is not None:
         return jsonify(data), HTTP_OK
     return jsonify({'Response': 'Note not found'}), HTTP_NOT_FOUND
