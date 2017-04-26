@@ -4,7 +4,7 @@ import datetime
 
 from .db import DBSession, File, FileShare, Role, User
 from sqlalchemy import exc
-from models import delete_shares
+from models import delete_shares, create_log_entry
 
 
 def public_file(user_id, file_id):
@@ -16,6 +16,7 @@ def public_file(user_id, file_id):
             public_link = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
             file.public_link = public_link
             session.commit()
+            create_log_entry(user_id, 'File made public', file.id, None)
             return public_link
         return False
     except exc.SQLAlchemyError as e:
@@ -33,6 +34,7 @@ def revoke_public(user_id, file_id):
         if file is not None:
             file.public_link = None
             session.commit()
+            create_log_entry(user_id, 'File not public anymore', file.id, None)
             return True
         return False
     except exc.SQLAlchemyError as e:
@@ -57,6 +59,7 @@ def share_file(user_id,input_dictionary):
                 fs = FileShare(file_id=file.id, role_id=role.id, user_id=user.id, created=datetime.datetime.now())
                 session.add(fs)
             session.commit()
+            create_log_entry(user_id, 'File shared with: ' + input_dictionary['to_user'], file.id, None)
             return True
         return False
     except exc.SQLAlchemyError as e:
@@ -76,6 +79,7 @@ def delete_share(user_id,input_dictionary):
             if file_share is not None:
                 session.delete(file_share)
                 session.commit()
+                create_log_entry(user_id, 'File share revoked from: ' + input_dictionary['to_user'], file_share.file_id, None)
                 return True
         return False
     except exc.SQLAlchemyError as e:

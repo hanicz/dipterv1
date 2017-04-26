@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
-from utils import HTTP_OK, HTTP_BAD_REQUEST, HTTP_INT_ERROR, validate
-from models import decode_token, get_all_files, upload_file, remove_file, remove_folder, crt_folder, get_all_deleted_files
+from utils import HTTP_OK, HTTP_BAD_REQUEST, validate, HTTP_NOT_FOUND
+from models import decode_token, get_all_files, upload_file, remove_file, remove_folder, crt_folder, get_all_deleted_files, search_user_file
 from exception import InvalidFileException
 
 
@@ -67,9 +67,9 @@ def delete_folder(folder_id):
         return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
 
 
-@files_api.route("/file", methods=['POST'])
-def create_file():
-    input_dictionary = request.get_json()
+@files_api.route("/file/<folder_id>", methods=['POST'])
+def create_file(folder_id):
+    input_dictionary = {"folder_id": folder_id}
     validation_dictionary = {'folder_id': "^[0-9]*$"}
     try:
         if validate(input_dictionary, validation_dictionary):
@@ -104,3 +104,13 @@ def create_folder():
 @files_api.route("/getPublicFile/<link>", methods=['GET'])
 def make_public(link):
     return "ok", HTTP_OK
+
+
+@files_api.route("/search/<file_name>", methods=['GET'])
+def search_file(file_name):
+
+    file = search_user_file(decode_token(request.cookies.get('token')), file_name)
+    if file is not None:
+        return jsonify(file), HTTP_OK
+    else:
+        return jsonify({'Response': 'File not found.'}), HTTP_NOT_FOUND

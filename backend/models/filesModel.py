@@ -11,6 +11,7 @@ from sqlalchemy import exc
 from sqlalchemy.sql.expression import func
 from werkzeug.utils import secure_filename
 from exception import InvalidFileException
+from models import create_log_entry
 
 
 def allowed_file(filename):
@@ -41,6 +42,21 @@ def get_all_deleted_files(user_id):
         print(e.__context__)
         session.rollback()
         return False
+    finally:
+        session.close()
+
+
+def search_user_file(user_id, file_name):
+    session = DBSession()
+    try:
+        file = session.query(File).filter((File.user_id == user_id) & (File.file_name == file_name))
+        if file is not None:
+            return file.serialize()
+        return None
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return None
     finally:
         session.close()
 
@@ -82,15 +98,17 @@ def upload_file(user, folder_id):
 def create_file(user_id, filename, sys_fname, folder_id):
     session = DBSession()
     try:
-        max_versioned_file = session.query(File).filter((File.user_id == user_id) & (File.file_name == filename) & func.max(File.version) & (File.folder_id == folder_id)).first()
+        max_versioned_file = session.query(func.max(File.version)).filter((File.user_id == user_id) & (File.file_name == filename) & (File.folder_id == folder_id))
 
-        if max_versioned_file is None:
-            new_file = File(user_id=user_id, file_name=filename, created=datetime.datetime.now(), system_file_name=sys_fname, folder_id=folder_id, version=0)
-        else:
-            new_file = File(user_id=user_id, file_name=filename, created=datetime.datetime.now(), system_file_name=sys_fname, folder_id=folder_id, version=max_versioned_file.version + 1)
-        session.add(new_file)
-        session.commit()
-        return True
+        for max_version in max_versioned_file:
+            if max_version[0] is None:
+                new_file = File(user_id=user_id, file_name=filename, created=datetime.datetime.now(), system_file_name=sys_fname, folder_id=folder_id, version=0)
+            else:
+                new_file = File(user_id=user_id, file_name=filename, created=datetime.datetime.now(), system_file_name=sys_fname, folder_id=folder_id, version=max_version[0] + 1)
+            session.add(new_file)
+            session.commit()
+            create_log_entry(user_id, 'File created', new_file.id, None)
+            return True
     except exc.SQLAlchemyError as e:
         print(e.__context__)
         session.rollback()
@@ -99,14 +117,15 @@ def create_file(user_id, filename, sys_fname, folder_id):
         session.close()
 
 
-def remove_file(user, fileid):
+def remove_file(user_id, file_id):
     session = DBSession()
     try:
-        file = session.query(File).filter((File.user_id == user) & (File.id == fileid)).first()
+        file = session.query(File).filter((File.user_id == user_id) & (File.id == file_id)).first()
         if file is not None:
             file.delete_date = datetime.datetime.now()
-            delete_shares(user, file.id)
+            delete_shares(user_id, file.id)
             session.commit()
+            create_log_entry(user_id, 'File deleted', file_id, None)
             return True
         return False
     except exc.SQLAlchemyError as e:
@@ -117,28 +136,32 @@ def remove_file(user, fileid):
         session.close()
 
 
-def remove_folder(user, folder_id):
+def remove_folder(user_id, folder_id):
     session = DBSession()
     try:
-        folder = session.query(Folder).filter((Folder.user_id == user) & (Folder.id == folder_id)).first()
+        folder = session.query(Folder).filter((Folder.user_id == user_id) & (Folder.id == folder_id)).first()
         if folder is not None:
             folder.delete_date=datetime.datetime.now()
-            deleted_files = session.query(File).filter((File.user_id == user) &
+            create_log_entry(user_id, 'Folder deleted', None, folder_id)
+            deleted_files = session.query(File).filter((File.user_id == user_id) &
                                                        (File.folder_id == folder.id))
             for f in deleted_files:
                 f.delete_date=datetime.datetime.now()
-                delete_shares(user, f.id)
+                create_log_entry(user_id, 'File deleted', f.id, None)
+                delete_shares(user_id, f.id)
 
-            deleted_folders = session.query(Folder).filter((Folder.user_id == user) &
+            deleted_folders = session.query(Folder).filter((Folder.user_id == user_id) &
                                                        (Folder.path.startswith(folder.path + folder.folder_name)))
             for f in deleted_folders:
                 f.delete_date=datetime.datetime.now()
+                create_log_entry(user_id, 'Folder deleted', None, f.id)
 
-                deleted_files = session.query(File).filter((File.user_id == user) &
+                deleted_files = session.query(File).filter((File.user_id == user_id) &
                                                            (File.folder_id == f.id))
                 for files in deleted_files:
                     files.delete_date = datetime.datetime.now()
-                    delete_shares(user, files.id)
+                    create_log_entry(user_id, 'File deleted', files.id, None)
+                    delete_shares(user_id, files.id)
 
             session.commit()
             return True
@@ -184,6 +207,7 @@ def crt_folder(user_id, input_dictionary):
 
             session.add(new_folder)
             os.makedirs(new_folder_path + new_folder.folder_name)
+            create_log_entry(user_id, 'Folder created', None, new_folder.id)
             session.commit()
             return True
 
@@ -204,6 +228,7 @@ def rename_file(user_id, input_dictionary):
         if file is not None:
             file.file_name = input_dictionary['file_name']
             session.commit()
+            create_log_entry(user_id, 'File renamed', file.id, None)
             return file.serialize()
         return None
     except exc.SQLAlchemyError as e:
@@ -222,6 +247,7 @@ def rename_folder(user_id, input_dictionary):
         if folder is not None:
             folder.folder_name = input_dictionary['folder_name']
             session.commit()
+            create_log_entry(user_id, 'Fodler renamed', None, folder.id)
             return folder.serialize()
         return None
     except exc.SQLAlchemyError as e:

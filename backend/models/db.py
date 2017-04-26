@@ -52,6 +52,7 @@ class File(Base):
     version = Column(Integer, nullable=False)
 
     fileShares = relationship("FileShare", cascade="all, delete-orphan")
+    logs = relationship("Log", cascade="all, delete-orphan")
 
     def __repr__(self):
         return "File: (id='%i', user_id='%i', file_name='%s', created='%s', public_link='%s', " \
@@ -85,6 +86,7 @@ class Folder(Base):
     delete_date = Column(DateTime, nullable=True)
 
     files = relationship("File", cascade="all, delete-orphan")
+    logs = relationship("Log", cascade="all, delete-orphan")
 
     def __repr__(self):
         return "Folder: (id='%i', user_id='%i', parent_folder='%i', path='%s', created='%s', folder_name='%s', " \
@@ -127,12 +129,25 @@ class Log(Base):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
-    trace = Column(TEXT, nullable=False)
+    message = Column(TEXT, nullable=False)
+    file_id = Column(Integer, ForeignKey('file.id'))
+    file = relationship(File)
+    folder_id = Column(Integer, ForeignKey('folder.id'))
+    folder = relationship(Folder)
     created = Column(DateTime, nullable=False)
 
     def __repr__(self):
         return "Log: (id='%i', user_id='%i', text='%s', created='%s')" \
                % (self.id, self.user_id, self.text,  str(self.created))
+
+    def serialize(self):
+        return{
+            'user': self.user_id,
+            'message': self.message,
+            'file': self.file_id,
+            'folder': self.folder_id,
+            'created': self.created
+        }
 
 
 class FileShare(Base):

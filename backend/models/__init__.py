@@ -1,3 +1,4 @@
+from models.logsModel import *
 from models.usersModel import *
 from models.db import *
 from models.tokensModel import *

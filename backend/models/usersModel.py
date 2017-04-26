@@ -10,6 +10,7 @@ from sqlalchemy import exc
 from .db import DBSession, User, Folder
 from .tokensModel import encode_token
 from utils import send_activate_email, reset_password_email, UPLOAD_FOLDER
+from models import create_log_entry
 
 
 def login_user(username, password):
@@ -20,8 +21,10 @@ def login_user(username, password):
             if pbkdf2_sha256.verify(password, user.password_hash):
                 user.failed_attempts = 0
                 session.commit()
+                create_log_entry(user.id, 'User logged in', None, None)
                 return encode_token(user.id)
             increment_bad_password(user)
+            create_log_entry(user.id, 'User wrong password', None, None)
             session.commit()
             return None
     except exc.SQLAlchemyError as e:
@@ -49,6 +52,7 @@ def register_user(username, user_password, email):
                                          email=email, activation_link=activation_link, created=datetime.datetime.now())
         session.add(new_user)
         send_activate_email(email, activation_link)
+        create_log_entry(new_user.id, 'User registered', None, None)
         session.commit()
         return new_user.serialize()
     except exc.SQLAlchemyError as e:
@@ -74,6 +78,7 @@ def activate_user(token):
             os.makedirs(path)
             session.add(new_folder)
             user.activation_link = None
+            create_log_entry(user.id, 'User activated', None, None)
             session.commit()
             return True
         return False
@@ -93,6 +98,7 @@ def reset_user(token,password):
             user.password_hash = pbkdf2_sha256.using(salt_size=16).hash(password)
             user.failed_attempts = 0
             user.activation_link = None
+            create_log_entry(user.id, 'User password reset', None, None)
             session.commit()
             return True
         return False
@@ -112,6 +118,7 @@ def delete_user(user_id):
             shutil.rmtree(os.path.join(UPLOAD_FOLDER, user_id))
             session.delete(user)
             session.commit()
+
             return True
         return False
     except exc.SQLAlchemyError as e:
@@ -144,6 +151,7 @@ def change_user_data(user_id, input_dictionary):
                     password_hash = pbkdf2_sha256.using(salt_size=16).hash(new_password)
                     user.password_hash = password_hash
                 session.commit()
+                create_log_entry(user.id, 'User changed data', None, None)
                 return user.serialize()
         return None
     except exc.SQLAlchemyError as e:

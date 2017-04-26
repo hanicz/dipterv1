@@ -3,7 +3,7 @@ import datetime
 import unittest
 
 from flask import Flask, request, jsonify
-from routes import users_api, files_api, notes_api, roles_api, file_shares_api
+from routes import users_api, files_api, notes_api, roles_api, file_shares_api, logs_api
 from models import init_db, login_required
 from models import get_secret_key, get_email_credentials
 from utils import HTTP_INT_ERROR
@@ -22,6 +22,7 @@ app.register_blueprint(files_api, url_prefix='/files')
 app.register_blueprint(notes_api, url_prefix='/notes')
 app.register_blueprint(roles_api, url_prefix='/roles')
 app.register_blueprint(file_shares_api, url_prefix='/shares')
+app.register_blueprint(logs_api, url_prefix='/logs')
 
 
 @app.before_request
