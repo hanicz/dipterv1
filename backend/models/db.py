@@ -54,11 +54,11 @@ class File(Base):
     fileShares = relationship("FileShare", cascade="all, delete-orphan")
     logs = relationship("Log", cascade="all, delete-orphan")
 
-    def __repr__(self):
+    '''def __repr__(self):
         return "File: (id='%i', user_id='%i', file_name='%s', created='%s', public_link='%s', " \
                "content='%s', folder='%i', delete_date='%s', system_file_name='%s')" \
-               % (self.id, self.user_id, self.file_name, str(self.created), self.public_link, self.content,
-                  self.folder, str(self.delete_date), self.system_file_name)
+               % (int(self.id), int(self.user_id), self.file_name, str(self.created), self.public_link, self.content,
+                  self.folder, str(self.delete_date), self.system_file_name)'''
 
     def serialize(self):
         return{
@@ -88,11 +88,11 @@ class Folder(Base):
     files = relationship("File", cascade="all, delete-orphan")
     logs = relationship("Log", cascade="all, delete-orphan")
 
-    def __repr__(self):
+    '''def __repr__(self):
         return "Folder: (id='%i', user_id='%i', parent_folder='%i', path='%s', created='%s', folder_name='%s', " \
                "delete_date='%s')" \
-               % (self.id, self.user_id, self.parent_folder, self.path,  str(self.created), self.folder_name,
-                  str(self.delete_date))
+               % (int(self.id), int(self.user_id), int(self.parent_folder), self.path,  str(self.created), self.folder_name,
+                  str(self.delete_date))'''
 
     def serialize(self):
         return{

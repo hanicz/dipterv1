@@ -247,7 +247,7 @@ def rename_folder(user_id, input_dictionary):
         if folder is not None:
             folder.folder_name = input_dictionary['folder_name']
             session.commit()
-            create_log_entry(user_id, 'Fodler renamed', None, folder.id)
+            create_log_entry(user_id, 'Folder renamed', None, folder.id)
             return folder.serialize()
         return None
     except exc.SQLAlchemyError as e:
@@ -263,9 +263,12 @@ def move_folder(user_id, input_dictionary):
     try:
         folder = session.query(Folder).filter(
             (Folder.user_id == user_id) & (Folder.id == input_dictionary['folder_id'])).first()
-        parent_folder = session.query(Folder).filter(
+        parent_folder = session.query(Folder).outerjoin(Folder, Folder.id == Folder.parent_folder).filter(
             (Folder.user_id == user_id) & (Folder.id == input_dictionary['parent_id'])).first()
         if folder is not None and parent_folder is not None:
+
+
+
             folder.parent_folder = parent_folder.id
             folder.path = parent_folder.path + parent_folder.folder_name + '/'
             session.commit()
@@ -282,17 +285,23 @@ def move_folder(user_id, input_dictionary):
 def move_file(user_id, input_dictionary):
     session = DBSession()
     try:
-        file = session.query(File).filter(
+        folder, file = session.query(Folder, File).filter((Folder.id == File.folder_id) &
             (File.user_id == user_id) & (File.id == input_dictionary['file_id'])).first()
         new_folder = session.query(Folder).filter(
             (Folder.user_id == user_id) & (Folder.id == input_dictionary['new_folder_id'])).first()
         if file is not None and new_folder is not None:
-            max_versioned_file = session.query(File).filter((File.user_id == user_id) & (File.file_name == file.file_name)
-                                                            & func.max(File.version) & (File.folder_id == new_folder.id)).first()
-            os.rename('', '')
+            max_version = session.query(func.max(File.version)).filter((File.user_id == user_id) & (File.file_name == file.file_name)
+                                                             & (File.folder_id == new_folder.id)).first()
+
+            if max_version[0] is not None:
+                file.version = max_version[0] + 1
+
+            os.rename(os.path.join(folder.path, file.system_file_name), os.path.join(new_folder.path, file.system_file_name))
             file.parent_folder = new_folder.id
             session.commit()
+            create_log_entry(user_id, 'File moved', file.id, new_folder.id)
             return file.serialize()
+        print(file.user_id)
         return None
     except exc.SQLAlchemyError as e:
         print(e.__context__)
