@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from utils import HTTP_OK, HTTP_BAD_REQUEST, validate, HTTP_NOT_FOUND
-from models import decode_token, get_all_files, upload_file, remove_file, remove_folder, crt_folder, get_all_deleted_files, search_user_file
+from models import decode_token, get_all_files, upload_file, remove_file, remove_folder, crt_folder, get_all_deleted_files, search_user_file, move_file, move_folder
 from exception import InvalidFileException
 
 
@@ -83,18 +83,14 @@ def create_file(folder_id):
 
 @files_api.route("/createFolder", methods=['POST'])
 def create_folder():
-    if request.cookies.get('token') is None:
-        user_id = 1
-    else:
-        user_id = decode_token(request.cookies.get('token'))
-
     input_dictionary = request.get_json()
     validation_dictionary = {'folder_name': None, 'parent_id': "^[0-9]*$"}
 
     try:
         if validate(input_dictionary, validation_dictionary):
-            if crt_folder(user_id, input_dictionary):
-                return jsonify({'Response': 'File uploaded successfully'}), HTTP_OK
+            data = crt_folder(decode_token(request.cookies.get('token')), input_dictionary)
+            if data is not None:
+                return jsonify(data), HTTP_OK
 
         return jsonify({'Response': 'Creating folder failed.'}), HTTP_BAD_REQUEST
     except InvalidFileException as e:
@@ -114,3 +110,16 @@ def search_file(file_name):
         return jsonify(file), HTTP_OK
     else:
         return jsonify({'Response': 'File not found.'}), HTTP_NOT_FOUND
+
+
+@files_api.route("/move/file", methods=['PUT'])
+def move_user_file():
+    input_dictionary = request.get_json()
+    validation_dictionary = {'file_id': "^[0-9]*$", 'new_folder_id': "^[0-9]*$"}
+
+    if validate(input_dictionary, validation_dictionary):
+        data = move_file(decode_token(request.cookies.get('token')), input_dictionary)
+        if data is not None:
+            return jsonify(data), HTTP_OK
+
+    return jsonify({'Response': 'File not found.'}), HTTP_BAD_REQUEST

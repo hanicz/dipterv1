@@ -94,3 +94,7 @@ Sending activation email for: test@123123f.gz
 Failed to send email for: test@123123f.gz Exception: (535, b'5.7.8 Username and Password not accepted. Learn more at\n5.7.8  https://support.google.com/mail/?p=BadCredentials c16sm80493wrb.56 - gsmtp')
 Sending activation email for: test@141321j312j3.hu
 Failed to send email for: test@141321j312j3.hu Exception: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+Sending activation email for: awdawd@12341csad.hu
+Failed to send email for: awdawd@12341csad.hu Exception: (535, b'5.7.8 Username and Password not accepted. Learn more at\n5.7.8  https://support.google.com/mail/?p=BadCredentials w17sm19056wme.13 - gsmtp')
+Sending activation email for: test@test12312321.huz
+Failed to send email for: test@test12312321.huz Exception: (535, b'5.7.8 Username and Password not accepted. Learn more at\n5.7.8  https://support.google.com/mail/?p=BadCredentials 23sm3998165wrx.26 - gsmtp')

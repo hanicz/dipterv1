@@ -7,7 +7,8 @@ import string
 
 from utils import NOT_ALLOWED_EXTENSIONS,UPLOAD_FOLDER
 from .db import DBSession, File, FileShare, Folder
-from sqlalchemy import exc
+from sqlalchemy import exc, not_
+from sqlalchemy.orm import aliased
 from sqlalchemy.sql.expression import func
 from werkzeug.utils import secure_filename
 from exception import InvalidFileException
@@ -70,7 +71,7 @@ def upload_file(user, folder_id):
         folder = session.query(Folder).filter((Folder.user_id == user) & (Folder.id == folder_id)).first()
         if folder is None:
             return False
-        path = folder.path + folder.folder_name + '/'
+        path = folder.path
     except exc.SQLAlchemyError as e:
         print(e.__context__)
         session.rollback()
@@ -201,21 +202,21 @@ def crt_folder(user_id, input_dictionary):
             (Folder.user_id == user_id) & (Folder.id == input_dictionary['parent_id'])).first()
 
         if folder is not None and secure_filename(input_dictionary['folder_name']) != "":
-            new_folder_path = folder.path + Folder.folder_name + '/'
+            new_folder_path = folder.path + input_dictionary['folder_name'] + '/'
             new_folder = Folder(user_id=user_id, folder_name=secure_filename(input_dictionary['folder_name']),
-                                created=datetime.datetime.now(), path=new_folder_path, parent_folder=Folder.id)
+                                created=datetime.datetime.now(), path=new_folder_path, parent_folder=folder.id)
 
             session.add(new_folder)
-            os.makedirs(new_folder_path + new_folder.folder_name)
+            os.makedirs(new_folder_path)
             create_log_entry(user_id, 'Folder created', None, new_folder.id)
             session.commit()
-            return True
+            return new_folder.serialize()
 
-        return False
+        return None
     except exc.SQLAlchemyError as e:
         print(e.__context__)
         session.rollback()
-        return False
+        return None
     finally:
         session.close()
 
@@ -263,16 +264,16 @@ def move_folder(user_id, input_dictionary):
     try:
         folder = session.query(Folder).filter(
             (Folder.user_id == user_id) & (Folder.id == input_dictionary['folder_id'])).first()
-        parent_folder = session.query(Folder).outerjoin(Folder, Folder.id == Folder.parent_folder).filter(
-            (Folder.user_id == user_id) & (Folder.id == input_dictionary['parent_id'])).first()
-        if folder is not None and parent_folder is not None:
+        if folder is not None:
+            child_folder = aliased(Folder)
+            parent_folder, child = session.query(Folder, child_folder).outerjoin(child_folder,
+                                                                                 Folder.id == child_folder.parent_folder).filter(
+                (Folder.user_id == user_id) & (Folder.id == input_dictionary['parent_id']) & not_(
+                    Folder.path.startswith(folder.path)) & (child_folder.user_id == user_id) & (
+                child_folder.folder_name == folder.folder_name)).first()
 
+            return True
 
-
-            folder.parent_folder = parent_folder.id
-            folder.path = parent_folder.path + parent_folder.folder_name + '/'
-            session.commit()
-            return folder.serialize()
         return None
     except exc.SQLAlchemyError as e:
         print(e.__context__)
@@ -297,7 +298,7 @@ def move_file(user_id, input_dictionary):
                 file.version = max_version[0] + 1
 
             os.rename(os.path.join(folder.path, file.system_file_name), os.path.join(new_folder.path, file.system_file_name))
-            file.parent_folder = new_folder.id
+            file.folder_id = new_folder.id
             session.commit()
             create_log_entry(user_id, 'File moved', file.id, new_folder.id)
             return file.serialize()

@@ -27,7 +27,7 @@ export class FileService {
     //     formData.append(`files[]`, files[i], files[i].name);
     // }
 
-    const url = `${this.userUrl}/file/1`;
+    const url = `${this.userUrl}/file/3`;
     return this.http.post(url,formData,{withCredentials: true})
       .map((res: Response) => res.json());
   }
