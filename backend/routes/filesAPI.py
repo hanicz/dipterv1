@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from utils import HTTP_OK, HTTP_BAD_REQUEST, validate, HTTP_NOT_FOUND
-from models import decode_token, get_all_files, upload_file, remove_file, remove_folder, crt_folder, get_all_deleted_files, search_user_file, move_file, move_folder
+from models import decode_token, get_all_files, upload_file, remove_file, remove_folder, crt_folder, get_all_deleted_files, search_user_file, move_file, move_folder, rename_folder, rename_file
 from exception import InvalidFileException
 
 
@@ -123,3 +123,42 @@ def move_user_file():
             return jsonify(data), HTTP_OK
 
     return jsonify({'Response': 'File not found.'}), HTTP_BAD_REQUEST
+
+
+@files_api.route("/move/folder", methods=['PUT'])
+def move_user_folder():
+    input_dictionary = request.get_json()
+    validation_dictionary = {'folder_id': "^[0-9]*$", 'parent_id': "^[0-9]*$"}
+
+    if validate(input_dictionary, validation_dictionary):
+        data = move_folder(decode_token(request.cookies.get('token')), input_dictionary)
+        if data is not None:
+            return jsonify(data), HTTP_OK
+
+    return jsonify({'Response': 'Folder not found.'}), HTTP_BAD_REQUEST
+
+
+@files_api.route("/rename/folder", methods=['PUT'])
+def rename_user_folder():
+    input_dictionary = request.get_json()
+    validation_dictionary = {'folder_id': "^[0-9]*$", 'folder_name': None}
+
+    if validate(input_dictionary, validation_dictionary):
+        data = rename_folder(decode_token(request.cookies.get('token')), input_dictionary)
+        if data is not None:
+            return jsonify(data), HTTP_OK
+
+    return jsonify({'Response': 'Folder not found.'}), HTTP_BAD_REQUEST
+
+
+@files_api.route("/rename/file", methods=['PUT'])
+def rename_user_folder():
+    input_dictionary = request.get_json()
+    validation_dictionary = {'file_id': "^[0-9]*$", 'file_name': None}
+
+    if validate(input_dictionary, validation_dictionary):
+        data = rename_file(decode_token(request.cookies.get('token')), input_dictionary)
+        if data is not None:
+            return jsonify(data), HTTP_OK
+
+    return jsonify({'Response': 'Folder not found.'}), HTTP_BAD_REQUEST

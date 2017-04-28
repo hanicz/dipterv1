@@ -1,12 +1,9 @@
 import os
-import datetime
-import unittest
 
-from flask import Flask, request, jsonify
+from flask import Flask, request
 from routes import users_api, files_api, notes_api, roles_api, file_shares_api, logs_api
 from models import init_db, login_required
 from models import get_secret_key, get_email_credentials, move_file
-from utils import HTTP_INT_ERROR
 from flask_cors import CORS
 from logger import LEVEL, log_message
 
