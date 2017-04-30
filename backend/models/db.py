@@ -87,6 +87,7 @@ class Folder(Base):
 
     files = relationship("File", cascade="all, delete-orphan")
     logs = relationship("Log", cascade="all, delete-orphan")
+    folders = relationship("Folder", cascade="all, delete-orphan")
 
     '''def __repr__(self):
         return "Folder: (id='%i', user_id='%i', parent_folder='%i', path='%s', created='%s', folder_name='%s', " \
@@ -124,7 +125,7 @@ class Role(Base):
 
 
 class Log(Base):
-    __tablename__ = 'my_logger'
+    __tablename__ = 'log'
 
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('user.id'))

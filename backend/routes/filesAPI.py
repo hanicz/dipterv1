@@ -1,49 +1,37 @@
-from flask import Blueprint, request, jsonify
-from utils import HTTP_OK, HTTP_BAD_REQUEST, validate, HTTP_NOT_FOUND
-from models import decode_token, get_all_files, upload_file, remove_file, remove_folder, crt_folder, get_all_deleted_files, search_user_file, move_file, move_folder, rename_folder, rename_file
+from flask import Blueprint, request, jsonify, send_from_directory
+from utils import HTTP_OK, HTTP_BAD_REQUEST, validate, HTTP_NOT_FOUND, limit_content_length, user_file_limit, HTTP_UNAUTHORIZED
+from models import decode_token, get_all_files, upload_file, remove_file, remove_folder, crt_folder, get_all_deleted_files, search_user_file, move_file, move_folder, rename_folder, rename_file, get_file_data, get_public_file_data
 from exception import InvalidFileException
 
 
 files_api = Blueprint('files_api', __name__)
 
 
-@files_api.route("/file/<id>", methods=['GET'])
-def get_file(id):
-
-    return 'ok', HTTP_OK
+@files_api.route("/file/<file_id>", methods=['GET'])
+def get_file(file_id):
+    path, system_filename, original_filename = get_file_data(decode_token(request.cookies.get('token')), file_id)
+    if None not in (path, system_filename, original_filename):
+        return send_from_directory(path, system_filename, mimetype='multipart/form-data', attachment_filename=original_filename, as_attachment=True)
+    else:
+        return jsonify({'Response': 'Error downloading file'}), HTTP_UNAUTHORIZED
 
 
 @files_api.route("/userFiles/<folder_id>", methods=['GET'])
 def get_user_files(folder_id):
-    if request.cookies.get('token') is None:
-        user_id = 1
-    else:
-        user_id = decode_token(request.cookies.get('token'))
-
-    files = get_all_files(user_id,folder_id)
+    files = get_all_files(decode_token(request.cookies.get('token')),folder_id)
     return jsonify(files), HTTP_OK
 
 
 @files_api.route("/userDeletedFiles", methods=['GET'])
 def get_deleted_files():
-    if request.cookies.get('token') is None:
-        user_id = 1
-    else:
-        user_id = decode_token(request.cookies.get('token'))
-
-    files = get_all_deleted_files(user_id)
+    files = get_all_deleted_files(decode_token(request.cookies.get('token')))
     return jsonify(files), HTTP_OK
 
 
 @files_api.route("/file/<id>", methods=['DELETE'])
 def delete_file(id):
-    if request.cookies.get('token') is None:
-        user_id = 1
-    else:
-        user_id = decode_token(request.cookies.get('token'))
-
     try:
-        if remove_file(user_id, id):
+        if remove_file(decode_token(request.cookies.get('token')), id):
             return jsonify({'Response': 'File deleted successfully'}), HTTP_OK
         else:
             return jsonify({'Response': 'Error deleting file'}), HTTP_BAD_REQUEST
@@ -53,14 +41,9 @@ def delete_file(id):
 
 @files_api.route("/removeFolder/<folder_id>", methods=['DELETE'])
 def delete_folder(folder_id):
-    if request.cookies.get('token') is None:
-        user_id = 1
-    else:
-        user_id = decode_token(request.cookies.get('token'))
-
     try:
-        if remove_folder(user_id, folder_id):
-            return jsonify({'Response': 'File deleted successfully'}), HTTP_OK
+        if remove_folder(decode_token(request.cookies.get('token')), folder_id):
+            return jsonify({'Response': 'Folder deleted successfully'}), HTTP_OK
         else:
             return jsonify({'Response': 'Error deleting file'}), HTTP_BAD_REQUEST
     except InvalidFileException as e:
@@ -68,6 +51,8 @@ def delete_folder(folder_id):
 
 
 @files_api.route("/file/<folder_id>", methods=['POST'])
+@limit_content_length(1073741824)
+@user_file_limit()
 def create_file(folder_id):
     input_dictionary = {"folder_id": folder_id}
     validation_dictionary = {'folder_id': "^[0-9]*$"}
@@ -99,7 +84,11 @@ def create_folder():
 
 @files_api.route("/getPublicFile/<link>", methods=['GET'])
 def make_public(link):
-    return "ok", HTTP_OK
+    path, system_filename, original_filename = get_public_file_data(link)
+    if None not in (path, system_filename, original_filename):
+        return send_from_directory(path, system_filename, mimetype='multipart/form-data', attachment_filename=original_filename, as_attachment=True)
+    else:
+        return jsonify({'Response': 'Error downloading file'}), HTTP_UNAUTHORIZED
 
 
 @files_api.route("/search/<file_name>", methods=['GET'])
@@ -152,7 +141,7 @@ def rename_user_folder():
 
 
 @files_api.route("/rename/file", methods=['PUT'])
-def rename_user_folder():
+def rename_user_file():
     input_dictionary = request.get_json()
     validation_dictionary = {'file_id': "^[0-9]*$", 'file_name': None}
 

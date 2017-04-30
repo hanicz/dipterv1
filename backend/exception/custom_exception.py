@@ -4,3 +4,7 @@ class UnexpectedException(Exception):
 
 class InvalidFileException(Exception):
     pass
+
+
+class InvalidContentLengthException(Exception):
+    pass

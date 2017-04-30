@@ -1,6 +1,6 @@
 backend/**/*.pyc
 backend/**/*.db
-backend/server_log.log
+backend/**/server_log.log
 
 backend/.idea/**/workspace.xml
 backend/.idea/**/tasks.xml

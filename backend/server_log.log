@@ -98,3 +98,11 @@ Sending activation email for: awdawd@12341csad.hu
 Failed to send email for: awdawd@12341csad.hu Exception: (535, b'5.7.8 Username and Password not accepted. Learn more at\n5.7.8  https://support.google.com/mail/?p=BadCredentials w17sm19056wme.13 - gsmtp')
 Sending activation email for: test@test12312321.huz
 Failed to send email for: test@test12312321.huz Exception: (535, b'5.7.8 Username and Password not accepted. Learn more at\n5.7.8  https://support.google.com/mail/?p=BadCredentials 23sm3998165wrx.26 - gsmtp')
+Sending activation email for: test@eawdawdd1.aw
+Failed to send email for: test@eawdawdd1.aw Exception: (535, b'5.7.8 Username and Password not accepted. Learn more at\n5.7.8  https://support.google.com/mail/?p=BadCredentials r60sm10459871wrb.37 - gsmtp')
+Sending activation email for: asd@1231231asd.hu
+Failed to send email for: asd@1231231asd.hu Exception: (535, b'5.7.8 Username and Password not accepted. Learn more at\n5.7.8  https://support.google.com/mail/?p=BadCredentials t30sm8956295wrc.24 - gsmtp')
+Sending activation email for: yolo@2131h123.huz
+Failed to send email for: yolo@2131h123.huz Exception: (535, b'5.7.8 Username and Password not accepted. Learn more at\n5.7.8  https://support.google.com/mail/?p=BadCredentials n99sm11525867wrb.62 - gsmtp')
+Sending activation email for: wad1213@awdhawd.hu
+Failed to send email for: wad1213@awdhawd.hu Exception: (535, b'5.7.8 Username and Password not accepted. Learn more at\n5.7.8  https://support.google.com/mail/?p=BadCredentials p107sm7498358wrb.64 - gsmtp')

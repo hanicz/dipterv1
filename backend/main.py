@@ -3,7 +3,7 @@ import os
 from flask import Flask, request
 from routes import users_api, files_api, notes_api, roles_api, file_shares_api, logs_api
 from models import init_db, login_required
-from models import get_secret_key, get_email_credentials, move_file
+from models import get_secret_key, get_email_credentials, delete_job
 from flask_cors import CORS
 from logger import LEVEL, log_message
 
@@ -43,5 +43,7 @@ def unhandled_exception(e):
 
 
 if __name__ == '__main__':
+    delete_job()
+
     app.secret_key = os.getenv('SECRET_KEY')
     app.run(host='0.0.0.0')

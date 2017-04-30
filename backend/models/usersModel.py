@@ -52,8 +52,8 @@ def register_user(username, user_password, email):
                                          email=email, activation_link=activation_link, created=datetime.datetime.now())
         session.add(new_user)
         send_activate_email(email, activation_link)
-        create_log_entry(new_user.id, 'User registered', None, None)
         session.commit()
+        create_log_entry(new_user.id, 'User registered', None, None)
         return new_user.serialize()
     except exc.SQLAlchemyError as e:
         print(e.__context__)
