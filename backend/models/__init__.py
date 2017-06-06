@@ -7,3 +7,4 @@ from models.filesModel import *
 from models.rolesModel import *
 from models.file_sharesModel import *
 from models.noteModel import *
+from models.dropboxModel import *

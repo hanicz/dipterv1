@@ -8,3 +8,11 @@ class InvalidFileException(Exception):
 
 class InvalidContentLengthException(Exception):
     pass
+
+
+class NotFoundException(Exception):
+    pass
+
+
+class InvalidParametersException(Exception):
+    pass

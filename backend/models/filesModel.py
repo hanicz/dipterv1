@@ -15,6 +15,7 @@ from sqlalchemy.sql.expression import func
 from werkzeug.utils import secure_filename
 from exception import InvalidFileException
 from models import create_log_entry
+from exception import UnexpectedException, NotFoundException, InvalidParametersException
 
 
 def allowed_file(filename):
@@ -242,7 +243,7 @@ def rename_file(user_id, input_dictionary):
             session.commit()
             create_log_entry(user_id, 'File renamed', file.id, None)
             return file.serialize()
-        return None
+        raise NotFoundException('File not found!')
     except exc.SQLAlchemyError as e:
         print(e.__context__)
         session.rollback()
@@ -256,12 +257,18 @@ def rename_folder(user_id, input_dictionary):
     try:
         folder = session.query(Folder).filter(
             (Folder.user_id == user_id) & (Folder.id == input_dictionary['folder_id'])).first()
+
         if folder is not None:
+
+            if folder.parent_folder is None:
+                raise UnexpectedException('Unable to rename folder!')
+
             folder.folder_name = input_dictionary['folder_name']
             session.commit()
             create_log_entry(user_id, 'Folder renamed', None, folder.id)
             return folder.serialize()
-        return None
+
+        raise NotFoundException('Folder not found!')
     except exc.SQLAlchemyError as e:
         print(e.__context__)
         session.rollback()

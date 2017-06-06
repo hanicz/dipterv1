@@ -3,7 +3,7 @@ import os
 from flask import Flask, request
 from routes import users_api, files_api, notes_api, roles_api, file_shares_api, logs_api
 from models import init_db, login_required
-from models import get_secret_key, get_email_credentials, delete_job
+from models import get_secret_key, get_email_credentials, delete_job, get_dropbox_credentials
 from flask_cors import CORS
 from logger import LEVEL, log_message
 
@@ -13,6 +13,7 @@ CORS(app, supports_credentials=True)
 init_db()
 os.environ['SECRET_KEY'] = get_secret_key()
 os.environ['MAIL'] = get_email_credentials()
+os.environ['DROPBOX'] = get_dropbox_credentials()
 
 app.register_blueprint(users_api, url_prefix='/users')
 app.register_blueprint(files_api, url_prefix='/files')

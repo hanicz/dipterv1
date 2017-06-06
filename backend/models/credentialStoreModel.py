@@ -1,5 +1,6 @@
 from .db import DBSession, CredentialStore, User
 from sqlalchemy import exc
+import dropbox
 
 
 def get_secret_key():
@@ -21,6 +22,19 @@ def get_email_credentials():
         mail_credentials = session.query(CredentialStore).filter((CredentialStore.environment == 'MAIL')).first()
         if mail_credentials is not None:
             return mail_credentials.code
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        return e
+    finally:
+        session.close()
+
+
+def get_dropbox_credentials():
+    session = DBSession()
+    try:
+        dropbox_credentials = session.query(CredentialStore).filter((CredentialStore.environment == 'DROPBOX')).first()
+        if dropbox_credentials is not None:
+            return dropbox_credentials.code
     except exc.SQLAlchemyError as e:
         print(e.__context__)
         return e
