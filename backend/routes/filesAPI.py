@@ -63,6 +63,8 @@ def create_file(folder_id):
             return jsonify({'Response': 'Creating file failed.'}), HTTP_BAD_REQUEST
     except InvalidFileException as e:
         return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
+    except InvalidParametersException as e:
+        return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
     return jsonify({'Response': 'File uploaded successfully'}), HTTP_OK
 
 
@@ -79,6 +81,8 @@ def create_folder():
 
         return jsonify({'Response': 'Creating folder failed.'}), HTTP_BAD_REQUEST
     except InvalidFileException as e:
+        return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
+    except InvalidParametersException as e:
         return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
 
 
@@ -105,13 +109,15 @@ def search_file(file_name):
 def move_user_file():
     input_dictionary = request.get_json()
     validation_dictionary = {'file_id': "^[0-9]*$", 'new_folder_id': "^[0-9]*$"}
+    try:
+        if validate(input_dictionary, validation_dictionary):
+            data = move_file(decode_token(request.cookies.get('token')), input_dictionary)
+            if data is not None:
+                return jsonify(data), HTTP_OK
 
-    if validate(input_dictionary, validation_dictionary):
-        data = move_file(decode_token(request.cookies.get('token')), input_dictionary)
-        if data is not None:
-            return jsonify(data), HTTP_OK
-
-    return jsonify({'Response': 'File not found.'}), HTTP_BAD_REQUEST
+        return jsonify({'Response': 'File not found.'}), HTTP_BAD_REQUEST
+    except InvalidParametersException as e:
+        return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
 
 
 @files_api.route("/move/folder", methods=['PUT'])

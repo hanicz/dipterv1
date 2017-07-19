@@ -18,6 +18,8 @@ class User(Base):
     activation_link = Column(String(250), nullable=True, unique=True)
     created = Column(DateTime, nullable=False)
     failed_attempts = Column(Integer, nullable=False, default=0)
+    dropbox_auth = Column(String(250), nullable=True)
+
 
     files = relationship("File", cascade="all, delete-orphan")
     logs = relationship("Log", cascade="all, delete-orphan")

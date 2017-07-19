@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from utils import limit_content_length, validate, HTTP_OK, HTTP_BAD_REQUEST, HTTP_CREATED, HTTP_NOT_FOUND
 from models import delete_note, create_note, decode_token, update_note, get_note
+from exception import InvalidParametersException
 
 notes_api = Blueprint('notes_api', __name__)
 
@@ -18,12 +19,14 @@ def get_notes(note_id):
 def create_notes():
     input_dictionary = request.get_json()
     validation_dictionary = {'content': None, 'file_name': None}
-
-    if validate(input_dictionary, validation_dictionary):
-        data = create_note(decode_token(request.cookies.get('token')),input_dictionary)
-        if data is not None:
-            return jsonify(data), HTTP_CREATED
-    return jsonify({'Response': 'Note creation failed'}), HTTP_BAD_REQUEST
+    try:
+        if validate(input_dictionary, validation_dictionary):
+            data = create_note(decode_token(request.cookies.get('token')),input_dictionary)
+            if data is not None:
+                return jsonify(data), HTTP_CREATED
+        return jsonify({'Response': 'Note creation failed'}), HTTP_BAD_REQUEST
+    except InvalidParametersException as e:
+        return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
 
 
 @notes_api.route("/updateNote", methods=['POST'])
@@ -32,11 +35,14 @@ def update_notes():
     validation_dictionary = {'content': None, 'file_name': None,
                              'note_id': "^[0-9]*$"}
 
-    if validate(input_dictionary, validation_dictionary):
-        data = update_note(decode_token(request.cookies.get('token')), input_dictionary)
-        if data is not None:
-            return jsonify(data), HTTP_OK
-    return jsonify({'Response': 'Note update failed'}), HTTP_BAD_REQUEST
+    try:
+        if validate(input_dictionary, validation_dictionary):
+            data = update_note(decode_token(request.cookies.get('token')), input_dictionary)
+            if data is not None:
+                return jsonify(data), HTTP_OK
+        return jsonify({'Response': 'Note update failed'}), HTTP_BAD_REQUEST
+    except InvalidParametersException as e:
+        return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
 
 
 @notes_api.route("/deleteNote/<note_id>", methods=['DELETE'])

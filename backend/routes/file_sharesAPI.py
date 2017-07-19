@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from utils import HTTP_OK, HTTP_BAD_REQUEST, validate
 from models import decode_token, public_file, share_file, delete_share, revoke_public
-from exception import InvalidFileException
+from exception import InvalidFileException, InvalidParametersException
 
 
 file_shares_api = Blueprint('file_shares_api', __name__)
@@ -18,6 +18,8 @@ def share():
                 return jsonify({'Response': 'File shared successfully'}), HTTP_OK
         return jsonify({'Response': 'File share failed'}), HTTP_BAD_REQUEST
     except InvalidFileException as e:
+        return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
+    except InvalidParametersException as e:
         return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
 
 
@@ -55,4 +57,6 @@ def delete():
                 return jsonify({'Response': 'File share revoked successfully'}), HTTP_OK
         return jsonify({'Response': 'File share revoking failed'}), HTTP_BAD_REQUEST
     except InvalidFileException as e:
+        return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
+    except InvalidParametersException as e:
         return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
