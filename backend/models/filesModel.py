@@ -12,10 +12,12 @@ from utils import NOT_ALLOWED_EXTENSIONS
 from .db import DBSession, File, FileShare, Folder, Role
 from sqlalchemy import exc, not_
 from sqlalchemy.sql.expression import func
+from sqlalchemy.orm import aliased
 from werkzeug.utils import secure_filename
 from exception import InvalidFileException
 from models import create_log_entry
 from exception import UnexpectedException, NotFoundException, InvalidParametersException
+from utils import UPLOAD_FOLDER
 
 
 def allowed_file(filename):
@@ -25,10 +27,38 @@ def allowed_file(filename):
 def get_all_files(user_id, folder_id):
     session = DBSession()
     try:
-        files = session.query(File).filter(
-            (File.user_id == user_id) & (File.delete_date == None) & (File.folder_id == folder_id))
+        if folder_id == 0:
+            files = session.query(File).join(Folder).filter(
+                (File.user_id == user_id) & (File.delete_date == None) & (File.folder_id == Folder.id) & (Folder.path == UPLOAD_FOLDER + str(user_id) + '/') & (Folder.user_id == user_id))
+        else:
+            files = session.query(File).filter(
+                (File.user_id == user_id) & (File.delete_date == None) & (File.folder_id == folder_id))
+
         if files is not None:
             return [f.serialize() for f in files]
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return False
+    finally:
+        session.close()
+
+
+def get_all_folders(user_id, folder_id):
+    session = DBSession()
+    try:
+        if folder_id == 0:
+
+            folderalias = aliased(Folder)
+
+            folders = session.query(Folder).join(folderalias, Folder.id).filter(
+                (Folder.user_id == user_id) & (Folder.delete_date == None) & (Folder.folder_id == folderalias.id) & (folderalias.path == UPLOAD_FOLDER + str(user_id) + '/') & (folderalias.user_id == user_id))
+        else:
+            folders = session.query(Folder).filter(
+                (Folder.user_id == user_id) & (Folder.delete_date == None) & (Folder.parent_folder == folder_id))
+
+        if folders is not None:
+            return [f.serialize() for f in folders]
     except exc.SQLAlchemyError as e:
         print(e.__context__)
         session.rollback()

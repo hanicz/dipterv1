@@ -21,7 +21,7 @@ export class UploadComponent {
   ){}
 
   ngOnInit(): void {
-      this.fileService.get_files().subscribe((json: Object) => {
+      this.fileService.get_files(0).subscribe((json: Object) => {
             console.log(json);
         },
         error => console.error('Error: ' + error)

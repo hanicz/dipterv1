@@ -32,11 +32,11 @@ export class FileService {
       .map((res: Response) => res.json());
   }
 
-  get_files(){
+  get_files(folder_id: number){
     let headers = new Headers({'Content-Type': 'application/json',
                                   'Accept': 'application/json'});
 
-    const url = `${this.userUrl}/userFiles`;
+    const url = `${this.userUrl}/userFiles/` + folder_id;
     return this.http.get(url,{
         withCredentials: true
       })
