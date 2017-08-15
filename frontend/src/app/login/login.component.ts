@@ -23,7 +23,7 @@ export class LoginComponent {
 
   login(): void {
     this.userService
-      .login_user(this.model.username,this.model.password)
+      .login_user(this.model)
       .subscribe(
         (json: Object) => {
             this.custResp = new CustomResponse().fromJSON(json);

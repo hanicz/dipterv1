@@ -13,6 +13,7 @@ import { UploadComponent }  from './upload/upload.component';
 import { ActivateComponent }  from './activate/activate.component';
 import { NotFoundComponent }  from './notfound/not-found.component';
 import { ResetComponent }  from './reset/reset.component';
+import { FilesComponent } from './files/files.component';
 
 @NgModule({
   imports:      [ BrowserModule,
@@ -25,7 +26,8 @@ import { ResetComponent }  from './reset/reset.component';
                   ActivateComponent,
                   NotFoundComponent,
                   ResetComponent,
-                  UploadComponent],
+                  UploadComponent,
+                  FilesComponent],
   bootstrap:    [ AppComponent ],
   providers: [ UserService,
                 FileService ],

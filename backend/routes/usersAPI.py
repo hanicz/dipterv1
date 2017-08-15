@@ -9,17 +9,17 @@ from exception import InvalidFileException, InvalidParametersException
 users_api = Blueprint('users_api', __name__)
 
 
-@users_api.route("/login", methods=['GET'])
+@users_api.route("/login", methods=['POST'])
 def login():
+    input_dictionary = request.get_json()
     validation_dictionary = {'username': None, 'password': None}
-    input_dictionary = {'username': request.args.get('username'), 'password': request.args.get('password')}
     try:
         if validate(input_dictionary, validation_dictionary):
-            token = login_user(request.args.get('username'), request.args.get('password'))
+            token = login_user(input_dictionary['username'], input_dictionary['password'])
             if token is not None:
                 response = make_response(jsonify({'Response': 'Login successful'}), HTTP_OK)
                 response.set_cookie('token', token.decode())
-                session[token.decode()] = request.args.get('username')
+                session[token.decode()] = input_dictionary['username']
                 return response
             else:
                 return jsonify({'Response': 'Login failed'}), HTTP_UNAUTHORIZED
