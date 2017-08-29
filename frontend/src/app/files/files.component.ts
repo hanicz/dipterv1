@@ -8,9 +8,9 @@ import { File } from '../entities/file';
 
 @Component({
   moduleId: module.id,
-  selector: 'upload',
-  templateUrl: './upload.component.html',
-  styleUrls: [ './upload.component.css' ]
+  selector: 'files',
+  templateUrl: './files.component.html',
+  styleUrls: [ './files.component.css' ]
 })
 export class FilesComponent {
 
