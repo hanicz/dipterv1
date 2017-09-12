@@ -78,6 +78,7 @@ def activate_user(token):
             os.makedirs(path)
             session.add(new_folder)
             user.activation_link = None
+            user.main_folder = new_folder.id
             create_log_entry(user.id, 'User activated', None, None)
             session.commit()
             return True

@@ -19,6 +19,7 @@ class User(Base):
     created = Column(DateTime, nullable=False)
     failed_attempts = Column(Integer, nullable=False, default=0)
     dropbox_auth = Column(String(250), nullable=True)
+    main_folder = Column(Integer, nullable=True)
 
 
     files = relationship("File", cascade="all, delete-orphan")
@@ -34,7 +35,8 @@ class User(Base):
         return {
             'id': self.id,
             'name': self.name,
-            'email': self.email
+            'email': self.email,
+            'folder': self.main_folder
         }
 
 
