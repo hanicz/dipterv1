@@ -9,6 +9,7 @@ import 'rxjs/add/operator/map';
 
 import { User } from '../utils/user'
 import { ResetUser } from '../entities/reset-user'
+import { ChangeUser } from '../entities/changeuser'
 
 
 @Injectable()
@@ -56,6 +57,12 @@ export class UserService {
   logout_user(){
     const url = `${this.userUrl}/logout`;
     return this.http.post(url,'',{headers:this.headers, withCredentials: true})
+      .map((res: Response) => res.json());
+  }
+
+  changedata(user: ChangeUser){
+    const url = `${this.userUrl}/changeData`;
+    return this.http.put(url,JSON.stringify(user),{headers:this.headers})
       .map((res: Response) => res.json());
   }
 }

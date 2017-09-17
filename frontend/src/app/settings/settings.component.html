@@ -1,0 +1,34 @@
+<div class="container">
+    <form class="form" (ngSubmit)="changeData()" #settingsForm="ngForm">
+      <div class="form-group">
+        <input type="text" class="form-control" id="email" placeholder="new email"
+              required
+              [(ngModel)]="model.new_email" name="email" #email="ngModel" pattern="[^@]+@[^@]+\.[a-zA-Z]{2,6}">
+
+      </div>
+      <div [hidden]="(email.valid || email.pristine)"
+             class="alert alert-danger">
+          Email is required
+      </div>
+      <div class="form-group">
+        <input type="password" class="form-control" id="password" placeholder="new password"
+              required
+              [(ngModel)]="model.new_password" name="password" #password="ngModel">
+      </div>
+      <div [hidden]="password.valid || password.pristine"
+             class="alert alert-danger">
+          Password is required
+      </div>
+      <div class="form-group">
+        <input type="password" class="form-control" id="oldpassword" placeholder="old password"
+              required
+              [(ngModel)]="model.old_password" name="oldpassword" #oldpassword="ngModel">
+      </div>
+      <div [hidden]="oldpassword.valid || oldpassword.pristine"
+             class="alert alert-danger">
+          Old Password is required
+      </div>
+      <button type="submit" [disabled]="!settingsForm.form.valid" click="settingsForm.changeData()">Send</button>
+      <p class="message"> <a routerLink="/files">Back</a></p>
+    </form>
+</div>
