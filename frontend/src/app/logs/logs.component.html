@@ -1,0 +1,7 @@
+<div class="container">
+    <ul class="logs">
+        <li *ngFor="let log of logs">
+          <span class="badge">{{log.created | date: 'medium'}}</span> <b *ngIf="log.folder"> {{log.folder}} </b> {{log.message}}
+        </li>
+      </ul>
+</div>

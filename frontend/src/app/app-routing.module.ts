@@ -12,6 +12,7 @@ import { NotFoundComponent }  from './notfound/not-found.component';
 import { UploadComponent }  from './upload/upload.component';
 import { FilesComponent }  from './files/files.component';
 import { SettingsComponent }  from './settings/settings.component';
+import { LogsComponent }  from './logs/logs.component';
 
 
 const routes: Routes = [
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'upload', component: UploadComponent },
   { path: 'files', component: FilesComponent },
   { path: 'settings', component: SettingsComponent },
+  { path: 'logs', component: LogsComponent },
   {path: '**', redirectTo: '/not-found'}
 ];
 
