@@ -12,6 +12,6 @@ def validate(value_dict, input_dict):
             raise InvalidParametersException('Method invoked with invalid parameters')
 
         if value is not None:
-            if not re.match(value, value_dict[key]):
+            if not re.match(value, str(value_dict[key])):
                 raise InvalidParametersException('Method invoked with invalid parameters')
     return True

@@ -1,4 +1,10 @@
-<div *ngIf="file">
-    <h2>{{file.name}} details!</h2>
-    <div><label>id: </label>{{file.id}}</div>
+<div class="filedetail" *ngIf="file">
+    <div>
+        <p><label>Name : </label> <input [(ngModel)]="file.fileName"></p>
+        <p><label>Created : </label> {{file.created | date: 'short'}}</p>
+        <p><label>Version : </label> {{file.version}}</p>
+        <button (click)="rename()">Rename</button>
+        <button>Delete</button>
+        <button>Move</button>
+    </div>
 </div>

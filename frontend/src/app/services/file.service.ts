@@ -4,6 +4,7 @@
 import { Injectable }    from '@angular/core';
 import { Headers, Http, URLSearchParams, Response } from '@angular/http';
 import { CustomResponse } from '../utils/customResponse'
+import { MyFile } from '../entities/file';
 
 import 'rxjs/add/operator/map';
 
@@ -12,8 +13,12 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class FileService {
 
-  private headers = new Headers({'Content-Type': 'multipart/form-data',
+  private formDataHeaders = new Headers({'Content-Type': 'multipart/form-data',
                                   'Accept': 'application/json'});
+
+  private jsonHeaders = new Headers({'Content-Type': 'application/json',
+                                  'Accept': 'application/json'});
+
   private userUrl = 'http://localhost:5000/files';
 
   constructor(private http: Http) { }
@@ -29,7 +34,6 @@ export class FileService {
 
     const url = `${this.userUrl}/file/1`;
     return this.http.post(url,formData,{
-        headers:this.headers,
         withCredentials: true
       })
       .map((res: Response) => res.json());
@@ -38,7 +42,7 @@ export class FileService {
   get_files(folder_id: number){
     const url = `${this.userUrl}/userFiles/` + folder_id;
     return this.http.get(url,{
-        headers:this.headers,
+        headers:this.jsonHeaders,
         withCredentials: true
       })
       .map((res: Response) => res.json());
@@ -47,9 +51,19 @@ export class FileService {
   get_folders(folder_id: number){
     const url = `${this.userUrl}/userFolders/` + folder_id;
     return this.http.get(url,{
-      headers:this.headers,
+      headers:this.jsonHeaders,
         withCredentials: true
       })
+      .map((res: Response) => res.json());
+  }
+
+  rename_file(file: MyFile){
+
+    const url = `${this.userUrl}/rename/file`;
+    return this.http.put(url,JSON.stringify(file),{
+      headers:this.jsonHeaders,
+      withCredentials: true
+    })
       .map((res: Response) => res.json());
   }
 

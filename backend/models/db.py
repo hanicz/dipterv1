@@ -69,7 +69,7 @@ class File(Base):
             'id': self.id,
             'fileName': self.file_name,
             'created': self.created,
-            'folder:': self.folder_id,
+            'folder': self.folder_id,
             'content': self.content,
             'deleted': self.delete_date,
             'version': self.version
@@ -103,7 +103,7 @@ class Folder(Base):
         return{
             'id': self.id,
             'created': self.created,
-            'folder:': self.folder_name,
+            'folderName': self.folder_name,
             'parent': self.parent_folder
         }
 

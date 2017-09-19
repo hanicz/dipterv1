@@ -166,8 +166,7 @@ def rename_user_folder():
 def rename_user_file():
     try:
         input_dictionary = request.get_json()
-        validation_dictionary = {'file_id': "^[0-9]*$", 'file_name': None}
-
+        validation_dictionary = {'id': "^[0-9]*$", 'fileName': None}
         if validate(input_dictionary, validation_dictionary):
             data = rename_file(decode_token(request.cookies.get('token')), input_dictionary)
             if data is not None:

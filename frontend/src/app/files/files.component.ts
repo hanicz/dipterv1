@@ -4,7 +4,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FileService} from '../services/file.service';
 import { CustomResponse } from '../utils/customResponse';
-import { File } from '../entities/file';
+import { MyFile } from '../entities/file';
 import { Folder } from '../entities/folder';
 
 
@@ -17,9 +17,9 @@ import { Folder } from '../entities/folder';
 export class FilesComponent {
 
   custResp: CustomResponse;
-  files: File[];
+  files: MyFile[];
   folders: Folder[];
-  selectedFile: File;
+  selectedFile: MyFile;
   selectedFolder: Folder;
 
   constructor(
@@ -27,15 +27,15 @@ export class FilesComponent {
   ){}
 
   ngOnInit(): void {
-      this.get_files(0);
       this.get_folders(0);
+      this.get_files(0);
   }
 
 
   get_files(folder_id: number): void{
     this.fileService.get_files(folder_id).subscribe((json: Object) => {
       console.log(json);
-      this.files = json as File[];
+      this.files = json as MyFile[];
       },
       error => console.error('Error: ' + error)
       );
@@ -43,14 +43,14 @@ export class FilesComponent {
 
   get_folders(folder_id: number): void{
     this.fileService.get_folders(folder_id).subscribe((json: Object) => {
-      console.log(json);
-      this.folders = json as Folder[];
+        console.log(json);
+        this.folders = json as Folder[];
       },
       error => console.error('Error: ' + error)
       );
   }
 
-  onSelectFile(file: File): void{
+  onSelectFile(file: MyFile): void{
     this.selectedFile = file;
   }
 
