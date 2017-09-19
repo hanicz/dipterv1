@@ -5,12 +5,8 @@ import { Component, OnInit } from '@angular/core';
 import { FileService} from '../services/file.service';
 import { CustomResponse } from '../utils/customResponse';
 import { File } from '../entities/file';
+import { Folder } from '../entities/folder';
 
-const FILES: File[] = [
-  { id: 11, name: 'Test1' },
-  { id: 12, name: 'Test2' },
-  { id: 13, name: 'Test3' },
-];
 
 @Component({
   moduleId: module.id,
@@ -21,22 +17,44 @@ const FILES: File[] = [
 export class FilesComponent {
 
   custResp: CustomResponse;
-  file: File[];
-  files = FILES;
+  files: File[];
+  folders: Folder[];
+  selectedFile: File;
+  selectedFolder: Folder;
 
   constructor(
     private fileService: FileService
   ){}
 
   ngOnInit(): void {
-   /*   this.fileService.get_files(0).subscribe((json: Object) => {
-            console.log(json);
-        },
-        error => console.error('Error: ' + error)
-        );*/
+      this.get_files(0);
+      this.get_folders(0);
   }
 
-  onChange(event: any) {
-        this.file = event.srcElement.files;
-    }
+
+  get_files(folder_id: number): void{
+    this.fileService.get_files(folder_id).subscribe((json: Object) => {
+      console.log(json);
+      this.files = json as File[];
+      },
+      error => console.error('Error: ' + error)
+      );
+  }
+
+  get_folders(folder_id: number): void{
+    this.fileService.get_folders(folder_id).subscribe((json: Object) => {
+      console.log(json);
+      this.folders = json as Folder[];
+      },
+      error => console.error('Error: ' + error)
+      );
+  }
+
+  onSelectFile(file: File): void{
+    this.selectedFile = file;
+  }
+
+  onSelectFolder(folder: Folder): void{
+    this.selectedFolder = folder;
+  }
 }

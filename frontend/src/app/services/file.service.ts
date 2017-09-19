@@ -28,16 +28,26 @@ export class FileService {
     // }
 
     const url = `${this.userUrl}/file/1`;
-    return this.http.post(url,formData,{withCredentials: true})
+    return this.http.post(url,formData,{
+        headers:this.headers,
+        withCredentials: true
+      })
       .map((res: Response) => res.json());
   }
 
   get_files(folder_id: number){
-    let headers = new Headers({'Content-Type': 'application/json',
-                                  'Accept': 'application/json'});
-
     const url = `${this.userUrl}/userFiles/` + folder_id;
     return this.http.get(url,{
+        headers:this.headers,
+        withCredentials: true
+      })
+      .map((res: Response) => res.json());
+  }
+
+  get_folders(folder_id: number){
+    const url = `${this.userUrl}/userFolders/` + folder_id;
+    return this.http.get(url,{
+      headers:this.headers,
         withCredentials: true
       })
       .map((res: Response) => res.json());

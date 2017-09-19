@@ -26,7 +26,7 @@ const routes: Routes = [
   { path: 'files', component: FilesComponent },
   { path: 'settings', component: SettingsComponent },
   { path: 'logs', component: LogsComponent },
-  {path: '**', redirectTo: '/not-found'}
+  { path: '**', redirectTo: '/not-found' }
 ];
 
 @NgModule({

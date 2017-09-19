@@ -1,7 +1,11 @@
 <div class="container">
-    <ul class="files">
-        <li *ngFor="let file of files">
-          <span class="badge">{{file.id}}</span> {{file.name}}
-        </li>
-      </ul>
+  <ul class="files">
+    <li *ngFor="let folder of folders" (click)="onSelectFolder(folder)">
+      <span class="badge">{{folder.id}}</span> {{folder.name}}
+    </li>
+    <li *ngFor="let file of files" (click)="onSelectFile(file)">
+      <span class="badge">{{file.id}}</span> {{file.name}}
+    </li>
+  </ul>
 </div>
+<file-detail [file]="selectedFile"></file-detail>

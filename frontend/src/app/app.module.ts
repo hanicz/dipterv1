@@ -17,6 +17,8 @@ import { ResetComponent }  from './reset/reset.component';
 import { FilesComponent } from './files/files.component';
 import { SettingsComponent } from './settings/settings.component';
 import { LogsComponent } from './logs/logs.component';
+import { FileDetailComponent } from './file-detail/file-detail.component';
+import { FolderDetailComponent } from './folder-detail/folder-detail.component';
 
 @NgModule({
   imports:      [ BrowserModule,
@@ -32,7 +34,8 @@ import { LogsComponent } from './logs/logs.component';
                   UploadComponent,
                   FilesComponent,
                   SettingsComponent,
-                  LogsComponent],
+                  LogsComponent,
+                  FileDetailComponent],
   bootstrap:    [ AppComponent ],
   providers: [ UserService,
                 FileService,
