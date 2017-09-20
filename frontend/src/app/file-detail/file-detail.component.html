@@ -4,7 +4,7 @@
         <p><label>Created : </label> {{file.created | date: 'short'}}</p>
         <p><label>Version : </label> {{file.version}}</p>
         <button (click)="rename()">Rename</button>
-        <button>Delete</button>
+        <button (click)="delete()">Delete</button>
         <button>Move</button>
     </div>
 </div>

@@ -1,7 +1,7 @@
 /**
  * Created by Hanicz on 2/19/2017.
  */
-import { Injectable }    from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Headers, Http, URLSearchParams, Response } from '@angular/http';
 import { CustomResponse } from '../utils/customResponse'
 import { MyFile } from '../entities/file';
@@ -13,19 +13,23 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class FileService {
 
-  private formDataHeaders = new Headers({'Content-Type': 'multipart/form-data',
-                                  'Accept': 'application/json'});
+  private formDataHeaders = new Headers({
+    'Content-Type': 'multipart/form-data',
+    'Accept': 'application/json'
+  });
 
-  private jsonHeaders = new Headers({'Content-Type': 'application/json',
-                                  'Accept': 'application/json'});
+  private jsonHeaders = new Headers({
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  });
 
   private userUrl = 'http://localhost:5000/files';
 
   constructor(private http: Http) { }
 
-  upload_file(file : File[]) {
+  upload_file(file: File[]) {
     let headers = new Headers();
-    let formData:FormData = new FormData();
+    let formData: FormData = new FormData();
     formData.append('file', file[0], file[0].name);
     console.log(file[0].name)
     // for (let i = 0; i < files.length; i++) {
@@ -33,38 +37,45 @@ export class FileService {
     // }
 
     const url = `${this.userUrl}/file/1`;
-    return this.http.post(url,formData,{
-        withCredentials: true
-      })
-      .map((res: Response) => res.json());
-  }
-
-  get_files(folder_id: number){
-    const url = `${this.userUrl}/userFiles/` + folder_id;
-    return this.http.get(url,{
-        headers:this.jsonHeaders,
-        withCredentials: true
-      })
-      .map((res: Response) => res.json());
-  }
-
-  get_folders(folder_id: number){
-    const url = `${this.userUrl}/userFolders/` + folder_id;
-    return this.http.get(url,{
-      headers:this.jsonHeaders,
-        withCredentials: true
-      })
-      .map((res: Response) => res.json());
-  }
-
-  rename_file(file: MyFile){
-
-    const url = `${this.userUrl}/rename/file`;
-    return this.http.put(url,JSON.stringify(file),{
-      headers:this.jsonHeaders,
+    return this.http.post(url, formData, {
       withCredentials: true
     })
       .map((res: Response) => res.json());
+  }
+
+  get_files(folder_id: Number) {
+    const url = `${this.userUrl}/userFiles/` + folder_id;
+    return this.http.get(url, {
+      withCredentials: true
+    })
+      .map((res: Response) => res.json());
+  }
+
+  get_folders(folder_id: Number) {
+    const url = `${this.userUrl}/userFolders/` + folder_id;
+    return this.http.get(url, {
+      withCredentials: true
+    })
+      .map((res: Response) => res.json());
+  }
+
+  rename_file(file: MyFile) {
+
+    const url = `${this.userUrl}/rename/file`;
+    return this.http.put(url, JSON.stringify(file), {
+      headers: this.jsonHeaders,
+      withCredentials: true
+    })
+      .map((res: Response) => res.json());
+  }
+
+  remove_file(id: Number) {
+
+    const url = `${this.userUrl}/file/${id}`;
+    return this.http.delete(url,{
+      headers: this.jsonHeaders,
+      withCredentials: true
+    }).map((res: Response) => res.json());
   }
 
 }

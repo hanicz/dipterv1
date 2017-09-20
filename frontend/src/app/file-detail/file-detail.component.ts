@@ -1,7 +1,7 @@
 /**
  * Created by Hanicz on 2/19/2017.
  */
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { MyFile } from '../entities/file';
 import { FileService } from '../services/file.service';
 
@@ -15,6 +15,8 @@ import { FileService } from '../services/file.service';
 export class FileDetailComponent {
   @Input() file: MyFile;
 
+  @Output() deleteEvent = new EventEmitter();
+
   constructor(
     private fileService: FileService
   ) { }
@@ -22,6 +24,16 @@ export class FileDetailComponent {
   rename(): void {
     this.fileService.rename_file(this.file).subscribe((json: Object) => {
       console.log(json);
+    },
+    error => console.error('Error: ' + error)
+    );
+  }
+
+  delete(): void {
+    this.fileService.remove_file(this.file.id).subscribe((json: Object) => {
+      console.log(json);
+      this.file = null;
+      this.deleteEvent.emit();
     },
     error => console.error('Error: ' + error)
     );

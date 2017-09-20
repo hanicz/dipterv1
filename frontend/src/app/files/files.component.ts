@@ -21,6 +21,10 @@ export class FilesComponent {
   folders: Folder[];
   selectedFile: MyFile;
   selectedFolder: Folder;
+  currentFolder: Folder;
+  uploadHidden:boolean = true;
+  prevent:boolean = false;
+  delay:number = 0;
 
   constructor(
     private fileService: FileService
@@ -32,7 +36,7 @@ export class FilesComponent {
   }
 
 
-  get_files(folder_id: number): void{
+  get_files(folder_id: Number): void{
     this.fileService.get_files(folder_id).subscribe((json: Object) => {
       console.log(json);
       this.files = json as MyFile[];
@@ -41,7 +45,7 @@ export class FilesComponent {
       );
   }
 
-  get_folders(folder_id: number): void{
+  get_folders(folder_id: Number): void{
     this.fileService.get_folders(folder_id).subscribe((json: Object) => {
         console.log(json);
         this.folders = json as Folder[];
@@ -56,5 +60,15 @@ export class FilesComponent {
 
   onSelectFolder(folder: Folder): void{
     this.selectedFolder = folder;
+  }
+
+  onDblSelectFolder(folder: Folder): void{
+    this.currentFolder = folder;
+    this.get_files(folder.id);
+    this.get_folders(folder.id);
+  }
+
+  showUpload(): void{
+    this.uploadHidden = false;
   }
 }

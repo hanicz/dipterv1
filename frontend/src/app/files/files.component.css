@@ -1,5 +1,5 @@
 .files {
-  position: relative;
+  position: absolute;
   z-index: 1;
   top: 50px;
   background: #FFFFFF;
@@ -33,4 +33,9 @@
 #image{
   float: left;
   margin-right: 3px;
+}
+
+#upload{
+  float:right;
+  color:#418BFA;
 }
