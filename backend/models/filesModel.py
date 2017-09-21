@@ -83,6 +83,20 @@ def get_all_deleted_files(user_id):
         session.close()
 
 
+def get_all_deleted_folders(user_id):
+    session = DBSession()
+    try:
+        folders = session.query(Folder).filter((Folder.user_id == user_id) & (Folder.delete_date != None))
+        if folders is not None:
+            return [f.serialize() for f in folders]
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return False
+    finally:
+        session.close()
+
+
 def search_user_file(user_id, file_name):
     session = DBSession()
     try:

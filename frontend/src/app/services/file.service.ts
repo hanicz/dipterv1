@@ -51,8 +51,24 @@ export class FileService {
       .map((res: Response) => res.json());
   }
 
+  get_deleted_files() {
+    const url = `${this.userUrl}/userDeletedFiles`;
+    return this.http.get(url, {
+      withCredentials: true
+    })
+      .map((res: Response) => res.json());
+  }
+
   get_folders(folder_id: Number) {
     const url = `${this.userUrl}/userFolders/` + folder_id;
+    return this.http.get(url, {
+      withCredentials: true
+    })
+      .map((res: Response) => res.json());
+  }
+
+  get_deleted_folders() {
+    const url = `${this.userUrl}/userDeletedFolders`;
     return this.http.get(url, {
       withCredentials: true
     })

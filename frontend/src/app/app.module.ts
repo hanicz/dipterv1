@@ -19,6 +19,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { LogsComponent } from './logs/logs.component';
 import { FileDetailComponent } from './file-detail/file-detail.component';
 import { FolderDetailComponent } from './folder-detail/folder-detail.component';
+import { DeletedFilesComponent } from './deleted-files/deleted-files.component';
 
 @NgModule({
   imports:      [ BrowserModule,
@@ -36,7 +37,8 @@ import { FolderDetailComponent } from './folder-detail/folder-detail.component';
                   SettingsComponent,
                   LogsComponent,
                   FileDetailComponent,
-                  FolderDetailComponent],
+                  FolderDetailComponent,
+                  DeletedFilesComponent],
   bootstrap:    [ AppComponent ],
   providers: [ UserService,
                 FileService,

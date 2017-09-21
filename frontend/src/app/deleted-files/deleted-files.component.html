@@ -1,0 +1,18 @@
+<div class="container">
+    <div class="files">
+      <li *ngFor="let folder of folders" (click)="onSelectFolder(folder)">
+        <div id="image">
+          <img class="img-responsive" src="assets/images/folder.png" width="20" height="30">
+        </div>
+        <span> {{folder.folderName}} </span>
+      </li>
+      <li *ngFor="let file of files" (click)="onSelectFile(file)">
+        <div id="image">
+          <img class="img-responsive" src="assets/images/file.png" width="15" height="10">
+        </div>
+        <span> {{file.fileName}}</span>
+      </li>
+    </div>
+    <file-detail [file]="selectedFile"></file-detail>
+  </div>
+  <folder-detail [folder]="selectedFolder"></folder-detail>

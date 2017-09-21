@@ -3,8 +3,10 @@
         <p><label>Name : </label> <input [(ngModel)]="file.fileName"></p>
         <p><label>Created : </label> {{file.created | date: 'short'}}</p>
         <p><label>Version : </label> {{file.version}}</p>
+        <p><label>Deleted : </label> {{file.deleted || "-"}}</p>
         <button (click)="rename()">Rename</button>
         <button (click)="delete()">Delete</button>
         <button>Move</button>
+        <button [disabled]="!isValid()">Restore</button>
     </div>
 </div>

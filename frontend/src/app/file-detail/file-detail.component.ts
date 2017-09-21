@@ -39,4 +39,11 @@ export class FileDetailComponent {
     );
   }
 
+  isValid() {
+    return this.file.deleted != null;
+  }
+
+  restore_file(){
+    
+  }
 }
