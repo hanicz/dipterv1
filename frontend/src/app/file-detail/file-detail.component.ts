@@ -16,6 +16,7 @@ export class FileDetailComponent {
   @Input() file: MyFile;
 
   @Output() deleteEvent = new EventEmitter();
+  @Output() shareEvent = new EventEmitter();
 
   constructor(
     private fileService: FileService
@@ -45,5 +46,9 @@ export class FileDetailComponent {
 
   restore_file(){
     
+  }
+
+  share(){
+    this.shareEvent.emit();
   }
 }

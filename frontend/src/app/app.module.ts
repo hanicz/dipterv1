@@ -9,6 +9,8 @@ import { LoginComponent }  from './login/login.component';
 import { UserService} from './services/user.service';
 import { FileService} from './services/file.service';
 import { LogService} from './services/log.service';
+import { RoleService} from './services/role.service';
+import { ShareService} from './services/share.service';
 import { RegisterComponent }  from './register/register.component';
 import { UploadComponent }  from './upload/upload.component';
 import { ActivateComponent }  from './activate/activate.component';
@@ -20,6 +22,8 @@ import { LogsComponent } from './logs/logs.component';
 import { FileDetailComponent } from './file-detail/file-detail.component';
 import { FolderDetailComponent } from './folder-detail/folder-detail.component';
 import { DeletedFilesComponent } from './deleted-files/deleted-files.component';
+import { ShareComponent } from './share/share.component';
+import { NotesComponent } from './notes/notes.component';
 
 @NgModule({
   imports:      [ BrowserModule,
@@ -38,10 +42,14 @@ import { DeletedFilesComponent } from './deleted-files/deleted-files.component';
                   LogsComponent,
                   FileDetailComponent,
                   FolderDetailComponent,
-                  DeletedFilesComponent],
+                  DeletedFilesComponent,
+                  ShareComponent,
+                  NotesComponent],
   bootstrap:    [ AppComponent ],
   providers: [ UserService,
                 FileService,
-                LogService ],
+                LogService,
+                RoleService,
+                ShareService ],
 })
 export class AppModule { }

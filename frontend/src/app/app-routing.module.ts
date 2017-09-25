@@ -14,6 +14,8 @@ import { FilesComponent }  from './files/files.component';
 import { SettingsComponent }  from './settings/settings.component';
 import { LogsComponent }  from './logs/logs.component';
 import { DeletedFilesComponent }  from './deleted-files/deleted-files.component';
+import { ShareComponent } from './share/share.component';
+import { NotesComponent } from './notes/notes.component';
 
 
 const routes: Routes = [
@@ -27,6 +29,8 @@ const routes: Routes = [
   { path: 'files', component: FilesComponent },
   { path: 'settings', component: SettingsComponent },
   { path: 'logs', component: LogsComponent },
+  { path: 'share', component: ShareComponent },
+  { path: 'notes', component: NotesComponent },
   { path: 'deleted-files', component: DeletedFilesComponent },
   { path: '**', redirectTo: '/not-found' }
 ];

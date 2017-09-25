@@ -1,0 +1,14 @@
+<div class="fileshare" *ngIf="file">
+    <div class="form-group">
+        <span id="close_upload" (click)="close()">X</span>
+    </div>
+    <div>
+        <p><label>Name: </label> {{ file.fileName }}</p>
+        <p><label>Public: </label> {{ file.publicLink || "-"}}</p>
+        <p><label>Role: </label> <select [(ngModel)] = "selectedRole"><option *ngFor="let role of roles" [ngValue]="role">{{ role.name }}</option></select></p>
+        <p><label>To: </label> <input type="text" [(ngModel)]="to_user" placeholder="example@example.com"></p>
+        <button (click)="share()">Share</button>
+        <button [disabled]="isValid()" (click)="makePublic()">Public</button>
+        <button [disabled]="!isValid()" (click)="revokePublic()">Revoke Public</button>
+    </div>
+</div>

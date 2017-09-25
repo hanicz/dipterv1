@@ -23,6 +23,7 @@ export class FilesComponent {
   selectedFolder: Folder;
   currentFolder: Folder;
   uploadHidden:boolean = true;
+  uploadShare:boolean = true;
   prevent:boolean = false;
   delay:number = 0;
 
@@ -70,5 +71,9 @@ export class FilesComponent {
 
   showUpload(): void{
     this.uploadHidden = false;
+  }
+
+  showShare(): void{
+    this.uploadShare = false;
   }
 }

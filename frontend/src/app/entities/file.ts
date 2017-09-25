@@ -8,4 +8,5 @@ export class MyFile{
     public content: String;
     public deleted: Date;
     public version: Number;
+    public publicLink: String;
 }

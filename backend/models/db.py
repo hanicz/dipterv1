@@ -72,7 +72,8 @@ class File(Base):
             'folder': self.folder_id,
             'content': self.content,
             'deleted': self.delete_date,
-            'version': self.version
+            'version': self.version,
+            'publicLink': self.public_link
         }
 
 
