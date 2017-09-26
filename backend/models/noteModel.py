@@ -81,3 +81,18 @@ def get_note(user_id, note_id):
         return None
     finally:
         session.close()
+
+
+def get_all_notes(user_id):
+    session = DBSession()
+    try:
+        files = session.query(File).filter(
+                (File.user_id == user_id) & (File.delete_date == None) & (File.content != None))
+        if files is not None:
+            return [f.serialize() for f in files]
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return False
+    finally:
+        session.close()

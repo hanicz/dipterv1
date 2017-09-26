@@ -32,10 +32,10 @@ def get_all_files(user_id, folder_id):
         if int(folder_id) == 0:
             print('yolo')
             files = session.query(File).join(Folder).filter(
-                (File.user_id == user_id) & (File.delete_date == None) & (File.folder_id == Folder.id) & (Folder.path == UPLOAD_FOLDER + str(user_id) + '/') & (Folder.user_id == user_id))
+                (File.user_id == user_id) & (File.delete_date == None) & (File.content == None) & (File.folder_id == Folder.id) & (Folder.path == UPLOAD_FOLDER + str(user_id) + '/') & (Folder.user_id == user_id))
         else:
             files = session.query(File).filter(
-                (File.user_id == user_id) & (File.delete_date == None) & (File.folder_id == folder_id))
+                (File.user_id == user_id) & (File.delete_date == None) & (File.content == None) & (File.folder_id == folder_id))
 
         if files is not None:
             return [f.serialize() for f in files]

@@ -1,5 +1,16 @@
 <div class="notes">
+    <li *ngFor="let note of notes" (click)="onSelectNote(note)">
+        <div id="image">
+            <img class="img-responsive" src="assets/images/file.png" width="15" height="10">
+        </div>
+        <span> {{note.fileName}} </span>
+    </li>
     <div>
-        <textarea rows="15" cols="50" style="resize: none;"></textarea>
+        <button (click)="share()">New</button>
+        <button (click)="share()">Update</button>
+        <button (click)="share()">Delete</button>
+        <button (click)="share()">Share</button>
+        <p><label>Name : </label> <input [(ngModel)]="selectedNote.fileName"></p>
+        <textarea rows="15" cols="50" style="resize: none;" [(ngModel)]="selectedNote.content"></textarea>
     </div>
 </div>

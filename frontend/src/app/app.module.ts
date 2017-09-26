@@ -10,6 +10,7 @@ import { UserService} from './services/user.service';
 import { FileService} from './services/file.service';
 import { LogService} from './services/log.service';
 import { RoleService} from './services/role.service';
+import { NoteService} from './services/note.service';
 import { ShareService} from './services/share.service';
 import { RegisterComponent }  from './register/register.component';
 import { UploadComponent }  from './upload/upload.component';
@@ -50,6 +51,7 @@ import { NotesComponent } from './notes/notes.component';
                 FileService,
                 LogService,
                 RoleService,
-                ShareService ],
+                ShareService,
+                NoteService ],
 })
 export class AppModule { }

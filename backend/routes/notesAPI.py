@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from utils import limit_content_length, validate, HTTP_OK, HTTP_BAD_REQUEST, HTTP_CREATED, HTTP_NOT_FOUND
-from models import delete_note, create_note, decode_token, update_note, get_note
+from models import delete_note, create_note, decode_token, update_note, get_note, get_all_notes
 from exception import InvalidParametersException
 
 notes_api = Blueprint('notes_api', __name__)
@@ -51,3 +51,9 @@ def delete_notes(note_id):
         return jsonify({'Response': 'Note deleted successfully'}), HTTP_OK
     else:
         return jsonify({'Response': 'Note deletion failed'}), HTTP_BAD_REQUEST
+
+
+@notes_api.route("/userNotes", methods=['GET'])
+def get_user_notes():
+    files = get_all_notes(decode_token(request.cookies.get('token')))
+    return jsonify(files), HTTP_OK
