@@ -6,11 +6,12 @@
         <span> {{note.fileName}} </span>
     </li>
     <div>
-        <button (click)="share()">New</button>
-        <button (click)="share()">Update</button>
-        <button (click)="share()">Delete</button>
-        <button (click)="share()">Share</button>
+        <button (click)="new_note()">New</button>
+        <button (click)="update_note()" [disabled]="!isValid()">Update</button>
+        <button (click)="delete_note()" [disabled]="!isValid()">Delete</button>
+        <button (click)="showShare()" [disabled]="!isValid()">Share</button>
         <p><label>Name : </label> <input [(ngModel)]="selectedNote.fileName"></p>
         <textarea rows="15" cols="50" style="resize: none;" [(ngModel)]="selectedNote.content"></textarea>
     </div>
+    <share [hidden]="notesShare" (closeEvent)="showShare = true;" [file]="selectedNote"></share>
 </div>

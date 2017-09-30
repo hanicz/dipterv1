@@ -18,7 +18,7 @@ def get_notes(note_id):
 @limit_content_length(300)
 def create_notes():
     input_dictionary = request.get_json()
-    validation_dictionary = {'content': None, 'file_name': None}
+    validation_dictionary = {'content': None, 'fileName': None}
     try:
         if validate(input_dictionary, validation_dictionary):
             data = create_note(decode_token(request.cookies.get('token')),input_dictionary)
@@ -32,8 +32,8 @@ def create_notes():
 @notes_api.route("/updateNote", methods=['POST'])
 def update_notes():
     input_dictionary = request.get_json()
-    validation_dictionary = {'content': None, 'file_name': None,
-                             'note_id': "^[0-9]*$"}
+    validation_dictionary = {'content': None, 'fileName': None,
+                             'id': "^[0-9]*$"}
 
     try:
         if validate(input_dictionary, validation_dictionary):

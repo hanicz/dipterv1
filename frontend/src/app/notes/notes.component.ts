@@ -18,6 +18,7 @@ export class NotesComponent {
 
     notes: MyFile[];
     selectedNote: MyFile;
+    notesShare: boolean = true;
 
     constructor(
         private fileService: FileService,
@@ -28,7 +29,7 @@ export class NotesComponent {
     ngOnInit(): void {
         this.selectedNote = new MyFile();
 
-        this.noteService.get_files().subscribe((json: Object) => {
+        this.noteService.get_notes().subscribe((json: Object) => {
             console.log(json);
             this.notes = json as MyFile[];
         },
@@ -36,7 +37,48 @@ export class NotesComponent {
         );
     }
 
-    onSelectNote(note: MyFile): void{
+    onSelectNote(note: MyFile): void {
         this.selectedNote = note;
+    }
+
+    isValid() {
+        return this.selectedNote.created != null;
+    }
+
+    update_note(): void {
+        this.noteService.update_note(this.selectedNote).subscribe((json: Object) => {
+            console.log(json);
+        },
+            error => console.error('Error: ' + error)
+        );
+    }
+
+    delete_note(): void {
+        this.noteService.delete_note(this.selectedNote.id).subscribe((json: Object) => {
+            console.log(json);
+            this.notes.splice(this.notes.indexOf(this.selectedNote), 1);
+            this.selectedNote = new MyFile();
+        },
+            error => console.error('Error: ' + error)
+        );
+    }
+
+    new_note(): void {
+
+        if (this.isValid()) {
+            this.selectedNote = new MyFile();
+        } else {
+
+            this.noteService.new_note(this.selectedNote).subscribe((json: Object) => {
+                console.log(json);
+                this.notes.push(json as MyFile);
+            },
+                error => console.error('Error: ' + error)
+            );
+        }
+    }
+
+    showShare(): void {
+        this.notesShare = false;
     }
 }

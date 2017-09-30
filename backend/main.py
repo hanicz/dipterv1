@@ -48,4 +48,4 @@ if __name__ == '__main__':
     delete_job()
 
     app.secret_key = os.getenv('SECRET_KEY')
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', threaded=True)

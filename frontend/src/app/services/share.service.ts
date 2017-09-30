@@ -3,7 +3,8 @@
  */
 import { Injectable } from '@angular/core';
 import { Headers, Http, URLSearchParams, Response } from '@angular/http';
-import { CustomResponse } from '../utils/customResponse'
+import { CustomResponse } from '../utils/customResponse';
+import { FileShare } from '../entities/fileshare';
 
 import 'rxjs/add/operator/map';
 
@@ -40,8 +41,8 @@ export class ShareService {
             .map((res: Response) => res.json());
     }
 
-    shareFile(file_id: Number, role_id: Number, to: String){
-        
+    shareFile(file_id: Number, role_id: Number, to: String) {
+
         var data = {
             'file_id': file_id,
             'role_id': role_id,
@@ -53,5 +54,21 @@ export class ShareService {
             headers: this.headers,
             withCredentials: true
         }).map((res: Response) => res.json());
+    }
+
+    get_shares(file_id: Number) {
+        const url = `${this.userUrl}/${file_id}`;
+        return this.http.get(url, {
+            withCredentials: true
+        })
+            .map((res: Response) => res.json());
+    }
+
+    revoke_share(share_id: Number) {
+        const url = `${this.userUrl}/revokeShare/${share_id}`;
+        return this.http.delete(url, {
+            withCredentials: true
+        })
+            .map((res: Response) => res.json());
     }
 }

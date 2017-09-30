@@ -4,6 +4,7 @@ import datetime
 
 from .db import DBSession, File, FileShare, Role, User
 from sqlalchemy import exc
+from sqlalchemy.orm import aliased
 from models import delete_shares, create_log_entry
 
 
@@ -70,17 +71,43 @@ def share_file(user_id,input_dictionary):
         session.close()
 
 
-def delete_share(user_id,input_dictionary):
+def delete_share(user_id, share_id):
     session = DBSession()
     try:
-        user = session.query(User).filter(User.email == input_dictionary['to_user']).first()
-        if user is not None:
-            file_share = session.query(FileShare).join(FileShare.file).filter((FileShare.file_id == int(input_dictionary['file_id'])) & (FileShare.user_id == user.id) & (File.user_id == user_id)).first()
-            if file_share is not None:
-                session.delete(file_share)
-                session.commit()
-                create_log_entry(user_id, 'File share revoked from: ' + input_dictionary['to_user'], file_share.file_id, None)
-                return True
+        file_share = session.query(FileShare).join(FileShare.file).filter((FileShare.id == share_id) & (File.user_id == user_id)).first()
+        if file_share is not None:
+            session.delete(file_share)
+            session.commit()
+            create_log_entry(user_id, 'File share revoked from: ' + str(file_share.user_id), file_share.file_id, None)
+            return True
+        return False
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return False
+    finally:
+        session.close()
+
+
+def get_shares(user_id, file_id):
+    session = DBSession()
+    try:
+        useralias = aliased(User)
+
+        q = session.query(User, Role, FileShare).filter((User.id == FileShare.user_id) & (Role.id == FileShare.role_id) & (FileShare.file_id == file_id)).join(FileShare.file).join(useralias, File.user_id == useralias.id).filter(useralias.id == user_id)
+
+        if q is not None:
+            data = []
+            for u, r, s in q:
+                result = {
+                    "id": s.id,
+                    "email": u.email,
+                    "role": r.name,
+                    "created": s.created,
+                    "file_id": s.file_id
+                }
+                data.append(result)
+            return data
         return False
     except exc.SQLAlchemyError as e:
         print(e.__context__)

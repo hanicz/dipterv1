@@ -22,9 +22,35 @@ export class NoteService {
 
   constructor(private http: Http) { }
 
-  get_files() {
+  get_notes() {
     const url = `${this.userUrl}/userNotes`;
     return this.http.get(url, {
+      withCredentials: true
+    })
+      .map((res: Response) => res.json());
+  }
+
+  update_note(note: MyFile){
+    const url = `${this.userUrl}/updateNote`;
+    return this.http.post(url,JSON.stringify(note), {
+      headers: this.headers,
+      withCredentials: true
+    })
+      .map((res: Response) => res.json());
+  }
+
+  delete_note(id: Number){
+    const url = `${this.userUrl}/deleteNote/${id}`;
+    return this.http.delete(url, {
+      withCredentials: true
+    })
+      .map((res: Response) => res.json());
+  }
+
+  new_note(note: MyFile){
+    const url = `${this.userUrl}/note`;
+    return this.http.put(url,JSON.stringify(note), {
+      headers: this.headers,
       withCredentials: true
     })
       .map((res: Response) => res.json());

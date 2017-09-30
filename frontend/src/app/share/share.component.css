@@ -9,6 +9,7 @@
     padding: 45px;
     text-align: center;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 15px 20px 0 rgba(0, 0, 0, 0.6);
+    list-style-type: none;
   }
   
 .fileshare button {
@@ -35,6 +36,11 @@
     color:#418BFA;
   }
 
+  #delete_share{
+    float:right;
+    color:#418BFA;
+  }
+
   .fileshare button:disabled {
     text-transform: uppercase;
     outline: 0;
@@ -48,4 +54,24 @@
     -webkit-transition: all 0.3 ease;
     transition: all 0.3 ease;
     cursor: pointer;
+  }
+
+  .fileshare li {
+    cursor: pointer;
+    position: relative;
+    left: 0;
+    background-color: #EEE;
+    margin: .5em;
+    padding: .3em 0;
+    height: 1.6em;
+    border-radius: 4px;
+  }
+  .fileshare li.selected:hover {
+    background-color: #BBD8DC !important;
+    color: white;
+  }
+  .fileshare li:hover {
+    color: #607D8B;
+    background-color: #DDD;
+    left: .1em;
   }

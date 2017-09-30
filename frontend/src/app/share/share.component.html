@@ -1,6 +1,6 @@
 <div class="fileshare" *ngIf="file">
     <div class="form-group">
-        <span id="close_upload" (click)="close()">X</span>
+        <span id="close_share" (click)="close()">X</span>
     </div>
     <div>
         <p><label>Name: </label> {{ file.fileName }}</p>
@@ -11,4 +11,7 @@
         <button [disabled]="isValid()" (click)="makePublic()">Public</button>
         <button [disabled]="!isValid()" (click)="revokePublic()">Revoke Public</button>
     </div>
+    <li *ngFor="let share of shares" >
+        <span> {{share.email}} </span> has <span> {{share.role}} </span> <span id="delete_share" (click)="delete_share(share)">X</span>
+    </li>
 </div>
