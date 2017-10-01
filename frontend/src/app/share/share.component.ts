@@ -19,6 +19,8 @@ import { ShareService } from '../services/share.service';
 export class ShareComponent {
     @Input() file: MyFile;
 
+    @Output() closeEvent= new EventEmitter();
+
     roles: Role[];
     selectedRole: Role;
     to_user: String;
@@ -90,5 +92,9 @@ export class ShareComponent {
         },
             error => console.error('Error: ' + error)
         );
+    }
+
+    close(): void{
+        this.closeEvent.emit();
     }
 }

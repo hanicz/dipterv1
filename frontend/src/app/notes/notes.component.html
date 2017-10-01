@@ -13,5 +13,5 @@
         <p><label>Name : </label> <input [(ngModel)]="selectedNote.fileName"></p>
         <textarea rows="15" cols="50" style="resize: none;" [(ngModel)]="selectedNote.content"></textarea>
     </div>
-    <share [hidden]="notesShare" (closeEvent)="showShare = true;" [file]="selectedNote"></share>
+    <share [hidden]="notesShare" (closeEvent)="notesShare = true;" [file]="selectedNote"></share>
 </div>

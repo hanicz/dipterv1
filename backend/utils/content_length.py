@@ -29,8 +29,10 @@ def user_file_limit():
                 user_files = session.query(File, Folder).filter((File.user_id == user_id) & (File.folder_id == Folder.id))
 
                 for file, folder in user_files:
-                    count += os.path.getsize(os.path.join(folder.path, file.system_file_name))
-
+                    if file.system_file_name is None:
+                        count += len(file.content.encode('utf-8'))
+                    else:
+                        count += os.path.getsize(os.path.join(folder.path, file.system_file_name))
                 if count > 1073741824:
                     return jsonify({'Response': 'User limit exceeded'}), 400
 

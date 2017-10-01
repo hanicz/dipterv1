@@ -27,7 +27,7 @@ export class FileService {
 
   constructor(private http: Http) { }
 
-  upload_file(file: File[]) {
+  upload_file(file: File[],folder_id: Number) {
     let headers = new Headers();
     let formData: FormData = new FormData();
     formData.append('file', file[0], file[0].name);
@@ -36,7 +36,7 @@ export class FileService {
     //     formData.append(`files[]`, files[i], files[i].name);
     // }
 
-    const url = `${this.userUrl}/file/1`;
+    const url = `${this.userUrl}/file/${folder_id}`;
     return this.http.post(url, formData, {
       withCredentials: true
     })
@@ -44,7 +44,7 @@ export class FileService {
   }
 
   get_files(folder_id: Number) {
-    const url = `${this.userUrl}/userFiles/` + folder_id;
+    const url = `${this.userUrl}/userFiles/${folder_id}`;
     return this.http.get(url, {
       withCredentials: true
     })
@@ -60,7 +60,7 @@ export class FileService {
   }
 
   get_folders(folder_id: Number) {
-    const url = `${this.userUrl}/userFolders/` + folder_id;
+    const url = `${this.userUrl}/userFolders/${folder_id}`;
     return this.http.get(url, {
       withCredentials: true
     })
@@ -86,7 +86,6 @@ export class FileService {
   }
 
   remove_file(id: Number) {
-
     const url = `${this.userUrl}/file/${id}`;
     return this.http.delete(url,{
       headers: this.jsonHeaders,
@@ -94,4 +93,23 @@ export class FileService {
     }).map((res: Response) => res.json());
   }
 
+  get_folder_list(){
+    const url = `${this.userUrl}/folder/list`;
+    return this.http.get(url,{
+      withCredentials: true
+    }).map((res: Response) => res.json());
+  }
+
+  move_file(folder_id: Number,file_id: Number){
+    let data = {
+      'file_id': file_id,
+      'new_folder_id': folder_id
+    }
+
+    const url = `${this.userUrl}/move/file`;
+    return this.http.put(url,JSON.stringify(data),{
+      headers: this.jsonHeaders,
+      withCredentials: true
+    }).map((res: Response) => res.json());
+  }
 }

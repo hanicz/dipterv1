@@ -17,7 +17,7 @@
     </li>
   </div>
   <file-detail (deleteEvent)="get_files(0)" (shareEvent)="showShare()" [file]="selectedFile"></file-detail>
-  <upload [hidden]="uploadHidden" (closeEvent)="uploadHidden = true;"></upload>
+  <upload [hidden]="uploadHidden" (closeEvent)="close_upload()" [folder]="selectedFolder.id"></upload>
   <share [hidden]="uploadShare" (closeEvent)="uploadShare = true;" [file]="selectedFile"></share>
 </div>
 <folder-detail [folder]="selectedFolder"></folder-detail>

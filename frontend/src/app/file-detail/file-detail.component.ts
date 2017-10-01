@@ -1,8 +1,9 @@
 /**
  * Created by Hanicz on 2/19/2017.
  */
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { MyFile } from '../entities/file';
+import { Folder } from '../entities/folder';
 import { FileService } from '../services/file.service';
 
 
@@ -15,12 +16,25 @@ import { FileService } from '../services/file.service';
 export class FileDetailComponent {
   @Input() file: MyFile;
 
+  folders: Folder[]
+  moveFolder: Folder;
+
   @Output() deleteEvent = new EventEmitter();
   @Output() shareEvent = new EventEmitter();
 
   constructor(
     private fileService: FileService
   ) { }
+
+  ngOnInit(): void {
+    this.fileService.get_folder_list().subscribe((json: Object) => {
+      console.log(json);
+      this.folders = json as Folder[];
+    },
+    error => console.error('Error: ' + error)
+    );
+  }
+
 
   rename(): void {
     this.fileService.rename_file(this.file).subscribe((json: Object) => {
@@ -48,7 +62,15 @@ export class FileDetailComponent {
     
   }
 
-  share(){
+  share(): void{
     this.shareEvent.emit();
+  }
+
+  move(): void{
+    this.fileService.move_file(this.moveFolder.id,this.file.id).subscribe((json: Object) => {
+      console.log(json);
+    },
+    error => console.error('Error: ' + error)
+    );
   }
 }

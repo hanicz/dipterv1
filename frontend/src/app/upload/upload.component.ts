@@ -4,6 +4,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FileService} from '../services/file.service';
 import { CustomResponse } from '../utils/customResponse';
+import { Folder } from '../entities/folder'
 
 @Component({
   moduleId: module.id,
@@ -16,6 +17,7 @@ export class UploadComponent {
   custResp: CustomResponse;
   file: File[];
 
+  @Input() folder: Number;
   @Output() closeEvent = new EventEmitter();
 
   constructor(
@@ -23,7 +25,7 @@ export class UploadComponent {
   ){}
 
   upload(): void {
-    this.fileService.upload_file(this.file).subscribe((json: Object) => {
+    this.fileService.upload_file(this.file,this.folder).subscribe((json: Object) => {
             this.custResp = new CustomResponse().fromJSON(json);
             console.log(this.custResp.Response);
             this.closeEvent.emit();

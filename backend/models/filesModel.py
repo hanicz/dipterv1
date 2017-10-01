@@ -30,7 +30,6 @@ def get_all_files(user_id, folder_id):
     print(folder_id)
     try:
         if int(folder_id) == 0:
-            print('yolo')
             files = session.query(File).join(Folder).filter(
                 (File.user_id == user_id) & (File.delete_date == None) & (File.content == None) & (File.folder_id == Folder.id) & (Folder.path == UPLOAD_FOLDER + str(user_id) + '/') & (Folder.user_id == user_id))
         else:
@@ -118,7 +117,12 @@ def upload_file(user, folder_id):
 
     try:
         session = DBSession()
-        folder = session.query(Folder).filter((Folder.user_id == user) & (Folder.id == folder_id)).first()
+
+        if int(folder_id) == 0:
+            folder = session.query(Folder).filter((Folder.path == UPLOAD_FOLDER + str(user) + '/') & (Folder.user_id == user)).first()
+        else:
+            folder = session.query(Folder).filter((Folder.user_id == user) & (Folder.id == folder_id)).first()
+
         if folder is None:
             return False
         path = folder.path
@@ -136,7 +140,7 @@ def upload_file(user, folder_id):
                 random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
             file = open(os.path.join(path, system_file_name), 'wb+')
 
-            create_file(user, filename, system_file_name, folder_id, path)
+            create_file(user, filename, system_file_name, folder.id, path)
 
             return file
         else:
@@ -449,6 +453,44 @@ def get_public_file_data(public_link):
         if file is not None and folder is not None:
             return folder.path, file.system_file_name, file.file_name
         return None
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return None
+    finally:
+        session.close()
+
+
+def get_folder_list(user_id):
+    session = DBSession()
+    try:
+        folders = session.query(Folder).filter((Folder.user_id == user_id) & (Folder.delete_date == None))
+        if folders is not None:
+            data = []
+            for f in folders:
+                result = {
+                    "id": f.id,
+                    "folderName": f.path[:-1].replace(UPLOAD_FOLDER + str(user_id) + '/', '') if f.path != UPLOAD_FOLDER + str(user_id) + '/' else None
+                }
+                data.append(result)
+            return data
+        raise NotFoundException('Folders not found!')
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return None
+    finally:
+        session.close()
+
+
+def restore_file(user_id, file_id):
+    session = DBSession()
+    try:
+        file = session.query(File).filter((File.user_id == user_id) & (File.delete_date != None) & (File.id == file_id))
+        if file is not None:
+            file.delete_date = None
+            session.commit()
+        raise NotFoundException('File not found!')
     except exc.SQLAlchemyError as e:
         print(e.__context__)
         session.rollback()

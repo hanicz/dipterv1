@@ -4,10 +4,11 @@
         <p><label>Created : </label> {{file.created | date: 'short'}}</p>
         <p><label>Version : </label> {{file.version}}</p>
         <p><label>Deleted : </label> {{file.deleted || "-"}}</p>
-        <button (click)="rename()">Rename</button>
-        <button (click)="delete()">Delete</button>
-        <button>Move</button>
-        <button [disabled]="!isValid()">Restore</button>
-        <button (click)="share()">Share</button>
+        <p><button (click)="rename()">Rename</button>
+        <button (click)="delete()">Delete</button></p>
+        <p><button (click)=move()>Move</button>
+        <select [(ngModel)]="moveFolder"><option *ngFor="let folder of folders" [ngValue]="folder">{{ folder.folderName || 'Main' }}</option></select></p>
+        <p><button [disabled]="!isValid()">Restore</button>
+        <button (click)="share()">Share</button></p>
     </div>
 </div>
