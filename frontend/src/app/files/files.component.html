@@ -1,23 +1,25 @@
-<div class="container">
-  <div class="files">
+<div class="row">
+  <div class="col-3">
+    <div class="files">
       <div class="form-group">
-          <img id="upload" class="img-responsive" src="assets/images/plus.png" (click)="showUpload()" width="20" height="30">
+        <p><img id="upload" class="img-responsive" src="assets/images/plus.png" (click)="showUpload()" width="20" height="30"></p>
       </div>
-    <li *ngFor="let folder of folders" (click)="onSelectFolder(folder)" (dblclick)="onDblSelectFolder(folder)">
-      <div id="image">
-        <img class="img-responsive" src="assets/images/folder.png" width="20" height="30">
-      </div>
-      <span> {{folder.folderName}} </span>
-    </li>
-    <li *ngFor="let file of files" (click)="onSelectFile(file)">
-      <div id="image">
-        <img class="img-responsive" src="assets/images/file.png" width="15" height="10">
-      </div>
-      <span> {{file.fileName}}</span>
-    </li>
+      <li *ngFor="let folder of folders" (click)="onSelectFolder(folder)" (dblclick)="onDblSelectFolder(folder)">
+        <div id="image">
+          <img class="img-responsive" src="assets/images/folder.png" width="20" height="30">
+        </div>
+        <span> {{folder.folderName}} </span>
+      </li>
+      <li *ngFor="let file of files" (click)="onSelectFile(file)">
+        <div id="image">
+          <img class="img-responsive" src="assets/images/file.png" width="15" height="10">
+        </div>
+        <span> {{file.fileName}}</span>
+      </li>
+    </div>
   </div>
-  <file-detail (deleteEvent)="get_files(0)" (shareEvent)="showShare()" [file]="selectedFile"></file-detail>
-  <upload [hidden]="uploadHidden" (closeEvent)="close_upload()" [folder]="selectedFolder.id"></upload>
-  <share [hidden]="uploadShare" (closeEvent)="uploadShare = true;" [file]="selectedFile"></share>
+  <file-detail (deleteEvent)="get_files(0)" (shareEvent)="showShare()" [file]="selectedFile" class="col"></file-detail>
+  <upload [hidden]="uploadHidden" (closeEvent)="close_upload()" [folder]="selectedFolder.id" class="col"></upload>
+  <share [hidden]="uploadShare" (closeEvent)="uploadShare = true;" [file]="selectedFile" class="col"></share>
 </div>
 <folder-detail [folder]="selectedFolder"></folder-detail>

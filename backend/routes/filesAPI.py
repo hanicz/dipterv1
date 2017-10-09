@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, send_from_directory
 from utils import HTTP_OK, HTTP_BAD_REQUEST, validate, HTTP_NOT_FOUND, limit_content_length, user_file_limit, HTTP_UNAUTHORIZED
-from models import decode_token, get_all_files, upload_file, remove_file, remove_folder, crt_folder, get_all_deleted_files, search_user_file, move_file, move_folder, rename_folder, rename_file, get_file_data, get_public_file_data, get_all_folders, get_all_deleted_folders, get_folder_list
+from models import decode_token, get_all_files, upload_file, remove_file, remove_folder, crt_folder, get_all_deleted_files, search_user_file, move_file, move_folder, rename_folder, rename_file, get_file_data, get_public_file_data, get_all_folders, get_all_deleted_folders, get_folder_list, restore_file
 from exception import InvalidFileException, NotFoundException, UnexpectedException, InvalidParametersException
 
 
@@ -201,13 +201,12 @@ def folder_list():
         return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
 
 
-@files_api.route("/file/restore/<file_id>", methods=['GET'])
-def restore_file(file_id):
+@files_api.route("/file/restore/<file_id>", methods=['PUT'])
+def restore_user_file(file_id):
     try:
-        data = get_folder_list(decode_token(request.cookies.get('token')))
+        data = restore_file(decode_token(request.cookies.get('token')), file_id)
         if data is not None:
             return jsonify(data), HTTP_OK
-
         return jsonify({'Response': 'Something went wrong!'}), HTTP_BAD_REQUEST
     except NotFoundException as e:
         return jsonify({'Response': str(e)}), HTTP_NOT_FOUND

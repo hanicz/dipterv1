@@ -57,4 +57,10 @@ export class DeletedFilesComponent {
   onSelectFolder(folder: Folder): void{
     this.selectedFolder = folder;
   }
+
+  file_restored(): void{
+    this.selectedFile = null;
+    this.get_deleted_folders();
+    this.get_deleted_files();
+  }
 }

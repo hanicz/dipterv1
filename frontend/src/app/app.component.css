@@ -30,3 +30,7 @@
     background-color: #DDD;
     left: .1em;
 }
+
+#menuBar {
+	border-bottom:1px solid white;
+}

@@ -73,4 +73,13 @@ export class FileDetailComponent {
     error => console.error('Error: ' + error)
     );
   }
+
+  restore(): void{
+    this.fileService.restore_file(this.file.id).subscribe((json:Object) => {
+      console.log(json);
+      this.deleteEvent.emit();
+    },
+    error => console.error('Error: ' + error)
+    );
+  }
 }

@@ -486,10 +486,12 @@ def get_folder_list(user_id):
 def restore_file(user_id, file_id):
     session = DBSession()
     try:
-        file = session.query(File).join(Folder).filter((File.user_id == user_id) & (File.delete_date != None) & (File.id == file_id) & (File.folder_id == Folder.id) & (Folder.delete_date == None))
+        file = session.query(File).join(Folder).filter((File.user_id == user_id) & (File.delete_date != None) & (File.id == file_id) & (File.folder_id == Folder.id) & (Folder.delete_date == None)).first()
         if file is not None:
             file.delete_date = None
             session.commit()
+            create_log_entry(user_id, 'File restored', file.id, None)
+            return file.serialize()
         raise NotFoundException('File not found!')
     except exc.SQLAlchemyError as e:
         print(e.__context__)

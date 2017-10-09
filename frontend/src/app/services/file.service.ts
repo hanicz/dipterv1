@@ -112,4 +112,11 @@ export class FileService {
       withCredentials: true
     }).map((res: Response) => res.json());
   }
+
+  restore_file(file_id: Number){
+    const url = `${this.userUrl}/file/restore/${file_id}`;
+    return this.http.put(url,null,{
+      withCredentials: true
+    }).map((res: Response) => res.json());
+  }
 }

@@ -13,6 +13,6 @@
         <span> {{file.fileName}}</span>
       </li>
     </div>
-    <file-detail [file]="selectedFile"></file-detail>
+    <file-detail (deleteEvent)="file_restored()" [file]="selectedFile"></file-detail>
   </div>
   <folder-detail [folder]="selectedFolder"></folder-detail>
