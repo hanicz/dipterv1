@@ -486,7 +486,7 @@ def get_folder_list(user_id):
 def restore_file(user_id, file_id):
     session = DBSession()
     try:
-        file = session.query(File).filter((File.user_id == user_id) & (File.delete_date != None) & (File.id == file_id))
+        file = session.query(File).join(Folder).filter((File.user_id == user_id) & (File.delete_date != None) & (File.id == file_id) & (File.folder_id == Folder.id) & (Folder.delete_date == None))
         if file is not None:
             file.delete_date = None
             session.commit()
@@ -497,3 +497,4 @@ def restore_file(user_id, file_id):
         return None
     finally:
         session.close()
+

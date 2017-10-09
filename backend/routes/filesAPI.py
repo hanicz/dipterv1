@@ -202,7 +202,7 @@ def folder_list():
 
 
 @files_api.route("/file/restore/<file_id>", methods=['GET'])
-def folder_list(file_id):
+def restore_file(file_id):
     try:
         data = get_folder_list(decode_token(request.cookies.get('token')))
         if data is not None:

@@ -2,6 +2,7 @@
  * Created by Hanicz on 2/19/2017.
  */
 import { Component } from '@angular/core';
+import {Router} from '@angular/router'
 import { UserService } from '../services/user.service'
 import { CustomResponse } from '../utils/customResponse'
 import { User } from '../utils/user'
@@ -18,7 +19,8 @@ export class LoginComponent {
   custResp: CustomResponse;
 
   constructor(
-    private userService: UserService
+    private userService: UserService,
+    private router: Router
   ){}
 
   login(): void {
@@ -28,8 +30,12 @@ export class LoginComponent {
         (json: Object) => {
             this.custResp = new CustomResponse().fromJSON(json);
             console.log(this.custResp.Response);
+            this.router.navigate(['./files']);
         },
-        error => console.error('Error: ' + error)
+        error => {
+          console.error('Error: ' + error);
+          console.log(this.router.url);
+        }
         );
   }
 }
