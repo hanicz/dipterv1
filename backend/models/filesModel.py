@@ -255,17 +255,21 @@ def crt_folder(user_id, input_dictionary):
     session = DBSession()
     try:
 
-        folder = session.query(Folder).filter(
-            (Folder.user_id == user_id) & (Folder.id == input_dictionary['parent_id'])).first()
+        if int(input_dictionary['parent']) == 0:
+            folder = session.query(Folder).filter(
+                (Folder.path == UPLOAD_FOLDER + str(user_id) + '/') & (Folder.user_id == user_id)).first()
+        else:
+            folder = session.query(Folder).filter(
+                (Folder.user_id == user_id) & (Folder.id == input_dictionary['parent'])).first()
 
-        if folder is not None and secure_filename(input_dictionary['folder_name']) != "":
+        if folder is not None and secure_filename(input_dictionary['folderName']) != "":
 
             existing_folder = session.query(Folder).filter(
-            (Folder.user_id == user_id) & (Folder.parent_folder == input_dictionary['parent_id']) & (Folder.folder_name == input_dictionary['folder_name'])).first()
+            (Folder.user_id == user_id) & (Folder.parent_folder == folder.id) & (Folder.folder_name == input_dictionary['folderName'])).first()
 
             if existing_folder is None:
-                new_folder_path = folder.path + input_dictionary['folder_name'] + '/'
-                new_folder = Folder(user_id=user_id, folder_name=secure_filename(input_dictionary['folder_name']),
+                new_folder_path = folder.path + input_dictionary['folderName'] + '/'
+                new_folder = Folder(user_id=user_id, folder_name=secure_filename(input_dictionary['folderName']),
                                     created=datetime.datetime.now(), path=new_folder_path, parent_folder=folder.id)
 
                 session.add(new_folder)

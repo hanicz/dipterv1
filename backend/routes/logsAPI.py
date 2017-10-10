@@ -13,7 +13,7 @@ def get_user_logs():
     return jsonify(entries), HTTP_OK
 
 
-@logs_api.route("/log/<file_id>", methods=['GET'])
+@logs_api.route("/log/file/<file_id>", methods=['GET'])
 def get_file_logs(file_id):
     entries = get_file_entries(decode_token(request.cookies.get('token')), file_id)
     return jsonify(entries), HTTP_OK

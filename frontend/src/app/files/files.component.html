@@ -2,7 +2,10 @@
   <div class="col-3">
     <div class="files">
       <div class="form-group">
-        <p><img id="upload" class="img-responsive" src="assets/images/plus.png" (click)="showUpload()" width="20" height="30"></p>
+        <p>
+          <img id="upload" class="img-responsive" src="assets/images/file.png" (click)="showUpload()" width="15" height="20">
+          <img id="newFolder" class="img-responsive" src="assets/images/folder.png" (click)="showFolder()" width="25" height="40">
+        </p>
       </div>
       <li *ngFor="let folder of folders" (click)="onSelectFolder(folder)" (dblclick)="onDblSelectFolder(folder)">
         <div id="image">
@@ -20,6 +23,7 @@
   </div>
   <file-detail (deleteEvent)="get_files(0)" (shareEvent)="showShare()" [file]="selectedFile" class="col"></file-detail>
   <upload [hidden]="uploadHidden" (closeEvent)="close_upload()" [folder]="selectedFolder.id" class="col"></upload>
+  <create-folder [hidden]="createFolderHidden" (closeEvent)="close_upload()" [folder]="selectedFolder.id" class="col"></create-folder>
   <share [hidden]="uploadShare" (closeEvent)="uploadShare = true;" [file]="selectedFile" class="col"></share>
 </div>
 <folder-detail [folder]="selectedFolder"></folder-detail>

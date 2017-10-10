@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 import { Headers, Http, URLSearchParams, Response } from '@angular/http';
 import { CustomResponse } from '../utils/customResponse'
 import { MyFile } from '../entities/file';
+import { Folder } from '../entities/Folder'
 
 import 'rxjs/add/operator/map';
 
@@ -116,6 +117,20 @@ export class FileService {
   restore_file(file_id: Number){
     const url = `${this.userUrl}/file/restore/${file_id}`;
     return this.http.put(url,null,{
+      withCredentials: true
+    }).map((res: Response) => res.json());
+  }
+
+  create_folder(folder: Folder){
+
+    let data = {
+      'folderName': folder.folderName,
+      'parent': String(folder.parent)
+    }
+
+    const url = `${this.userUrl}/createFolder`;
+    return this.http.post(url,JSON.stringify(data),{
+      headers: this.jsonHeaders,
       withCredentials: true
     }).map((res: Response) => res.json());
   }

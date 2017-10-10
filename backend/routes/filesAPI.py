@@ -83,7 +83,7 @@ def create_file(folder_id):
 @files_api.route("/createFolder", methods=['POST'])
 def create_folder():
     input_dictionary = request.get_json()
-    validation_dictionary = {'folder_name': None, 'parent_id': "^[0-9]*$"}
+    validation_dictionary = {'folderName': None, 'parent': "^[0-9]*$"}
 
     try:
         if validate(input_dictionary, validation_dictionary):

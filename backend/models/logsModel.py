@@ -22,9 +22,19 @@ def create_log_entry(user_id, message, file_id, folder_id):
 def get_user_entries(user_id):
     session = DBSession()
     try:
-        user_entries = session.query(Log).filter((Log.user_id == user_id)).order_by(Log.created)
+        user_entries = session.query(Log).outerjoin(File, File.id == Log.file_id).outerjoin(Folder, Folder.id == Log.folder_id).filter((Log.user_id == user_id)).order_by(Log.created.desc()).add_entity(File).add_entity(Folder)
         if user_entries is not None:
-            return [l.serialize() for l in user_entries]
+            data = []
+            for log, file, folder in user_entries:
+                result = {
+                    'message': log.message,
+                    'created': log.created,
+                    'file': file.file_name if file is not None else None,
+                    'folder': folder.folder_name if folder is not None else None
+                }
+                data.append(result)
+            return data
+        return None
     except exc.SQLAlchemyError as e:
         print(e.__context__)
         session.rollback()

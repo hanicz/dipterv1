@@ -58,11 +58,11 @@ class File(Base):
     fileShares = relationship("FileShare", cascade="all, delete-orphan")
     logs = relationship("Log", cascade="all, delete-orphan")
 
-    '''def __repr__(self):
+    def __repr__(self):
         return "File: (id='%i', user_id='%i', file_name='%s', created='%s', public_link='%s', " \
                "content='%s', folder='%i', delete_date='%s', system_file_name='%s')" \
                % (int(self.id), int(self.user_id), self.file_name, str(self.created), self.public_link, self.content,
-                  self.folder, str(self.delete_date), self.system_file_name)'''
+                  self.folder_id, str(self.delete_date), self.system_file_name)
 
     def serialize(self):
         return{
@@ -143,8 +143,8 @@ class Log(Base):
     created = Column(DateTime, nullable=False)
 
     def __repr__(self):
-        return "Log: (id='%i', user_id='%i', text='%s', created='%s')" \
-               % (self.id, self.user_id, self.text,  str(self.created))
+        return "Log: (id='%i', user_id='%i', message='%s', created='%s')" \
+               % (self.id, self.user_id, self.message,  str(self.created))
 
     def serialize(self):
         return{

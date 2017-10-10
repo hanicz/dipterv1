@@ -24,6 +24,7 @@ export class FilesComponent {
   currentFolder: Folder;
   uploadHidden: boolean = true;
   uploadShare: boolean = true;
+  createFolderHidden: boolean = true;
   prevent: boolean = false;
   delay: number = 0;
 
@@ -54,6 +55,14 @@ export class FilesComponent {
     this.fileService.get_folders(folder_id).subscribe((json: Object) => {
       console.log(json);
       this.folders = json as Folder[];
+
+      if(folder_id != 0){
+        var backFolder = new Folder();
+        backFolder.folderName = '...';
+        backFolder.id = folder_id;
+        this.folders.unshift(backFolder);
+      }
+
     },
       error => console.error('Error: ' + error)
     );
@@ -81,8 +90,13 @@ export class FilesComponent {
     this.uploadShare = false;
   }
 
-  close_upload(): void{
+  showFolder(): void {
+    this.createFolderHidden = false;
+  }
+
+  close_upload(): void {
     this.uploadHidden = true;
+    this.createFolderHidden = true;
     this.get_files(this.currentFolder.id);
     this.get_folders(this.currentFolder.id);
   }

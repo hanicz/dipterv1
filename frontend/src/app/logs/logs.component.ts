@@ -5,14 +5,14 @@ import { Component, OnInit } from '@angular/core';
 import { CustomResponse } from '../utils/customResponse';
 import { Log } from '../entities/log';
 import { NgIf } from '@angular/common';
-import { LogService} from '../services/log.service';
+import { LogService } from '../services/log.service';
 
 
 @Component({
   moduleId: module.id,
   selector: 'logs',
   templateUrl: './logs.component.html',
-  styleUrls: [ './logs.component.css' ]
+  styleUrls: ['./logs.component.css']
 })
 export class LogsComponent {
 
@@ -21,15 +21,15 @@ export class LogsComponent {
 
   constructor(
     private logService: LogService
-  ){
+  ) {
   }
 
   ngOnInit(): void {
-      this.logService.get_logs().subscribe((json: Object[]) => {
-            console.log(json);
-            this.logs = json as Log[];
-        },
-        error => console.error('Error: ' + error)
-        );
+    this.logService.get_logs().subscribe((json: Object[]) => {
+      console.log(json);
+      this.logs = json as Log[];
+    },
+      error => console.error('Error: ' + error)
+    );
   }
 }

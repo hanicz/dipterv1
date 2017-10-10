@@ -1,0 +1,12 @@
+<div class="container">
+    <form class="form" (ngSubmit)="create()" #createForm="ngForm">
+        <div class="form-group">
+            <span id="close_createFolder" (click)="close()">X</span>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" id="folder_name" placeholder="foldername" required [(ngModel)]="newFolder.folderName" name="foldername"
+                #username="ngModel">
+        </div>
+        <button type="submit">Create</button>
+    </form>
+</div>

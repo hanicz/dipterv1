@@ -25,6 +25,7 @@ import { FolderDetailComponent } from './folder-detail/folder-detail.component';
 import { DeletedFilesComponent } from './deleted-files/deleted-files.component';
 import { ShareComponent } from './share/share.component';
 import { NotesComponent } from './notes/notes.component';
+import { CreateFolderComponent } from './create-folder/create-folder.component';
 
 @NgModule({
   imports:      [ BrowserModule,
@@ -45,7 +46,8 @@ import { NotesComponent } from './notes/notes.component';
                   FolderDetailComponent,
                   DeletedFilesComponent,
                   ShareComponent,
-                  NotesComponent],
+                  NotesComponent,
+                  CreateFolderComponent],
   bootstrap:    [ AppComponent ],
   providers: [ UserService,
                 FileService,
