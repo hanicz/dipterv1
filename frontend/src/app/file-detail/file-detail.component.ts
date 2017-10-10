@@ -58,10 +58,6 @@ export class FileDetailComponent {
     return this.file.deleted != null;
   }
 
-  restore_file(){
-    
-  }
-
   share(): void{
     this.shareEvent.emit();
   }

@@ -152,7 +152,7 @@ def move_user_folder():
 def rename_user_folder():
     try:
         input_dictionary = request.get_json()
-        validation_dictionary = {'folder_id': "^[0-9]*$", 'folder_name': None}
+        validation_dictionary = {'id': "^[0-9]*$", 'folderName': None}
 
         if validate(input_dictionary, validation_dictionary):
             data = rename_folder(decode_token(request.cookies.get('token')), input_dictionary)

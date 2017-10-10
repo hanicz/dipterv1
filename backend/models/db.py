@@ -105,7 +105,8 @@ class Folder(Base):
             'id': self.id,
             'created': self.created,
             'folderName': self.folder_name,
-            'parent': self.parent_folder
+            'parent': self.parent_folder,
+            'deleted': self.delete_date
         }
 
 

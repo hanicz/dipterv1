@@ -37,7 +37,7 @@ export class FilesComponent {
     this.selectedFolder.id = 0;
     this.currentFolder = new Folder();
     this.currentFolder.id = 0;
-    this.get_folders(0);
+    this.get_folders(this.currentFolder);
     this.get_files(0);
   }
 
@@ -51,15 +51,15 @@ export class FilesComponent {
     );
   }
 
-  get_folders(folder_id: Number): void {
-    this.fileService.get_folders(folder_id).subscribe((json: Object) => {
+  get_folders(folder: Folder): void {
+    this.fileService.get_folders(folder.id).subscribe((json: Object) => {
       console.log(json);
       this.folders = json as Folder[];
 
-      if(folder_id != 0){
+      if(folder.id != 0){
         var backFolder = new Folder();
         backFolder.folderName = '...';
-        backFolder.id = folder_id;
+        backFolder.id = folder.parent;
         this.folders.unshift(backFolder);
       }
 
@@ -79,7 +79,7 @@ export class FilesComponent {
   onDblSelectFolder(folder: Folder): void {
     this.currentFolder = folder;
     this.get_files(folder.id);
-    this.get_folders(folder.id);
+    this.get_folders(folder);
   }
 
   showUpload(): void {
@@ -98,6 +98,6 @@ export class FilesComponent {
     this.uploadHidden = true;
     this.createFolderHidden = true;
     this.get_files(this.currentFolder.id);
-    this.get_folders(this.currentFolder.id);
+    this.get_folders(this.currentFolder);
   }
 }

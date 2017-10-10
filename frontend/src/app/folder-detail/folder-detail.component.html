@@ -1,4 +1,18 @@
-<div *ngIf="folder">
-        <h2>{{folder.folderName}} details!</h2>
-        <div><label>id: </label>{{folder.id}}</div>
+<div class="folderdetail" *ngIf="folder">
+    <div>
+        <p><label>Name : </label> <input [(ngModel)]="folder.folderName"></p>
+        <p><label>Created : </label> {{folder.created | date: 'short'}}</p>
+        <p><label>Deleted : </label> {{folder.deleted || "-"}}</p>
+        <p>
+            <button (click)="rename()" [disabled]="isValid()">Rename</button>
+            <button (click)="delete()" [disabled]="isValid()">Delete</button>
+        </p>
+        <p>
+            <button (click)=move() [disabled]="isValid()">Move</button>
+            <select [(ngModel)]="moveFolder"><option *ngFor="let folder of folders" [ngValue]="folder">{{ folder.folderName || 'Main' }}</option></select>
+        </p>
+        <p>
+            <button [disabled]="!isValid()" (click)="restore()">Restore</button>
+        </p>
     </div>
+</div>

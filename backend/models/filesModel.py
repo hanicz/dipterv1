@@ -262,7 +262,7 @@ def crt_folder(user_id, input_dictionary):
             folder = session.query(Folder).filter(
                 (Folder.user_id == user_id) & (Folder.id == input_dictionary['parent'])).first()
 
-        if folder is not None and secure_filename(input_dictionary['folderName']) != "":
+        if folder is not None and secure_filename(input_dictionary['folderName']) != "" and secure_filename(input_dictionary['folderName']) != '...':
 
             existing_folder = session.query(Folder).filter(
             (Folder.user_id == user_id) & (Folder.parent_folder == folder.id) & (Folder.folder_name == input_dictionary['folderName'])).first()
@@ -310,14 +310,14 @@ def rename_folder(user_id, input_dictionary):
     session = DBSession()
     try:
         folder = session.query(Folder).filter(
-            (Folder.user_id == user_id) & (Folder.id == input_dictionary['folder_id'])).first()
+            (Folder.user_id == user_id) & (Folder.id == input_dictionary['id'])).first()
 
-        if folder is not None:
+        if folder is not None and secure_filename(input_dictionary['folderName']) != "" and secure_filename(input_dictionary['folderName']) != '...':
 
             if folder.parent_folder is None:
                 raise UnexpectedException('Unable to rename folder!')
 
-            folder.folder_name = input_dictionary['folder_name']
+            folder.folder_name = input_dictionary['folderName']
             session.commit()
             create_log_entry(user_id, 'Folder renamed', None, folder.id)
             return folder.serialize()

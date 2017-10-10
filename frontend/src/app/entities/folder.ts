@@ -5,4 +5,5 @@ export class Folder{
     public created: Date;
     public folderName: String;
     public parent: Number;
+    public deleted: Date;
 }

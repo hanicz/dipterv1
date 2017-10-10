@@ -25,5 +25,5 @@
   <upload [hidden]="uploadHidden" (closeEvent)="close_upload()" [folder]="selectedFolder.id" class="col"></upload>
   <create-folder [hidden]="createFolderHidden" (closeEvent)="close_upload()" [folder]="selectedFolder.id" class="col"></create-folder>
   <share [hidden]="uploadShare" (closeEvent)="uploadShare = true;" [file]="selectedFile" class="col"></share>
+  <folder-detail [folder]="selectedFolder"></folder-detail>
 </div>
-<folder-detail [folder]="selectedFolder"></folder-detail>
