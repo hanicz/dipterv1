@@ -7,7 +7,7 @@ from flask import Blueprint, jsonify
 roles_api = Blueprint('roles_api', __name__)
 
 
-@roles_api.route("/getAllRoles", methods=['GET'])
+@roles_api.route("", methods=['GET'])
 def get_roles():
     files = get_all_roles()
     return jsonify(files), HTTP_OK

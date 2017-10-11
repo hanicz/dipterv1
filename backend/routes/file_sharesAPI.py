@@ -7,7 +7,7 @@ from exception import InvalidFileException, InvalidParametersException
 file_shares_api = Blueprint('file_shares_api', __name__)
 
 
-@file_shares_api.route("/shareFile", methods=['POST'])
+@file_shares_api.route("/share", methods=['POST'])
 def share():
     try:
         input_dictionary = request.get_json()
@@ -23,7 +23,7 @@ def share():
         return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
 
 
-@file_shares_api.route("/makePublic/<file_id>", methods=['PUT'])
+@file_shares_api.route("/public/<file_id>", methods=['PUT'])
 def make_public(file_id):
 
     try:
@@ -36,7 +36,7 @@ def make_public(file_id):
         return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
 
 
-@file_shares_api.route("/revokePublic/<file_id>", methods=['PUT'])
+@file_shares_api.route("/private/<file_id>", methods=['PUT'])
 def un_public(file_id):
     try:
         if revoke_public(decode_token(request.cookies.get('token')), file_id):
@@ -47,7 +47,7 @@ def un_public(file_id):
         return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
 
 
-@file_shares_api.route("/revokeShare/<id>", methods=['DELETE'])
+@file_shares_api.route("/revoke/<id>", methods=['DELETE'])
 def delete(id):
     try:
         if delete_share(decode_token(request.cookies.get('token')), id):

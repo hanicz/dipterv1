@@ -6,7 +6,7 @@ from exception import InvalidParametersException
 notes_api = Blueprint('notes_api', __name__)
 
 
-@notes_api.route("/note/<note_id>", methods=['GET'])
+@notes_api.route("/<note_id>", methods=['GET'])
 def get_notes(note_id):
     data = get_note(decode_token(request.cookies.get('token')), note_id)
     if data is not None:
@@ -29,7 +29,7 @@ def create_notes():
         return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
 
 
-@notes_api.route("/updateNote", methods=['POST'])
+@notes_api.route("/update", methods=['POST'])
 def update_notes():
     input_dictionary = request.get_json()
     validation_dictionary = {'content': None, 'fileName': None,
@@ -45,7 +45,7 @@ def update_notes():
         return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
 
 
-@notes_api.route("/deleteNote/<note_id>", methods=['DELETE'])
+@notes_api.route("/<note_id>", methods=['DELETE'])
 def delete_notes(note_id):
     if delete_note(decode_token(request.cookies.get('token')), note_id):
         return jsonify({'Response': 'Note deleted successfully'}), HTTP_OK
@@ -53,7 +53,8 @@ def delete_notes(note_id):
         return jsonify({'Response': 'Note deletion failed'}), HTTP_BAD_REQUEST
 
 
-@notes_api.route("/userNotes", methods=['GET'])
+@notes_api.route("", methods=['GET'])
 def get_user_notes():
     files = get_all_notes(decode_token(request.cookies.get('token')))
     return jsonify(files), HTTP_OK
+

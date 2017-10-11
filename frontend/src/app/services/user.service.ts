@@ -54,15 +54,21 @@ export class UserService {
       .map((res: Response) => res.json());
   }
 
-  logout_user(){
-    const url = `${this.userUrl}/logout`;
-    return this.http.post(url,'',{headers:this.headers, withCredentials: true})
+  changedata(user: ChangeUser){
+    const url = `${this.userUrl}/change`;
+    return this.http.put(url,JSON.stringify(user),{headers:this.headers})
       .map((res: Response) => res.json());
   }
 
-  changedata(user: ChangeUser){
-    const url = `${this.userUrl}/changeData`;
-    return this.http.put(url,JSON.stringify(user),{headers:this.headers})
+  logout(){
+    const url = `${this.userUrl}/logout`;
+    return this.http.put(url,null,{headers:this.headers})
+      .map((res: Response) => res.json());
+  }
+
+  delete(){
+    const url = `${this.userUrl}/delete`;
+    return this.http.delete(url,{headers:this.headers})
       .map((res: Response) => res.json());
   }
 }

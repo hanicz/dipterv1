@@ -19,7 +19,23 @@ export class LogService {
   constructor(private http: Http) { }
 
   get_logs(){
-    const url = `${this.userUrl}/log`;
+    const url = `${this.userUrl}`;
+    return this.http.get(url,{
+        withCredentials: true
+      })
+      .map((res: Response) => res.json());
+  }
+
+  get_file_logs(file_id: Number){
+    const url = `${this.userUrl}/file/${file_id}`;
+    return this.http.get(url,{
+        withCredentials: true
+      })
+      .map((res: Response) => res.json());
+  }
+
+  get_folder_logs(folder_id: Number){
+    const url = `${this.userUrl}/folder/${folder_id}`;
     return this.http.get(url,{
         withCredentials: true
       })

@@ -16,25 +16,25 @@ def get_file(file_id):
         return jsonify({'Response': 'Error downloading file'}), HTTP_UNAUTHORIZED
 
 
-@files_api.route("/userFiles/<folder_id>", methods=['GET'])
+@files_api.route("/file/<folder_id>", methods=['GET'])
 def get_user_files(folder_id):
     files = get_all_files(decode_token(request.cookies.get('token')), folder_id)
     return jsonify(files), HTTP_OK
 
 
-@files_api.route("/userFolders/<folder_id>", methods=['GET'])
+@files_api.route("/folder/<folder_id>", methods=['GET'])
 def get_user_folders(folder_id):
     folders = get_all_folders(decode_token(request.cookies.get('token')), folder_id)
     return jsonify(folders), HTTP_OK
 
 
-@files_api.route("/userDeletedFiles", methods=['GET'])
+@files_api.route("/file/deleted", methods=['GET'])
 def get_deleted_files():
     files = get_all_deleted_files(decode_token(request.cookies.get('token')))
     return jsonify(files), HTTP_OK
 
 
-@files_api.route("/userDeletedFolders", methods=['GET'])
+@files_api.route("/folder/deleted", methods=['GET'])
 def get_deleted_folders():
     folders = get_all_deleted_folders(decode_token(request.cookies.get('token')))
     return jsonify(folders), HTTP_OK
@@ -51,7 +51,7 @@ def delete_file(id):
         return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
 
 
-@files_api.route("/removeFolder/<folder_id>", methods=['DELETE'])
+@files_api.route("/folder/<folder_id>", methods=['DELETE'])
 def delete_folder(folder_id):
     try:
         if remove_folder(decode_token(request.cookies.get('token')), folder_id):
@@ -117,7 +117,7 @@ def search_file(file_name):
         return jsonify({'Response': 'File not found.'}), HTTP_NOT_FOUND
 
 
-@files_api.route("/move/file", methods=['PUT'])
+@files_api.route("/file/move", methods=['PUT'])
 def move_user_file():
     input_dictionary = request.get_json()
     validation_dictionary = {'file_id': "^[0-9]*$", 'new_folder_id': "^[0-9]*$"}
@@ -132,7 +132,7 @@ def move_user_file():
         return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
 
 
-@files_api.route("/move/folder", methods=['PUT'])
+@files_api.route("/folder/move", methods=['PUT'])
 def move_user_folder():
     try:
         input_dictionary = request.get_json()
@@ -148,7 +148,7 @@ def move_user_folder():
         return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
 
 
-@files_api.route("/rename/folder", methods=['PUT'])
+@files_api.route("/folder/rename", methods=['PUT'])
 def rename_user_folder():
     try:
         input_dictionary = request.get_json()
@@ -168,7 +168,7 @@ def rename_user_folder():
         return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
 
 
-@files_api.route("/rename/file", methods=['PUT'])
+@files_api.route("/file/rename", methods=['PUT'])
 def rename_user_file():
     try:
         input_dictionary = request.get_json()

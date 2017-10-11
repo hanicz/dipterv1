@@ -373,9 +373,9 @@ def move_file(user_id, input_dictionary):
     try:
         folder, file = session.query(Folder, File).filter((Folder.id == File.folder_id) &
                                                           (File.user_id == user_id) & (
-                                                              File.id == input_dictionary['file_id'])).first()
+                                                              File.id == input_dictionary['file_id']) & (File.delete_date == None)).first()
         new_folder = session.query(Folder).filter(
-            (Folder.user_id == user_id) & (Folder.id == input_dictionary['new_folder_id'])).first()
+            (Folder.user_id == user_id) & (Folder.id == input_dictionary['new_folder_id']) & (Folder.delete_date == None)).first()
         if file is not None and new_folder is not None:
             max_version = session.query(func.max(File.version)).filter(
                 (File.user_id == user_id) & (File.file_name == file.file_name)

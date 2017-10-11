@@ -25,7 +25,7 @@ export class ShareService {
 
     makePublic(file_id: Number) {
 
-        const url = `${this.userUrl}/makePublic/${file_id}`;
+        const url = `${this.userUrl}/public/${file_id}`;
         return this.http.put(url, null, {
             withCredentials: true
         })
@@ -34,7 +34,7 @@ export class ShareService {
 
     revokePublic(file_id: Number) {
 
-        const url = `${this.userUrl}/revokePublic/${file_id}`;
+        const url = `${this.userUrl}/private/${file_id}`;
         return this.http.put(url, null, {
             withCredentials: true
         })
@@ -49,7 +49,7 @@ export class ShareService {
             'to_user': to
         };
 
-        const url = `${this.userUrl}/shareFile`;
+        const url = `${this.userUrl}/share`;
         return this.http.post(url, JSON.stringify(data), {
             headers: this.headers,
             withCredentials: true
@@ -65,7 +65,7 @@ export class ShareService {
     }
 
     revoke_share(share_id: Number) {
-        const url = `${this.userUrl}/revokeShare/${share_id}`;
+        const url = `${this.userUrl}/revoke/${share_id}`;
         return this.http.delete(url, {
             withCredentials: true
         })

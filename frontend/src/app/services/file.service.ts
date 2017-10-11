@@ -45,7 +45,7 @@ export class FileService {
   }
 
   get_files(folder_id: Number) {
-    const url = `${this.userUrl}/userFiles/${folder_id}`;
+    const url = `${this.userUrl}/file/${folder_id}`;
     return this.http.get(url, {
       withCredentials: true
     })
@@ -53,7 +53,7 @@ export class FileService {
   }
 
   get_deleted_files() {
-    const url = `${this.userUrl}/userDeletedFiles`;
+    const url = `${this.userUrl}/file/deleted`;
     return this.http.get(url, {
       withCredentials: true
     })
@@ -61,7 +61,7 @@ export class FileService {
   }
 
   get_folders(folder_id: Number) {
-    const url = `${this.userUrl}/userFolders/${folder_id}`;
+    const url = `${this.userUrl}/folder/${folder_id}`;
     return this.http.get(url, {
       withCredentials: true
     })
@@ -69,7 +69,7 @@ export class FileService {
   }
 
   get_deleted_folders() {
-    const url = `${this.userUrl}/userDeletedFolders`;
+    const url = `${this.userUrl}/folder/deleted`;
     return this.http.get(url, {
       withCredentials: true
     })
@@ -77,7 +77,7 @@ export class FileService {
   }
 
   rename_file(file: MyFile) {
-    const url = `${this.userUrl}/rename/file`;
+    const url = `${this.userUrl}/file/rename`;
     return this.http.put(url, JSON.stringify(file), {
       headers: this.jsonHeaders,
       withCredentials: true
@@ -86,7 +86,7 @@ export class FileService {
   }
 
   rename_folder(folder: Folder) {
-    const url = `${this.userUrl}/rename/folder`;
+    const url = `${this.userUrl}/folder/rename`;
     return this.http.put(url, JSON.stringify(folder), {
       headers: this.jsonHeaders,
       withCredentials: true
@@ -97,7 +97,13 @@ export class FileService {
   remove_file(id: Number) {
     const url = `${this.userUrl}/file/${id}`;
     return this.http.delete(url, {
-      headers: this.jsonHeaders,
+      withCredentials: true
+    }).map((res: Response) => res.json());
+  }
+
+  remove_folder(id: Number) {
+    const url = `${this.userUrl}/folder/${id}`;
+    return this.http.delete(url, {
       withCredentials: true
     }).map((res: Response) => res.json());
   }
@@ -115,7 +121,20 @@ export class FileService {
       'new_folder_id': folder_id
     }
 
-    const url = `${this.userUrl}/move/file`;
+    const url = `${this.userUrl}/file/move`;
+    return this.http.put(url, JSON.stringify(data), {
+      headers: this.jsonHeaders,
+      withCredentials: true
+    }).map((res: Response) => res.json());
+  }
+
+  move_folder(folder_id: Number, parent_id: Number) {
+    let data = {
+      'folder_id': folder_id,
+      'parent_id': parent_id
+    }
+
+    const url = `${this.userUrl}/folder/move`;
     return this.http.put(url, JSON.stringify(data), {
       headers: this.jsonHeaders,
       withCredentials: true

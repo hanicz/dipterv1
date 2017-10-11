@@ -19,7 +19,7 @@ export class RoleService {
   constructor(private http: Http) { }
 
   get_roles(){
-    const url = `${this.userUrl}/getAllRoles`;
+    const url = `${this.userUrl}`;
     return this.http.get(url,{
         withCredentials: true
       })

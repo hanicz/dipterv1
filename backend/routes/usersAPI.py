@@ -69,7 +69,7 @@ def reset_password():
         return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
 
 
-@users_api.route("/deleteUser", methods=['DELETE'])
+@users_api.route("/delete", methods=['DELETE'])
 def delete():
     if delete_user(decode_token(request.cookies.get('token'))):
         return jsonify({'Response': 'User deleted successfully'}), HTTP_OK
@@ -77,7 +77,7 @@ def delete():
         return jsonify({'Response': 'Error deleting user'}), HTTP_BAD_REQUEST
 
 
-@users_api.route("/changeData", methods=['PUT'])
+@users_api.route("/change", methods=['PUT'])
 def change_data():
     input_dictionary = request.get_json()
     validation_dictionary = {'old_password': None}
