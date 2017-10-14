@@ -14,5 +14,10 @@
         <p>
             <button [disabled]="!isValid()" (click)="restore()">Restore</button>
         </p>
+        <ul class="logs">
+            <li *ngFor="let log of logs">
+                <span class="badge">{{log.created | date: 'medium'}}</span> {{log.message}}
+            </li>
+        </ul>
     </div>
 </div>

@@ -56,19 +56,26 @@ export class UserService {
 
   changedata(user: ChangeUser){
     const url = `${this.userUrl}/change`;
-    return this.http.put(url,JSON.stringify(user),{headers:this.headers})
+    return this.http.put(url,JSON.stringify(user),{
+      headers: this.headers,
+      withCredentials: true
+    })
       .map((res: Response) => res.json());
   }
 
   logout(){
     const url = `${this.userUrl}/logout`;
-    return this.http.put(url,null,{headers:this.headers})
+    return this.http.put(url,null,{
+      withCredentials: true
+    })
       .map((res: Response) => res.json());
   }
 
   delete(){
     const url = `${this.userUrl}/delete`;
-    return this.http.delete(url,{headers:this.headers})
+    return this.http.delete(url,{
+      withCredentials: true
+    })
       .map((res: Response) => res.json());
   }
 }

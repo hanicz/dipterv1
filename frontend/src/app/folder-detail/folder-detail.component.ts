@@ -1,9 +1,11 @@
 /**
  * Created by Hanicz on 2/19/2017.
  */
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { Folder } from '../entities/folder';
 import { FileService } from '../services/file.service';
+import { LogService } from '../services/log.service';
+import { Log } from '../entities/log';
 
 
 @Component({
@@ -17,11 +19,13 @@ export class FolderDetailComponent {
 
   folders: Folder[]
   moveFolder: Folder;
+  logs: Log[];
 
   @Output() deleteEvent = new EventEmitter();
 
   constructor(
-    private fileService: FileService
+    private fileService: FileService,
+    private logService: LogService
   ) { }
 
   ngOnInit(): void {
@@ -31,6 +35,20 @@ export class FolderDetailComponent {
     },
     error => console.error('Error: ' + error)
     );
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    for (let propName in changes) {
+        if (propName == "folder" && this.folder != undefined) {
+
+          this.logService.get_folder_logs(this.folder.id).subscribe((json:Object) => {
+            console.log(json);
+            this.logs = json as Log[];
+          },
+          error => console.error('Error: ' + error)
+          );
+        }
+    }
   }
 
   isValid() {

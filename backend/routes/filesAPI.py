@@ -7,7 +7,7 @@ from exception import InvalidFileException, NotFoundException, UnexpectedExcepti
 files_api = Blueprint('files_api', __name__)
 
 
-@files_api.route("/file/<file_id>", methods=['GET'])
+@files_api.route("/download/<file_id>", methods=['GET'])
 def get_file(file_id):
     path, system_filename, original_filename = get_file_data(decode_token(request.cookies.get('token')), file_id)
     if None not in (path, system_filename, original_filename):

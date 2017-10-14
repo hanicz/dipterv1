@@ -1,10 +1,12 @@
 /**
  * Created by Hanicz on 2/19/2017.
  */
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { MyFile } from '../entities/file';
 import { Folder } from '../entities/folder';
 import { FileService } from '../services/file.service';
+import { LogService } from '../services/log.service';
+import { Log } from '../entities/log';
 
 
 @Component({
@@ -18,12 +20,15 @@ export class FileDetailComponent {
 
   folders: Folder[]
   moveFolder: Folder;
+  logs: Log[];
+
 
   @Output() deleteEvent = new EventEmitter();
   @Output() shareEvent = new EventEmitter();
 
   constructor(
-    private fileService: FileService
+    private fileService: FileService,
+    private logService: LogService
   ) { }
 
   ngOnInit(): void {
@@ -34,6 +39,20 @@ export class FileDetailComponent {
     error => console.error('Error: ' + error)
     );
   }
+
+  ngOnChanges(changes: SimpleChanges) {
+    for (let propName in changes) {
+        if (propName == "file" && this.file != undefined) {
+
+          this.logService.get_file_logs(this.file.id).subscribe((json:Object) => {
+            console.log(json);
+            this.logs = json as Log[];
+          },
+          error => console.error('Error: ' + error)
+          );
+        }
+    }
+}
 
 
   rename(): void {

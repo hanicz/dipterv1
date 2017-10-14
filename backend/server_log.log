@@ -112,3 +112,5 @@ Sending activation email for: test123123@d112.hu
 Failed to send email for: test123123@d112.hu Exception: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
 Sending activation email for: test2@test2.hu
 Failed to send email for: test2@test2.hu Exception: (535, b'5.7.8 Username and Password not accepted. Learn more at\n5.7.8  https://support.google.com/mail/?p=BadCredentials b190sm191316wma.41 - gsmtp')
+Sending activation email for: deltest@deltest.awd
+Failed to send email for: deltest@deltest.awd Exception: (535, b'5.7.8 Username and Password not accepted. Learn more at\n5.7.8  https://support.google.com/mail/?p=BadCredentials 55sm3713746wrw.60 - gsmtp')

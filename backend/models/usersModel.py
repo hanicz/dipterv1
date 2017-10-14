@@ -116,7 +116,7 @@ def delete_user(user_id):
     try:
         user = session.query(User).filter((User.activation_link == None) & (User.id == user_id)).first()
         if user is not None:
-            shutil.rmtree(os.path.join(UPLOAD_FOLDER, user_id))
+            shutil.rmtree(os.path.join(UPLOAD_FOLDER, str(user_id)))
             session.delete(user)
             session.commit()
 
