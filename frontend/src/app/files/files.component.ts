@@ -56,12 +56,12 @@ export class FilesComponent {
       console.log(json);
       this.folders = json as Folder[];
 
-      if(folder.id != 0){
+      /*if(folder.id != 0){
         var backFolder = new Folder();
         backFolder.folderName = '...';
         backFolder.id = folder.parent;
         this.folders.unshift(backFolder);
-      }
+      }*/
 
     },
       error => console.error('Error: ' + error)

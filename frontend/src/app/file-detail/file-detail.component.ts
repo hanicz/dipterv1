@@ -7,6 +7,7 @@ import { Folder } from '../entities/folder';
 import { FileService } from '../services/file.service';
 import { LogService } from '../services/log.service';
 import { Log } from '../entities/log';
+import { DropboxService } from '../services/dropbox.service'
 
 
 @Component({
@@ -28,7 +29,8 @@ export class FileDetailComponent {
 
   constructor(
     private fileService: FileService,
-    private logService: LogService
+    private logService: LogService,
+    private dropboxService: DropboxService
   ) { }
 
   ngOnInit(): void {
@@ -36,30 +38,29 @@ export class FileDetailComponent {
       console.log(json);
       this.folders = json as Folder[];
     },
-    error => console.error('Error: ' + error)
+      error => console.error('Error: ' + error)
     );
   }
 
   ngOnChanges(changes: SimpleChanges) {
     for (let propName in changes) {
-        if (propName == "file" && this.file != undefined) {
+      if (propName == "file" && this.file != undefined) {
 
-          this.logService.get_file_logs(this.file.id).subscribe((json:Object) => {
-            console.log(json);
-            this.logs = json as Log[];
-          },
+        this.logService.get_file_logs(this.file.id).subscribe((json: Object) => {
+          console.log(json);
+          this.logs = json as Log[];
+        },
           error => console.error('Error: ' + error)
-          );
-        }
+        );
+      }
     }
-}
-
+  }
 
   rename(): void {
     this.fileService.rename_file(this.file).subscribe((json: Object) => {
       console.log(json);
     },
-    error => console.error('Error: ' + error)
+      error => console.error('Error: ' + error)
     );
   }
 
@@ -69,7 +70,7 @@ export class FileDetailComponent {
       this.file = null;
       this.deleteEvent.emit();
     },
-    error => console.error('Error: ' + error)
+      error => console.error('Error: ' + error)
     );
   }
 
@@ -77,24 +78,32 @@ export class FileDetailComponent {
     return this.file.deleted != null;
   }
 
-  share(): void{
+  share(): void {
     this.shareEvent.emit();
   }
 
-  move(): void{
-    this.fileService.move_file(this.moveFolder.id,this.file.id).subscribe((json: Object) => {
+  move(): void {
+    this.fileService.move_file(this.moveFolder.id, this.file.id).subscribe((json: Object) => {
       console.log(json);
     },
-    error => console.error('Error: ' + error)
+      error => console.error('Error: ' + error)
     );
   }
 
-  restore(): void{
-    this.fileService.restore_file(this.file.id).subscribe((json:Object) => {
+  restore(): void {
+    this.fileService.restore_file(this.file.id).subscribe((json: Object) => {
       console.log(json);
       this.deleteEvent.emit();
     },
-    error => console.error('Error: ' + error)
+      error => console.error('Error: ' + error)
+    );
+  }
+
+  dropbox(): void {
+    this.dropboxService.upload_to_dropbox(this.file.id).subscribe((json: Object) => {
+      console.log(json);
+    },
+      error => console.error('Error: ' + error)
     );
   }
 }

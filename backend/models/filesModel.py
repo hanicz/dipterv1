@@ -48,11 +48,9 @@ def get_all_files(user_id, folder_id):
 
 def get_all_folders(user_id, folder_id):
     session = DBSession()
+    folderalias = aliased(Folder)
     try:
         if int(folder_id) == 0:
-
-            folderalias = aliased(Folder)
-
             folders = session.query(Folder).filter((Folder.user_id == user_id) & (Folder.delete_date == None)).join(folderalias, Folder.parent_folder == folderalias.id).filter((folderalias.path == UPLOAD_FOLDER + str(user_id) + '/') & (folderalias.user_id == user_id))
         else:
             folders = session.query(Folder).filter(
@@ -504,3 +502,20 @@ def restore_file(user_id, file_id):
     finally:
         session.close()
 
+
+def get_parent_folder(user_id, folder_id):
+    session = DBSession()
+    try:
+        if int(folder_id) != 0:
+            f = session.query(Folder).filter((Folder.id == folder_id) & (Folder.user_id == user_id)).first()
+            parent_folder = session.query(Folder).filter((Folder.id == f.parent_folder) & (Folder.user_id == user_id)).first()
+            if parent_folder is not None:
+                parent_folder.folder_name = '...'
+                return parent_folder
+        return None
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return None
+    finally:
+        session.close()

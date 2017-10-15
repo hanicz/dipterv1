@@ -17,6 +17,7 @@ import { DeletedFilesComponent }  from './deleted-files/deleted-files.component'
 import { ShareComponent } from './share/share.component';
 import { NotesComponent } from './notes/notes.component';
 import { CreateFolderComponent } from './create-folder/create-folder.component';
+import { DropboxComponent } from './dropbox/dropbox.component';
 
 
 const routes: Routes = [
@@ -34,6 +35,7 @@ const routes: Routes = [
   { path: 'notes', component: NotesComponent },
   { path: 'deleted-files', component: DeletedFilesComponent },
   { path: 'create-folder', component: CreateFolderComponent },
+  { path: 'dropbox', component: DropboxComponent },
   { path: '**', redirectTo: '/not-found' }
 ];
 

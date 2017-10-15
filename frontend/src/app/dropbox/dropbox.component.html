@@ -1,0 +1,9 @@
+<div class="container">
+    <form class="form" (ngSubmit)="finish_auth()" #uploadForm="ngForm">
+        Please go to: {{ url }}
+        <input type="text" class="form-control" id="token" placeholder="token"
+        required
+        [(ngModel)]="token" name="token">
+        <button type="submit">Authorize</button>
+    </form>
+</div>

@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask, request
-from routes import users_api, files_api, notes_api, roles_api, file_shares_api, logs_api
+from routes import users_api, files_api, notes_api, roles_api, file_shares_api, logs_api, dropbox_api
 from models import init_db, login_required
 from models import get_secret_key, get_email_credentials, delete_job, get_dropbox_secret, get_dropbox_key
 from flask_cors import CORS
@@ -22,6 +22,7 @@ app.register_blueprint(notes_api, url_prefix='/notes')
 app.register_blueprint(roles_api, url_prefix='/roles')
 app.register_blueprint(file_shares_api, url_prefix='/shares')
 app.register_blueprint(logs_api, url_prefix='/logs')
+app.register_blueprint(dropbox_api, url_prefix='/dropbox')
 
 
 @app.before_request

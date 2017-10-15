@@ -1,4 +1,4 @@
-<div class="folderdetail" *ngIf="folder">
+<div class="folderdetail" *ngIf="folder.folderName">
     <div>
         <p><label>Name : </label> <input [(ngModel)]="folder.folderName"></p>
         <p><label>Created : </label> {{folder.created | date: 'short'}}</p>

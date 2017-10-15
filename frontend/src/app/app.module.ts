@@ -12,6 +12,7 @@ import { LogService} from './services/log.service';
 import { RoleService} from './services/role.service';
 import { NoteService} from './services/note.service';
 import { ShareService} from './services/share.service';
+import { DropboxService} from './services/dropbox.service';
 import { RegisterComponent }  from './register/register.component';
 import { UploadComponent }  from './upload/upload.component';
 import { ActivateComponent }  from './activate/activate.component';
@@ -26,6 +27,7 @@ import { DeletedFilesComponent } from './deleted-files/deleted-files.component';
 import { ShareComponent } from './share/share.component';
 import { NotesComponent } from './notes/notes.component';
 import { CreateFolderComponent } from './create-folder/create-folder.component';
+import { DropboxComponent } from './dropbox/dropbox.component';
 
 @NgModule({
   imports:      [ BrowserModule,
@@ -47,13 +49,15 @@ import { CreateFolderComponent } from './create-folder/create-folder.component';
                   DeletedFilesComponent,
                   ShareComponent,
                   NotesComponent,
-                  CreateFolderComponent],
+                  CreateFolderComponent,
+                  DropboxComponent],
   bootstrap:    [ AppComponent ],
   providers: [ UserService,
                 FileService,
                 LogService,
                 RoleService,
                 ShareService,
-                NoteService ],
+                NoteService,
+                DropboxService ],
 })
 export class AppModule { }
