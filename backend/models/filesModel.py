@@ -97,7 +97,7 @@ def get_all_deleted_folders(user_id):
 def search_user_file(user_id, file_name):
     session = DBSession()
     try:
-        file = session.query(File).filter((File.user_id == user_id) & (File.file_name == file_name))
+        file = session.query(File).filter((File.user_id == user_id) & (File.file_name.startswith(file_name)))
         if file is not None:
             return file.serialize()
         return None

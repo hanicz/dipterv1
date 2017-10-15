@@ -1,5 +1,6 @@
 .files {
   /*position: absolute;*/
+  float: left;
   z-index: 1;
   top: 50px;
   background: #FFFFFF;

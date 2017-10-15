@@ -1,10 +1,11 @@
 .filedetail {
     background: #FFFFFF;
-    max-width: 30%;
+    width: 17%;
+    margin: auto;
     border-radius: 8px;
     padding: 45px;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 15px 20px 0 rgba(0, 0, 0, 0.6);
-    display: inline-block;
+    /*display: inline-block;*/
     float: right;
   }
 

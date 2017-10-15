@@ -4,6 +4,7 @@ from .db import DBSession, User, File, Folder, FileShare, Role
 from sqlalchemy import exc
 import time
 import datetime
+from models import create_log_entry
 
 
 def auth_url():
@@ -93,7 +94,7 @@ def upload_file_to_dbx(user_id, file_id):
                         else:
                             dbx.files_upload_session_append_v2(f.read(CHUNK_SIZE), cursor)
                             cursor.offset = f.tell()
-
+            create_log_entry(user_id, 'File uploaded to Dropbox', file.id, None)
         session.close()
         return True
     else:
