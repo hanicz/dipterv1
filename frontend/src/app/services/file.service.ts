@@ -5,7 +5,8 @@ import { Injectable } from '@angular/core';
 import { Headers, Http, URLSearchParams, Response } from '@angular/http';
 import { CustomResponse } from '../utils/customResponse'
 import { MyFile } from '../entities/file';
-import { Folder } from '../entities/Folder'
+import { Folder } from '../entities/Folder';
+import { ResponseContentType, RequestOptions } from '@angular/http';
 
 import 'rxjs/add/operator/map';
 
@@ -42,6 +43,13 @@ export class FileService {
       withCredentials: true
     })
       .map((res: Response) => res.json());
+  }
+
+  download(file_id: Number){
+    const url = `${this.userUrl}/download/${file_id}`;
+    let options = new RequestOptions({responseType: ResponseContentType.Blob,
+                                      withCredentials: true});
+    return this.http.get(url,options).map(res => res.blob());
   }
 
   get_files(folder_id: Number) {

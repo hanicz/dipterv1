@@ -10,7 +10,8 @@
             <select [(ngModel)]="moveFolder"><option *ngFor="let folder of folders" [ngValue]="folder">{{ folder.folderName || 'Main' }}</option></select></p>
         <p><button [disabled]="!isValid()" (click)="restore()">Restore</button>
             <button (click)="share()" [disabled]="isValid()">Share</button></p>
-        <p><button (click)="dropbox()" [disabled]="isValid()">Dropbox</button></p>
+        <p><button (click)="dropbox()" [disabled]="isValid()">Dropbox</button>
+            <button (click)="download()" [disabled]="isValid()">Download</button></p>
         <ul class="logs">
             <li *ngFor="let log of logs">
                 <span class="badge">{{log.created | date: 'medium'}}</span> {{log.message}}

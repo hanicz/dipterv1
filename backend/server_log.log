@@ -123,3 +123,5 @@ Sending activation email for: testtes213t@adwda123d123.hu
 Failed to send email for: testtes213t@adwda123d123.hu Exception: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
 Sending activation email for: 21d12d12@1212d1.hu
 Failed to send email for: 21d12d12@1212d1.hu Exception: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+Sending activation email for: test@tesd1d21t.hu
+Failed to send email for: test@tesd1d21t.hu Exception: (535, b'5.7.8 Username and Password not accepted. Learn more at\n5.7.8  https://support.google.com/mail/?p=BadCredentials o24sm10736008wmi.39 - gsmtp')

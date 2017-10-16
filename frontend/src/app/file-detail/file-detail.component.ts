@@ -7,8 +7,8 @@ import { Folder } from '../entities/folder';
 import { FileService } from '../services/file.service';
 import { LogService } from '../services/log.service';
 import { Log } from '../entities/log';
-import { DropboxService } from '../services/dropbox.service'
-
+import { DropboxService } from '../services/dropbox.service';
+import saveAs = require('file-saver');
 
 @Component({
   moduleId: module.id,
@@ -105,5 +105,11 @@ export class FileDetailComponent {
     },
       error => console.error('Error: ' + error)
     );
+  }
+
+  download(): void{
+    this.fileService.download(this.file.id).subscribe(blob =>{
+      saveAs(blob,this.file.fileName.toString());
+    });
   }
 }
