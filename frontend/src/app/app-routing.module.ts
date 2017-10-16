@@ -18,6 +18,7 @@ import { ShareComponent } from './share/share.component';
 import { NotesComponent } from './notes/notes.component';
 import { CreateFolderComponent } from './create-folder/create-folder.component';
 import { DropboxComponent } from './dropbox/dropbox.component';
+import { SharedWithMeComponent } from './shared-with-me/shared-with-me.component'
 
 
 const routes: Routes = [
@@ -36,6 +37,7 @@ const routes: Routes = [
   { path: 'deleted-files', component: DeletedFilesComponent },
   { path: 'create-folder', component: CreateFolderComponent },
   { path: 'dropbox', component: DropboxComponent },
+  { path: 'shared-with-me', component: SharedWithMeComponent },
   { path: '**', redirectTo: '/not-found' }
 ];
 

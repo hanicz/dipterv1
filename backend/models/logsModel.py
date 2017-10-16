@@ -2,21 +2,18 @@ import datetime
 
 from .db import DBSession, Log, File, FileShare, Role, Folder
 from sqlalchemy import exc
+from exception import UnexpectedException
 
 
-def create_log_entry(user_id, message, file_id, folder_id):
-    session = DBSession()
+def create_log_entry(user_id, message, file_id, folder_id, session):
     try:
         new_log_entry = Log(user_id=user_id, created=datetime.datetime.now(), message=message, file_id=file_id, folder_id=folder_id)
         session.add(new_log_entry)
-        session.commit()
-        return new_log_entry.serialize()
     except exc.SQLAlchemyError as e:
         print(e.__context__)
         session.rollback()
-        return None
-    finally:
         session.close()
+        raise UnexpectedException('Log entry failed')
 
 
 def get_user_entries(user_id):

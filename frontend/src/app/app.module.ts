@@ -28,6 +28,7 @@ import { ShareComponent } from './share/share.component';
 import { NotesComponent } from './notes/notes.component';
 import { CreateFolderComponent } from './create-folder/create-folder.component';
 import { DropboxComponent } from './dropbox/dropbox.component';
+import { SharedWithMeComponent } from './shared-with-me/shared-with-me.component'
 
 @NgModule({
   imports:      [ BrowserModule,
@@ -50,7 +51,8 @@ import { DropboxComponent } from './dropbox/dropbox.component';
                   ShareComponent,
                   NotesComponent,
                   CreateFolderComponent,
-                  DropboxComponent],
+                  DropboxComponent,
+                  SharedWithMeComponent],
   bootstrap:    [ AppComponent ],
   providers: [ UserService,
                 FileService,

@@ -33,21 +33,21 @@ export class FolderDetailComponent {
       console.log(json);
       this.folders = json as Folder[];
     },
-    error => console.error('Error: ' + error)
+      error => console.error('Error: ' + error)
     );
   }
 
   ngOnChanges(changes: SimpleChanges) {
     for (let propName in changes) {
-        if (propName == "folder" && this.folder != undefined) {
+      if (propName == "folder" && this.folder != undefined) {
 
-          this.logService.get_folder_logs(this.folder.id).subscribe((json:Object) => {
-            console.log(json);
-            this.logs = json as Log[];
-          },
+        this.logService.get_folder_logs(this.folder.id).subscribe((json: Object) => {
+          console.log(json);
+          this.logs = json as Log[];
+        },
           error => console.error('Error: ' + error)
-          );
-        }
+        );
+      }
     }
   }
 
@@ -69,15 +69,24 @@ export class FolderDetailComponent {
       this.folder = null;
       this.deleteEvent.emit();
     },
-    error => console.error('Error: ' + error)
+      error => console.error('Error: ' + error)
     );
   }
 
-  move(): void{
-    this.fileService.move_folder(this.folder.id,this.moveFolder.id).subscribe((json: Object) => {
+  move(): void {
+    this.fileService.move_folder(this.folder.id, this.moveFolder.id).subscribe((json: Object) => {
       console.log(json);
     },
-    error => console.error('Error: ' + error)
+      error => console.error('Error: ' + error)
+    );
+  }
+
+  restore(): void {
+    this.fileService.restore_folder(this.folder.id).subscribe((json: Object) => {
+      console.log(json);
+      this.deleteEvent.emit();
+    },
+      error => console.error('Error: ' + error)
     );
   }
 }

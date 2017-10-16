@@ -94,7 +94,7 @@ def upload_file_to_dbx(user_id, file_id):
                         else:
                             dbx.files_upload_session_append_v2(f.read(CHUNK_SIZE), cursor)
                             cursor.offset = f.tell()
-            create_log_entry(user_id, 'File uploaded to Dropbox', file.id, None)
+            create_log_entry(user_id, 'File uploaded to Dropbox', file.id, None, session)
         session.close()
         return True
     else:

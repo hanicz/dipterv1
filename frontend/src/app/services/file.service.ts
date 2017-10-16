@@ -148,6 +148,13 @@ export class FileService {
     }).map((res: Response) => res.json());
   }
 
+  restore_folder(folder_id: Number) {
+    const url = `${this.userUrl}/folder/restore/${folder_id}`;
+    return this.http.put(url, null, {
+      withCredentials: true
+    }).map((res: Response) => res.json());
+  }
+
   create_folder(folder: Folder) {
 
     let data = {
@@ -160,5 +167,13 @@ export class FileService {
       headers: this.jsonHeaders,
       withCredentials: true
     }).map((res: Response) => res.json());
+  }
+
+  get_shared_with_me_files() {
+    const url = `${this.userUrl}/shared`;
+    return this.http.get(url, {
+      withCredentials: true
+    })
+      .map((res: Response) => res.json());
   }
 }
