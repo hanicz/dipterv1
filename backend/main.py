@@ -1,11 +1,13 @@
 import os
 
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from routes import users_api, files_api, notes_api, roles_api, file_shares_api, logs_api, dropbox_api
 from models import init_db, login_required
 from models import get_secret_key, get_email_credentials, delete_job, get_dropbox_secret, get_dropbox_key
 from flask_cors import CORS
 from logger import LEVEL, log_message
+import datetime
+from utils import HTTP_INT_ERROR
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
@@ -30,7 +32,7 @@ app.register_blueprint(dropbox_api, url_prefix='/dropbox')
 def before_request():
     print(request.path)
 
-'''
+
 @app.errorhandler(500)
 def internal_server_error(error):
     message = str('%s Server Error: %s' % (datetime.datetime.now(), error))
@@ -42,7 +44,7 @@ def internal_server_error(error):
 def unhandled_exception(e):
     message = ('%s Unhandled Exception: %s'% (datetime.datetime.now(), e))
     log_message(LEVEL.ERROR, message)
-    return jsonify({'Response': 'Something went wrong'}), HTTP_INT_ERROR'''
+    return jsonify({'Response': 'Something went wrong'}), HTTP_INT_ERROR
 
 
 if __name__ == '__main__':

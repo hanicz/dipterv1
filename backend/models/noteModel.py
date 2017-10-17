@@ -94,5 +94,7 @@ def get_all_notes(user_id):
         print(e.__context__)
         session.rollback()
         return False
+    except Exception as e:
+        print(str(e))
     finally:
         session.close()
