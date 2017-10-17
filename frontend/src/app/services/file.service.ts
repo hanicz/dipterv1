@@ -184,4 +184,12 @@ export class FileService {
     })
       .map((res: Response) => res.json());
   }
+
+  search_files(file_name: String) {
+    const url = `${this.userUrl}/search/${file_name}`;
+    return this.http.get(url, {
+      withCredentials: true
+    })
+      .map((res: Response) => res.json());
+  }
 }

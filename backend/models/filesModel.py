@@ -95,9 +95,9 @@ def get_all_deleted_folders(user_id):
 def search_user_file(user_id, file_name):
     session = DBSession()
     try:
-        file = session.query(File).filter((File.user_id == user_id) & (File.file_name.startswith(file_name)))
-        if file is not None:
-            return file.serialize()
+        files = session.query(File).filter((File.user_id == user_id) & (File.file_name.startswith(file_name)) & (File.delete_date == None))
+        if files is not None:
+            return [f.serialize() for f in files]
         return None
     except exc.SQLAlchemyError as e:
         print(e.__context__)
@@ -146,7 +146,7 @@ def upload_file(user, folder_id):
                                                               stream_factory=custom_stream)
 
 
-def create_file(user_id, filename, sys_fname, folder_id, path):
+def create_file(user_id, filename, sys_fname, folder_id):
     session = DBSession()
     try:
         max_versioned_file = session.query(func.max(File.version)).filter(
@@ -174,7 +174,11 @@ def create_file(user_id, filename, sys_fname, folder_id, path):
 def remove_file(user_id, file_id):
     session = DBSession()
     try:
-        file = session.query(File).filter((File.user_id == user_id) & (File.id == file_id) & (File.delete_date == None)).first()
+        file = session.query(File). \
+            outerjoin(FileShare, File.id == FileShare.file_id). \
+            outerjoin(Role). \
+            filter(((File.user_id == user_id) & (File.id == file_id)) | (
+            (FileShare.user_id == user_id) & (Role.priority >= 3)) & (File.delete_date == None)).first()
         if file is not None:
             file.delete_date = datetime.datetime.now()
             delete_shares(user_id, file.id)
@@ -279,8 +283,11 @@ def crt_folder(user_id, input_dictionary):
 def rename_file(user_id, input_dictionary):
     session = DBSession()
     try:
-        file = session.query(File).filter(
-            (File.user_id == user_id) & (File.id == input_dictionary['id'])).first()
+        file = session.query(File).\
+            outerjoin(FileShare, File.id == FileShare.file_id).\
+            outerjoin(Role).\
+            filter(((File.user_id == user_id) & (File.id == input_dictionary['id'])) | ((FileShare.user_id == user_id) & (Role.priority >= 2)) & (File.delete_date == None)).first()
+
         if file is not None:
             file.file_name = input_dictionary['fileName']
             create_log_entry(user_id, 'File renamed', file.id, None, session)

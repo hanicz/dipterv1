@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from utils import HTTP_OK, HTTP_BAD_REQUEST, HTTP_INT_ERROR, validate, HTTP_UNAUTHORIZED
-from models import auth_url, auth_finish, decode_token, upload_file_to_dbx
+from models import auth_url, auth_finish, decode_token, upload_file_to_dbx, download_from_dbx
 from exception import InvalidFileException
 
 
@@ -33,5 +33,18 @@ def upload(file_id):
     try:
         upload_file_to_dbx(decode_token(request.cookies.get('token')), file_id)
         return jsonify({'Response': 'File uploaded to Dropbox successfully'}), HTTP_OK
+    except Exception as e:
+        return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
+
+
+@dropbox_api.route("/download", methods=['POST'])
+def download():
+    input_dictionary = request.get_json()
+    validation_dictionary = {'folder_id': "^[0-9]*$", 'path': None, 'file_name': None}
+
+    try:
+        if validate(input_dictionary, validation_dictionary):
+            download_from_dbx(decode_token(request.cookies.get('token')), input_dictionary)
+            return jsonify({'Response': 'File downloaded from Dropbox successfully'}), HTTP_OK
     except Exception as e:
         return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST

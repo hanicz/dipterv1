@@ -22,13 +22,14 @@ export class FilesComponent {
   selectedFile: MyFile;
   selectedFolder: Folder;
   currentFolder: Folder;
+  search: String;
+
   uploadHidden: boolean = true;
   uploadShare: boolean = true;
   createFolderHidden: boolean = true;
   prevent: boolean = false;
   folderHidden: boolean = true;
   fileHidden: boolean = true;
-  delay: number = 0;
 
   constructor(
     private fileService: FileService
@@ -69,15 +70,20 @@ export class FilesComponent {
   }
 
   onSelectFolder(folder: Folder): void {
-    this.fileHidden = true;
-    this.folderHidden = false;
-    this.selectedFolder = folder;
+    if (folder.folderName != '...') {
+      this.fileHidden = true;
+      this.folderHidden = false;
+      this.selectedFolder = folder;
+    }else{
+      this.folderHidden = true;
+      this.fileHidden = true;
+    }
   }
 
   onDblSelectFolder(folder: Folder): void {
     this.folderHidden = true;
     this.fileHidden = true;
-    
+
     this.currentFolder = folder;
     this.get_files(folder.id);
     this.get_folders(folder);
@@ -100,5 +106,23 @@ export class FilesComponent {
     this.createFolderHidden = true;
     this.get_files(this.currentFolder.id);
     this.get_folders(this.currentFolder);
+  }
+
+  search_files(newValue: String): void {
+    this.folderHidden = true;
+    this.fileHidden = true;
+    this.search = newValue;
+    if (newValue == "") {
+      this.get_files(this.currentFolder.id);
+      this.get_folders(this.currentFolder);
+    } else {
+      this.fileService.search_files(this.search).subscribe((json: Object) => {
+        console.log(json);
+        this.files = json as MyFile[];
+        this.folders = null;
+      },
+        error => console.error('Error: ' + error)
+      );
+    }
   }
 }

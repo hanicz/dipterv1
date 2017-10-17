@@ -4,7 +4,10 @@ from .db import DBSession, User, File, Folder, FileShare, Role
 from sqlalchemy import exc
 import time
 import datetime
+import random
+import string
 from models import create_log_entry
+from models import create_file
 
 
 def auth_url():
@@ -100,3 +103,31 @@ def upload_file_to_dbx(user_id, file_id):
     else:
         session.close()
         return False
+
+
+def download_from_dbx(user_id, input_dictionary):
+    dbx = Dropbox(get_access_token(user_id))
+
+    path = '/%s/%s' % (input_dictionary['path'], input_dictionary['file_name'])
+
+    while '//' in path:
+        path = path.replace('//', '/')
+
+    session = DBSession()
+
+    try:
+
+        folder = session.query(Folder).filter((Folder.id == input_dictionary['folder_id']) & (Folder.delete_date == None) & (Folder.user_id == user_id)).first()
+        session.close()
+        if folder is not None:
+            system_file_name = ''.join(
+                random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
+            with open(os.path.join(folder.path, system_file_name), "w") as f:
+                md, res = dbx.files_download(path)
+                create_file(user_id, input_dictionary['file_name'], system_file_name, folder.id)
+                f.write(res.content)
+                print(len(res.content), 'bytes; md:', md)
+
+    except exceptions.HttpError as err:
+        print('*** HTTP error', err)
+        return None

@@ -17,6 +17,8 @@ import { Folder } from '../entities/folder';
 export class SharedWithMeComponent {
 
     files: MyFile[];
+    fileHidden: boolean = true;
+    selectedFile: MyFile;
 
   constructor(
     private fileService: FileService
@@ -29,5 +31,10 @@ export class SharedWithMeComponent {
       },
         error => console.error('Error: ' + error)
       );
+  }
+
+  onSelectFile(file: MyFile): void {
+    this.fileHidden = false;
+    this.selectedFile = file;
   }
 }
