@@ -4,7 +4,7 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { MyFile } from '../entities/file';
 import { Role } from '../entities/role';
-import { FileShare } from '../entities/fileshare';
+import { FileShare } from '../entities/FileShare';
 import { FileService } from '../services/file.service';
 import { RoleService } from '../services/role.service';
 import { ShareService } from '../services/share.service';

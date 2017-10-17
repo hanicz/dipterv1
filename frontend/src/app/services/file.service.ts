@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 import { Headers, Http, URLSearchParams, Response } from '@angular/http';
 import { CustomResponse } from '../utils/customResponse'
 import { MyFile } from '../entities/file';
-import { Folder } from '../entities/Folder';
+import { Folder } from '../entities/folder';
 import { ResponseContentType, RequestOptions } from '@angular/http';
 
 import 'rxjs/add/operator/map';

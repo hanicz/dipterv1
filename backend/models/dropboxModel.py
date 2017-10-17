@@ -122,7 +122,7 @@ def download_from_dbx(user_id, input_dictionary):
         if folder is not None:
             system_file_name = ''.join(
                 random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
-            with open(os.path.join(folder.path, system_file_name), "w") as f:
+            with open(os.path.join(folder.path, system_file_name), "wb") as f:
                 md, res = dbx.files_download(path)
                 create_file(user_id, input_dictionary['file_name'], system_file_name, folder.id)
                 f.write(res.content)

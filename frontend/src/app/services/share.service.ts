@@ -4,7 +4,7 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http, URLSearchParams, Response } from '@angular/http';
 import { CustomResponse } from '../utils/customResponse';
-import { FileShare } from '../entities/fileshare';
+import { FileShare } from '../entities/FileShare';
 
 import 'rxjs/add/operator/map';
 
