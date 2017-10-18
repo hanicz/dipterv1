@@ -135,9 +135,7 @@ def upload_file(user, folder_id):
             system_file_name = ''.join(
                 random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
             file = open(os.path.join(path, system_file_name), 'wb+')
-
             create_file(user, filename, system_file_name, folder.id)
-
             return file
         else:
             raise InvalidFileException('Invalid extension or filename')

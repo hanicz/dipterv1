@@ -22,11 +22,15 @@ export class DeletedFilesComponent {
   selectedFile: MyFile;
   selectedFolder: Folder;
 
+  folderHidden: boolean = true;
+  fileHidden: boolean = true;
+
   constructor(
     private fileService: FileService
   ){}
 
   ngOnInit(): void {
+      this.selectedFolder = new Folder();
       this.get_deleted_folders();
       this.get_deleted_files();
   }
@@ -52,10 +56,14 @@ export class DeletedFilesComponent {
 
   onSelectFile(file: MyFile): void{
     this.selectedFile = file;
+    this.fileHidden = false;
+    this.folderHidden = true;
   }
 
   onSelectFolder(folder: Folder): void{
     this.selectedFolder = folder;
+    this.fileHidden = true;
+    this.folderHidden = false;
   }
 
   file_restored(): void{

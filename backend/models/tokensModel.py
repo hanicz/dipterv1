@@ -36,8 +36,6 @@ def decode_token(token):
 def login_required(f):
     @wraps(f)
     def authenticate(*args, **kwargs):
-        print('Authenticating user')
-
         if auth:
 
             if request.path in secure_paths:
