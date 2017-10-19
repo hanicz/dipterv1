@@ -5,7 +5,7 @@ import datetime
 from .db import DBSession, File, FileShare, Role, User
 from sqlalchemy import exc
 from sqlalchemy.orm import aliased
-from models import delete_shares, create_log_entry
+from models import delete_shares, create_log_entry, get_user_data
 
 
 def public_file(user_id, file_id):
@@ -59,7 +59,7 @@ def share_file(user_id,input_dictionary):
             else:
                 fs = FileShare(file_id=file.id, role_id=role.id, user_id=user.id, created=datetime.datetime.now())
                 session.add(fs)
-            create_log_entry(user_id, 'File shared with: ' + input_dictionary['to_user'], file.id, None, session)
+            create_log_entry(user_id, role.name + 'role on file for: ' + input_dictionary['to_user'], file.id, None, session)
             session.commit()
             return True
         return False
@@ -77,8 +77,9 @@ def delete_share(user_id, share_id):
         file_share = session.query(FileShare).join(FileShare.file).filter((FileShare.id == share_id) & (File.user_id == user_id)).first()
         if file_share is not None:
             session.delete(file_share)
-            create_log_entry(user_id, 'File share revoked from: ' + str(file_share.user_id), file_share.file_id, None, session)
             session.commit()
+            create_log_entry(user_id, 'File share revoked from: ' + get_user_data(file_share.user_id).email,
+                             file_share.file_id, None, session)
             return True
         return False
     except exc.SQLAlchemyError as e:

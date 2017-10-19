@@ -13,18 +13,18 @@ from utils import send_activate_email, reset_password_email, UPLOAD_FOLDER
 from models import create_log_entry
 
 
-def login_user(username, password):
+def login_user(username, password, ip):
     session = DBSession()
     try:
         user = session.query(User).filter((User.activation_link == None) & (User.name == username)).first()
         if user is not None:
             if pbkdf2_sha256.verify(password, user.password_hash):
                 user.failed_attempts = 0
-                create_log_entry(user.id, 'User logged in', None, None, session)
+                create_log_entry(user.id, 'User logged in with IP: ' + str(ip), None, None, session)
                 session.commit()
                 return encode_token(user.id)
             increment_bad_password(user)
-            create_log_entry(user.id, 'User wrong password', None, None, session)
+            create_log_entry(user.id, 'User used wrong password with IP: ' + str(ip), None, None, session)
             session.commit()
             return None
     except exc.SQLAlchemyError as e:
@@ -91,7 +91,7 @@ def activate_user(token):
         session.close()
 
 
-def reset_user(token,password):
+def reset_user(token, password):
     session = DBSession()
     try:
         user = session.query(User).filter((User.activation_link == token) & (User.failed_attempts == 2)).first()
@@ -99,7 +99,7 @@ def reset_user(token,password):
             user.password_hash = pbkdf2_sha256.using(salt_size=16).hash(password)
             user.failed_attempts = 0
             user.activation_link = None
-            create_log_entry(user.id, 'User password reset', None, None, session)
+            create_log_entry(user.id, 'User password was reset', None, None, session)
             session.commit()
             return True
         return False
@@ -151,9 +151,24 @@ def change_user_data(user_id, input_dictionary):
                 if new_password is not None:
                     password_hash = pbkdf2_sha256.using(salt_size=16).hash(new_password)
                     user.password_hash = password_hash
-                create_log_entry(user.id, 'User changed data', None, None, session)
+                create_log_entry(user.id, 'User changed personal data', None, None, session)
                 session.commit()
                 return user.serialize()
+        return None
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return None
+    finally:
+        session.close()
+
+
+def get_user_data(user_id):
+    session = DBSession()
+    try:
+        user = session.query(User).filter((User.activation_link == None) & (User.id == user_id)).first()
+        if user is not None:
+            return user
         return None
     except exc.SQLAlchemyError as e:
         print(e.__context__)

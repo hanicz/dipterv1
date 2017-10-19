@@ -15,7 +15,7 @@ def login():
     validation_dictionary = {'username': None, 'password': None}
     try:
         if validate(input_dictionary, validation_dictionary):
-            token = login_user(input_dictionary['username'], input_dictionary['password'])
+            token = login_user(input_dictionary['username'], input_dictionary['password'], request.environ['REMOTE_ADDR'])
             if token is not None:
                 response = make_response(jsonify({'Response': 'Login successful'}), HTTP_OK)
                 response.set_cookie('token', token.decode())

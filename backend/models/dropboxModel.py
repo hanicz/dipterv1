@@ -6,9 +6,8 @@ import time
 import datetime
 import random
 import string
-from models import create_log_entry
-from models import create_file
-
+from models import create_log_entry, create_file, File
+from exception import UnexpectedException, NotFoundException
 
 def auth_url():
     app_key = os.getenv('DROPBOX_KEY')
@@ -30,15 +29,15 @@ def auth_finish(token, user_id):
             user.dropbox_auth = oauth_result.access_token
             session.commit()
             return True
-        return False
+        raise NotFoundException('User not found')
     except exc.SQLAlchemyError as e:
         print(str(e))
         session.rollback()
-        return False
+        raise UnexpectedException('An unexpected issue occurred')
     except Exception as e:
         print(str(e))
         session.rollback()
-        return False
+        raise UnexpectedException('An unexpected issue occurred')
     finally:
         session.close()
 
@@ -46,14 +45,14 @@ def auth_finish(token, user_id):
 def get_access_token(user_id):
     session = DBSession()
     try:
-        user = session.query(User).filter(User.id == user_id).first()
+        user = session.query(User).filter((User.id == user_id) & (User.dropbox_auth != None)).first()
         if user is not None:
             return user.dropbox_auth
-        return None
+        raise NotFoundException('User with token not found')
     except exc.SQLAlchemyError as e:
         print(str(e))
         session.rollback()
-        return None
+        raise UnexpectedException('An unexpected issue occurred')
     finally:
         session.close()
 
@@ -109,25 +108,16 @@ def download_from_dbx(user_id, input_dictionary):
     dbx = Dropbox(get_access_token(user_id))
 
     path = '/%s/%s' % (input_dictionary['path'], input_dictionary['file_name'])
-
     while '//' in path:
         path = path.replace('//', '/')
-
     session = DBSession()
-
-    try:
-
-        folder = session.query(Folder).filter((Folder.id == input_dictionary['folder_id']) & (Folder.delete_date == None) & (Folder.user_id == user_id)).first()
-        session.close()
-        if folder is not None:
-            system_file_name = ''.join(
-                random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
-            with open(os.path.join(folder.path, system_file_name), "wb") as f:
-                md, res = dbx.files_download(path)
-                create_file(user_id, input_dictionary['file_name'], system_file_name, folder.id)
-                f.write(res.content)
-                print(len(res.content), 'bytes; md:', md)
-
-    except exceptions.HttpError as err:
-        print('*** HTTP error', err)
-        return None
+    folder = session.query(Folder).filter((Folder.id == input_dictionary['folder_id']) & (Folder.delete_date == None) & (Folder.user_id == user_id)).first()
+    session.close()
+    if folder is not None:
+        system_file_name = ''.join(
+            random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
+        with open(os.path.join(folder.path, system_file_name), "wb") as f:
+            md, res = dbx.files_download(path)
+            file = create_file(user_id, input_dictionary['file_name'], system_file_name, folder.id)
+            create_log_entry(user_id, 'File downloaded from Dropbox', file.id, None, session)
+            f.write(res.content)

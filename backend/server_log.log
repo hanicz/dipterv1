@@ -129,3 +129,5 @@ Sending activation email for: hanicz20@gmail.com
 Failed to send email for: hanicz20@gmail.com Exception: (535, b'5.7.8 Username and Password not accepted. Learn more at\n5.7.8  https://support.google.com/mail/?p=BadCredentials 19sm9406399wms.7 - gsmtp')
 Sending activation email for: hanicz20@gmail.com
 Failed to send email for: hanicz20@gmail.com Exception: (535, b'5.7.8 Username and Password not accepted. Learn more at\n5.7.8  https://support.google.com/mail/?p=BadCredentials i16sm16911191wrf.19 - gsmtp')
+2017-10-19 11:17:49.078910 Unhandled Exception: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg0MDgyNDEsInVzZXIiOjF9.5ApnDMut02FiPoZgzvzwlSnuUx8kh45umZDT2QvwHdY'
+2017-10-19 11:17:56.023330 Unhandled Exception: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg0MDgyNDEsInVzZXIiOjF9.5ApnDMut02FiPoZgzvzwlSnuUx8kh45umZDT2QvwHdY'

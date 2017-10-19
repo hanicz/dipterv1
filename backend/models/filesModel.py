@@ -15,7 +15,7 @@ from sqlalchemy.sql.expression import func
 from sqlalchemy.orm import aliased
 from werkzeug.utils import secure_filename
 from exception import InvalidFileException
-from models import create_log_entry
+from models import create_log_entry, get_user_data
 from exception import UnexpectedException, NotFoundException, InvalidParametersException
 from utils import UPLOAD_FOLDER
 
@@ -160,7 +160,7 @@ def create_file(user_id, filename, sys_fname, folder_id):
             session.add(new_file)
             session.commit()
             create_log_entry(user_id, 'File created', new_file.id, None, session)
-            return True
+            return new_file
     except exc.SQLAlchemyError as e:
         print(e.__context__)
         session.rollback()
@@ -232,6 +232,8 @@ def delete_shares(user_id, file_id):
             for s in delete_sh:
                 session.delete(s)
             session.commit()
+            create_log_entry(user_id, 'File share revoked from: ' + get_user_data(delete_sh.user_id).email, file_id,
+                             None, session)
             return True
         return False
     except exc.SQLAlchemyError as e:
@@ -287,8 +289,8 @@ def rename_file(user_id, input_dictionary):
             filter(((File.user_id == user_id) & (File.id == input_dictionary['id'])) | ((FileShare.user_id == user_id) & (Role.priority >= 2)) & (File.delete_date == None)).first()
 
         if file is not None:
+            create_log_entry(user_id, 'File renamed from: ' + file.file_name  + ' to:' + input_dictionary['fileName'], file.id, None, session)
             file.file_name = input_dictionary['fileName']
-            create_log_entry(user_id, 'File renamed', file.id, None, session)
             session.commit()
             return file.serialize()
         raise NotFoundException('File not found!')
@@ -317,9 +319,9 @@ def rename_folder(user_id, input_dictionary):
             for f in folders_rename:
                 f.path = f.path.replace(folder.path[:-1], path + input_dictionary['folderName'], 1)
 
+            create_log_entry(user_id, 'Folder renamed from: ' + folder.folder_name + ' to: ' + input_dictionary['folderName'], None, folder.id, session)
             folder.folder_name = input_dictionary['folderName']
             folder.path = path + folder.folder_name + '/'
-            create_log_entry(user_id, 'Folder renamed', None, folder.id, session)
             session.commit()
             return folder.serialize()
 
@@ -388,7 +390,7 @@ def move_file(user_id, input_dictionary):
             os.rename(os.path.join(folder.path, file.system_file_name),
                       os.path.join(new_folder.path, file.system_file_name))
             file.folder_id = new_folder.id
-            create_log_entry(user_id, 'File moved', file.id, new_folder.id, session)
+            create_log_entry(user_id, 'File moved to: ' + new_folder.folder_name, file.id, new_folder.id, session)
             session.commit()
             return file.serialize()
         print(file.user_id)
