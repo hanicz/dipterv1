@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from utils import limit_content_length, validate, HTTP_OK, HTTP_BAD_REQUEST, HTTP_CREATED, HTTP_NOT_FOUND
-from models import delete_note, create_note, decode_token, update_note, get_note, get_all_notes
+from models import delete_note, create_note, decode_token, update_note, get_note, get_all_notes, get_shared_with_me_notes
 from exception import InvalidParametersException
 
 notes_api = Blueprint('notes_api', __name__)
@@ -58,3 +58,8 @@ def get_user_notes():
     files = get_all_notes(decode_token(request.cookies.get('token')))
     return jsonify(files), HTTP_OK
 
+
+@notes_api.route("/shared", methods=['GET'])
+def get_shared_notes():
+    files = get_shared_with_me_notes(decode_token(request.cookies.get('token')))
+    return jsonify(files), HTTP_OK
