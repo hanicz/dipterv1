@@ -30,6 +30,7 @@ def create_notes():
 
 
 @notes_api.route("/update", methods=['POST'])
+@limit_content_length(300)
 def update_notes():
     input_dictionary = request.get_json()
     validation_dictionary = {'content': None, 'fileName': None,

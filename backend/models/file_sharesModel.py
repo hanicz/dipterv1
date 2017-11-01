@@ -95,7 +95,8 @@ def get_shares(user_id, file_id):
     try:
         useralias = aliased(User)
 
-        q = session.query(User, Role, FileShare).filter((User.id == FileShare.user_id) & (Role.id == FileShare.role_id) & (FileShare.file_id == file_id)).join(FileShare.file).join(useralias, File.user_id == useralias.id).filter(useralias.id == user_id)
+        q = session.query(User, Role, FileShare).filter((User.id == FileShare.user_id) & (Role.id == FileShare.role_id) & (FileShare.file_id == file_id))\
+            .join(FileShare.file).join(useralias, File.user_id == useralias.id).filter(useralias.id == user_id)
 
         if q is not None:
             data = []

@@ -3,7 +3,7 @@ import os
 from flask import Flask, request, jsonify
 from routes import users_api, files_api, notes_api, roles_api, file_shares_api, logs_api, dropbox_api
 from models import init_db, login_required
-from models import get_secret_key, get_email_credentials, delete_job, get_dropbox_secret, get_dropbox_key
+from models import get_code, delete_job
 from flask_cors import CORS
 from logger import LEVEL, log_message
 import datetime
@@ -13,10 +13,10 @@ app = Flask(__name__)
 CORS(app, supports_credentials=True)
 
 init_db()
-os.environ['SECRET_KEY'] = get_secret_key()
-os.environ['MAIL'] = get_email_credentials()
-os.environ['DROPBOX_KEY'] = get_dropbox_key()
-os.environ['DROPBOX_SECRET'] = get_dropbox_secret()
+os.environ['SECRET_KEY'] = get_code('SECRET_KEY')
+os.environ['MAIL'] = get_code('MAIL')
+os.environ['DROPBOX_KEY'] = get_code('DROPBOX_KEY')
+os.environ['DROPBOX_SECRET'] = get_code('DROPBOX_SECRET')
 
 app.register_blueprint(users_api, url_prefix='/users')
 app.register_blueprint(files_api, url_prefix='/files')
@@ -33,7 +33,7 @@ def before_request():
     print(request.path)
 
 
-@app.errorhandler(500)
+'''@app.errorhandler(500)
 def internal_server_error(error):
     message = str('%s Server Error: %s' % (datetime.datetime.now(), error))
     log_message(LEVEL.ERROR, message)
@@ -44,7 +44,7 @@ def internal_server_error(error):
 def unhandled_exception(e):
     message = ('%s Unhandled Exception: %s'% (datetime.datetime.now(), e))
     log_message(LEVEL.ERROR, message)
-    return jsonify({'Response': 'Something went wrong'}), HTTP_INT_ERROR
+    return jsonify({'Response': 'Something went wrong'}), HTTP_INT_ERROR'''
 
 
 if __name__ == '__main__':

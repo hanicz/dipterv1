@@ -43,10 +43,10 @@ def get_deleted_folders():
     return jsonify(folders), HTTP_OK
 
 
-@files_api.route("/file/<id>", methods=['DELETE'])
-def delete_file(id):
+@files_api.route("/file/<file_id>", methods=['DELETE'])
+def delete_file(file_id):
     try:
-        if remove_file(decode_token(request.cookies.get('token')), id):
+        if remove_file(decode_token(request.cookies.get('token')), file_id):
             return jsonify({'Response': 'File deleted successfully'}), HTTP_OK
         else:
             return jsonify({'Response': 'Error deleting file'}), HTTP_BAD_REQUEST

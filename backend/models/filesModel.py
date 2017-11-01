@@ -160,6 +160,7 @@ def create_file(user_id, filename, sys_fname, folder_id):
             session.add(new_file)
             session.commit()
             create_log_entry(user_id, 'File created', new_file.id, None, session)
+            session.commit()
             return new_file
     except exc.SQLAlchemyError as e:
         print(e.__context__)
@@ -231,8 +232,8 @@ def delete_shares(user_id, file_id):
             delete_sh = session.query(FileShare).filter((FileShare.file_id == file.id))
             for s in delete_sh:
                 session.delete(s)
-            session.commit()
-            create_log_entry(user_id, 'File share revoked from: ' + get_user_data(delete_sh.user_id).email, file_id,
+                session.commit()
+                create_log_entry(user_id, 'File share revoked from: ' + get_user_data(delete_sh.user_id).email, file_id,
                              None, session)
             return True
         return False
