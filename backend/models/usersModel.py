@@ -26,7 +26,7 @@ def login_user(username, password, ip):
             increment_bad_password(user)
             create_log_entry(user.id, 'User used wrong password with IP: ' + str(ip), None, None, session)
             session.commit()
-            return None
+        return None
     except exc.SQLAlchemyError as e:
         print(e.__context__)
         session.rollback()

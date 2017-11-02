@@ -4,6 +4,7 @@ from .db import DBSession, File, Folder, FileShare, Role
 from sqlalchemy import exc
 from models import create_log_entry
 
+
 def create_note(user_id, input_dictionary):
     session = DBSession()
     try:
