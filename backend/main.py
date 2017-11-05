@@ -33,7 +33,7 @@ def before_request():
     print(request.path)
 
 
-'''@app.errorhandler(500)
+@app.errorhandler(500)
 def internal_server_error(error):
     message = str('%s Server Error: %s' % (datetime.datetime.now(), error))
     log_message(LEVEL.ERROR, message)
@@ -44,7 +44,7 @@ def internal_server_error(error):
 def unhandled_exception(e):
     message = ('%s Unhandled Exception: %s'% (datetime.datetime.now(), e))
     log_message(LEVEL.ERROR, message)
-    return jsonify({'Response': 'Something went wrong'}), HTTP_INT_ERROR'''
+    return jsonify({'Response': 'Something went wrong'}), HTTP_INT_ERROR
 
 
 if __name__ == '__main__':
