@@ -105,10 +105,11 @@ def get_shared_with_me_notes(user_id):
     session = DBSession()
     try:
         files = session.query(File). \
-            outerjoin(FileShare, File.id == FileShare.file_id). \
-            outerjoin(Role). \
-            filter((File.user_id == user_id) | (
-            (FileShare.user_id == user_id) & (Role.priority >= 1)) & (File.delete_date == None) & (File.content != None))
+            join(FileShare, File.id == FileShare.file_id). \
+            join(Role, Role.id == FileShare.role_id). \
+            filter((File.user_id != user_id) & (File.delete_date == None) & (File.content != None) &
+                   (FileShare.user_id == user_id) & (Role.priority >= 1))
+
         if files is not None:
             return [f.serialize() for f in files]
     except exc.SQLAlchemyError as e:

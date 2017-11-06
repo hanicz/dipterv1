@@ -19,7 +19,7 @@ import { NotesComponent } from './notes/notes.component';
 import { CreateFolderComponent } from './create-folder/create-folder.component';
 import { DropboxComponent } from './dropbox/dropbox.component';
 import { SharedWithMeComponent } from './shared-with-me/shared-with-me.component'
-
+import { SharedNotesComponent } from './shared-notes/shared-notes.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -38,6 +38,7 @@ const routes: Routes = [
   { path: 'create-folder', component: CreateFolderComponent },
   { path: 'dropbox', component: DropboxComponent },
   { path: 'shared-with-me', component: SharedWithMeComponent },
+  { path: 'shared-notes', component: SharedNotesComponent },
   { path: '**', redirectTo: '/not-found' }
 ];
 

@@ -2,23 +2,20 @@
     <div class="container-fluid" id="menuBar">
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" style="cursor: pointer;" (click)="this.router.navigate(['./files']);">Files <span class="sr-only">(current)</span></a>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Files<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a style="cursor: pointer;" (click)="this.router.navigate(['./files']);">My Files</a></li>
+                        <li><a style="cursor: pointer;" (click)="this.router.navigate(['./shared-with-me']);">Shared with me</a></li>
+                        <li><a style="cursor: pointer;" (click)="this.router.navigate(['./deleted-files']);">Deleted</a></li>
+                    </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" style="cursor: pointer;" (click)="this.router.navigate(['./logs']);">Logs <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" style="cursor: pointer;" (click)="this.router.navigate(['./notes']);">Notes <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" style="cursor: pointer;" (click)="this.router.navigate(['./deleted-files']);">Deleted <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" style="cursor: pointer;" (click)="this.router.navigate(['./dropbox']);">Dropbox <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" style="cursor: pointer;" (click)="this.router.navigate(['./shared-with-me']);">Shared With Me <span class="sr-only">(current)</span></a>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Notes<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a style="cursor: pointer;" (click)="this.router.navigate(['./notes']);">My Notes</a></li>
+                        <li><a style="cursor: pointer;" (click)="this.router.navigate(['./shared-notes']);">Shared with me</a></li>
+                    </ul>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -26,8 +23,10 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">User<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a style="cursor: pointer;" (click)="this.router.navigate(['./settings']);">Change Data</a></li>
-                        <li><a style="cursor: pointer;" (click)="delete()">Delete Account</a></li>
+                        <li><a style="cursor: pointer;" (click)="this.router.navigate(['./dropbox']);">Dropbox</a></li>
+                        <li><a style="cursor: pointer;" (click)="this.router.navigate(['./logs']);">Logs</a></li>
                         <li><a style="cursor: pointer;" (click)="logout()">Logout</a></li>
+                        <li><a style="cursor: pointer;" (click)="delete()">Delete Account</a></li>
                     </ul>
                 </li>
             </ul>

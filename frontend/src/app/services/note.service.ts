@@ -30,6 +30,14 @@ export class NoteService {
       .map((res: Response) => res.json());
   }
 
+  get_shared_notes() {
+    const url = `${this.userUrl}/shared`;
+    return this.http.get(url, {
+      withCredentials: true
+    })
+      .map((res: Response) => res.json());
+  }
+
   update_note(note: MyFile){
     const url = `${this.userUrl}/update`;
     return this.http.post(url,JSON.stringify(note), {

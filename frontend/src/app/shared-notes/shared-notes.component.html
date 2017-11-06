@@ -1,0 +1,17 @@
+<div class="notes">
+    <li *ngFor="let note of notes" (click)="onSelectNote(note)">
+        <div id="image">
+            <img class="img-responsive" src="assets/images/file.png" width="15" height="10">
+        </div>
+        <span> {{note.fileName}} </span>
+    </li>
+    <div>
+        <p>
+            <button (click)="update_note()" [disabled]="!isValid()">Update</button>
+            <button (click)="delete_note()" [disabled]="!isValid()">Delete</button>
+        </p>
+        <p><label>Name : </label> <input [(ngModel)]="selectedNote.fileName"></p>
+        <textarea rows="15" cols="50" style="resize: none;" [(ngModel)]="selectedNote.content"></textarea>
+    </div>
+    <share [hidden]="notesShare" (closeEvent)="notesShare = true;" [file]="selectedNote"></share>
+</div>
