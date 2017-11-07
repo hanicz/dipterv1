@@ -1,38 +1,23 @@
 .files {
-    /*position: absolute;*/
-    z-index: 1;
-    top: 50px;
-    background: #FFFFFF;
-    width: 50%;
-    margin: auto;
-    border-radius: 8px;
-    padding: 45px;
-    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 15px 20px 0 rgba(0, 0, 0, 0.6);
-    list-style-type: none;
-    /*display: inline-block;*/
-  }
-  .files li {
-    cursor: pointer;
-    position: relative;
-    left: 0;
-    background-color: #EEE;
-    margin: .5em;
-    padding: .3em 0;
-    height: 1.6em;
-    border-radius: 4px;
-    top: 5px;
-    user-select: none;
-  }
-  .files li.selected:hover {
-    background-color: #BBD8DC !important;
-    color: white;
-  }
-  .files li:hover {
-    color: #607D8B;
-    background-color: #DDD;
-    left: .1em;
-  }
-  #image{
-    float: left;
-    margin-right: 3px;
-  }
+  /*z-index: 1;*/
+  left:100px;
+  top: 50px;
+  background: #FFFFFF;
+  margin-left: 1%;
+  border-radius: 8px;
+  padding: 45px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 15px 20px 0 rgba(0, 0, 0, 0.6);
+  list-style-type: none;
+}
+
+.files li:hover {
+  color: #607D8B;
+  background-color: #DDD;
+  cursor: pointer;
+  user-select: none;
+}
+
+#image{
+  float: left;
+  margin-right: 3px;
+}

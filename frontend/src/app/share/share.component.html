@@ -3,15 +3,33 @@
         <span id="close_share" (click)="close()">X</span>
     </div>
     <div>
-        <p><label>Name: </label> {{ file.fileName }}</p>
-        <p><label>Public: </label> {{ file.publicLink || "-"}}</p>
-        <p><label>Role: </label> <select [(ngModel)] = "selectedRole"><option *ngFor="let role of roles" [ngValue]="role">{{ role.name }}</option></select></p>
-        <p><label>To: </label> <input type="text" [(ngModel)]="to_user" placeholder="example@example.com"></p>
-        <button (click)="share()">Share</button>
-        <button [disabled]="isValid()" (click)="makePublic()">Public</button>
-        <button [disabled]="!isValid()" (click)="revokePublic()">Revoke Public</button>
+        <div class="form-group row">
+            <label>Name: </label> {{ file.fileName }}</div>
+        <div class="form-group row">
+            <label>Public: </label> {{ file.publicLink || "-"}}</div>
+        <div class="form-group row">
+            <label>Role: </label>
+            <select [(ngModel)]="selectedRole">
+                <option *ngFor="let role of roles" [ngValue]="role">{{ role.name }}</option>
+            </select>
+        </div>
+        <div class="form-group row">
+            <label>To: </label>
+            <input type="text" [(ngModel)]="to_user" placeholder="example@example.com" class="form-control">
+        </div>
+        <div class="form-group row">
+            <button (click)="share()" class="btn btn-primary">Share</button>
+        </div>
+        <div class="form-group row">
+            <button [disabled]="isValid()" (click)="makePublic()" class="btn btn-primary">Public</button>
+        </div>
+        <div class="form-group row">
+            <button [disabled]="!isValid()" (click)="revokePublic()" class="btn btn-primary">Revoke Public</button>
+        </div>
     </div>
-    <li *ngFor="let share of shares" >
-        <span> {{share.email}} </span> has <span> {{share.role}} </span> <span id="delete_share" (click)="delete_share(share)">X</span>
+    <li *ngFor="let share of shares">
+        <span> {{share.email}} </span> has
+        <span> {{share.role}} </span>
+        <span id="delete_share" (click)="delete_share(share)">X</span>
     </li>
 </div>

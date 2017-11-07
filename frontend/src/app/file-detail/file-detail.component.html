@@ -1,17 +1,34 @@
 <div class="filedetail" *ngIf="file">
     <div>
-        <p><label>Name : </label> <input [(ngModel)]="file.fileName"></p>
-        <p><label>Created : </label> {{file.created | date: 'short'}}</p>
-        <p><label>Version : </label> {{file.version}}</p>
-        <p><label>Deleted : </label> {{file.deleted || "-"}}</p>
-        <p><button (click)="rename()" [disabled]="isValid()">Rename</button>
-            <button (click)="delete()" [disabled]="isValid()">Delete</button></p>
-        <p><button (click)=move() [disabled]="isValid()">Move</button>
-            <select [(ngModel)]="moveFolder"><option *ngFor="let folder of folders" [ngValue]="folder">{{ folder.folderName || 'Main' }}</option></select></p>
-        <p><button [disabled]="!isValid()" (click)="restore()">Restore</button>
-            <button (click)="share()" [disabled]="isValid()">Share</button></p>
-        <p><button (click)="dropbox()" [disabled]="isValid()">Dropbox</button>
-            <button (click)="download()" [disabled]="isValid()">Download</button></p>
+        <div class="form-group row">
+            <label for="fileName">Name : </label>
+            <input [(ngModel)]="file.fileName" class="form-control" id="fileName" [disabled]="isValid()">
+        </div>
+        <div class="form-group row">
+            <label>Created : </label> {{file.created | date: 'short'}}
+        </div>
+        <div class="form-group row">
+            <label>Version : </label> {{file.version}}</div>
+        <div class="form-group row">
+            <label>Deleted : </label> {{file.deleted || "-"}}</div>
+        <div class="form-group row">
+            <button (click)="rename()" [disabled]="isValid()" class="btn btn-primary">Rename</button>
+            <button (click)="delete()" [disabled]="isValid()" class="btn btn-primary">Delete</button>
+        </div>
+        <div class="form-group row">
+            <button (click)=move() [disabled]="isValid()" class="btn btn-primary">Move</button>
+            <select [(ngModel)]="moveFolder">
+                <option *ngFor="let folder of folders" [ngValue]="folder">{{ folder.folderName || 'Main' }}</option>
+            </select>
+        </div>
+        <div class="form-group row">
+            <button [disabled]="!isValid()" (click)="restore()" class="btn btn-primary">Restore</button>
+            <button (click)="share()" [disabled]="isValid()" class="btn btn-primary">Share</button>
+        </div>
+        <div class="form-group row">
+            <button (click)="dropbox()" [disabled]="isValid()" class="btn btn-primary">Dropbox</button>
+            <button (click)="download()" [disabled]="isValid()" class="btn btn-primary">Download</button>
+        </div>
         <ul class="logs">
             <li *ngFor="let log of logs">
                 <span class="badge">{{log.created | date: 'medium'}}</span> {{log.message}}

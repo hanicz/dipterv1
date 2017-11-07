@@ -30,6 +30,7 @@ import { CreateFolderComponent } from './create-folder/create-folder.component';
 import { DropboxComponent } from './dropbox/dropbox.component';
 import { SharedWithMeComponent } from './shared-with-me/shared-with-me.component'
 import { SharedNotesComponent } from './shared-notes/shared-notes.component';
+import {  TruncatePipe }   from './entities/pipe';
 
 @NgModule({
   imports:      [ BrowserModule,
@@ -54,7 +55,8 @@ import { SharedNotesComponent } from './shared-notes/shared-notes.component';
                   CreateFolderComponent,
                   DropboxComponent,
                   SharedWithMeComponent,
-                  SharedNotesComponent],
+                  SharedNotesComponent,
+                  TruncatePipe],
   bootstrap:    [ AppComponent ],
   providers: [ UserService,
                 FileService,

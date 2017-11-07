@@ -30,6 +30,7 @@ export class CreateFolderComponent {
         this.newFolder.parent = this.folder;
         this.fileService.create_folder(this.newFolder).subscribe((json: Object) => {
             console.log(json);
+            this.newFolder = new Folder();
             this.closeEvent.emit();
         },
             error => console.error('Error: ' + error)

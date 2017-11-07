@@ -1,18 +1,28 @@
-<div class="container">
+<div class="row">
+  <div class="col-xs-9">
     <div class="files">
-      <li *ngFor="let folder of folders" (click)="onSelectFolder(folder)">
-        <div id="image">
-          <img class="img-responsive" src="assets/images/folder.png" width="20" height="30">
-        </div>
-        <span> {{folder.folderName}} </span>
-      </li>
-      <li *ngFor="let file of files" (click)="onSelectFile(file)">
-        <div id="image">
-          <img class="img-responsive" src="assets/images/file.png" width="15" height="10">
-        </div>
-        <span> {{file.fileName}}</span>
-      </li>
+      <div class="list-group row ">
+        <li *ngFor="let folder of folders" (click)="onSelectFolder(folder)" class="list-group-item col-sm-3">
+          <div id="image">
+            <img class="img-responsive" src="assets/images/folder.png" width="20" height="30">
+          </div>
+          <span> {{folder.folderName | limitTo: 27}} </span>
+        </li>
+      </div>
+      <div class="list-group row ">
+        <li *ngFor="let file of files" (click)="onSelectFile(file)" class="list-group-item col-sm-3">
+          <div id="image">
+            <img class="img-responsive" src="assets/images/file.png" width="15" height="10">
+          </div>
+          <span> {{file.fileName | limitTo: 27}}</span>
+        </li>
+      </div>
     </div>
   </div>
-  <file-detail [hidden]="fileHidden" (deleteEvent)="file_restored()" [file]="selectedFile"></file-detail>
-  <folder-detail [hidden]="folderHidden" [folder]="selectedFolder"></folder-detail>
+  <div class="col-xs-3">
+    <file-detail [hidden]="fileHidden" (deleteEvent)="file_restored()" [file]="selectedFile"></file-detail>
+  </div>
+  <div class="col-xs-3">
+    <folder-detail [hidden]="folderHidden" [folder]="selectedFolder"></folder-detail>
+  </div>
+</div>

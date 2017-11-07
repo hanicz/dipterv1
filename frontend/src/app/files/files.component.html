@@ -1,26 +1,39 @@
-<div class="files">
-  <div class="form-group">
-    <p>
-        <input type="text" class="form-control" id="search" placeholder="search" [ngModel]="search" (ngModelChange)="search_files($event)" name="search">
-      <img id="upload" class="img-responsive" src="assets/images/file.png" (click)="showUpload()" width="15" height="20">
-      <img id="newFolder" class="img-responsive" src="assets/images/folder.png" (click)="showFolder()" width="25" height="40">
-    </p>
+<div class="row">
+  <div class="col-xs-9">
+    <div class="files">
+      <div class="form-group row">
+        <div class="col-sm-5">
+          <input type="text" class="form-control" id="search" placeholder="search" [ngModel]="search" (ngModelChange)="search_files($event)"
+            name="search">
+        </div>
+        <img id="upload" class="img-responsive" src="assets/images/file.png" (click)="showUpload()" width="15" height="20">
+        <img id="newFolder" class="img-responsive" src="assets/images/folder.png" (click)="showFolder()" width="25" height="40">
+      </div>
+      <div class="list-group row ">
+        <li *ngFor="let folder of folders" (click)="onSelectFolder(folder)" (dblclick)="onDblSelectFolder(folder)" class="list-group-item col-sm-3">
+          <div id="image">
+            <img class="img-responsive" src="assets/images/folder.png" width="20" height="30">
+          </div>
+          <span> {{folder.folderName | limitTo: 27}} </span>
+        </li>
+      </div>
+      <div class="list-group row ">
+        <li *ngFor="let file of files" (click)="onSelectFile(file)" class="list-group-item col-sm-3">
+          <div id="image">
+            <img class="img-responsive" src="assets/images/file.png" width="15" height="10">
+          </div>
+          <span> {{ file.fileName | limitTo: 27 }}</span>
+        </li>
+      </div>
+    </div>
   </div>
-  <li *ngFor="let folder of folders" (click)="onSelectFolder(folder)" (dblclick)="onDblSelectFolder(folder)">
-    <div id="image">
-      <img class="img-responsive" src="assets/images/folder.png" width="20" height="30">
-    </div>
-    <span> {{folder.folderName}} </span>
-  </li>
-  <li *ngFor="let file of files" (click)="onSelectFile(file)">
-    <div id="image">
-      <img class="img-responsive" src="assets/images/file.png" width="15" height="10">
-    </div>
-    <span> {{file.fileName}}</span>
-  </li>
+  <div class="col-xs-3">
+    <file-detail [hidden]="fileHidden" (deleteEvent)="get_files(0)" (shareEvent)="showShare()" [file]="selectedFile" class="col"></file-detail>
+  </div>
+  <div class="col-xs-3">
+    <folder-detail [hidden]="folderHidden" [folder]="selectedFolder"></folder-detail>
+  </div>
 </div>
-<file-detail [hidden]="fileHidden" (deleteEvent)="get_files(0)" (shareEvent)="showShare()" [file]="selectedFile" class="col"></file-detail>
 <upload [hidden]="uploadHidden" (closeEvent)="close_upload()" [folder]="selectedFolder.id" class="col"></upload>
 <create-folder [hidden]="createFolderHidden" (closeEvent)="close_upload()" [folder]="selectedFolder.id" class="col"></create-folder>
 <share [hidden]="uploadShare" (closeEvent)="uploadShare = true;" [file]="selectedFile" class="col"></share>
-<folder-detail [hidden]="folderHidden" [folder]="selectedFolder"></folder-detail>

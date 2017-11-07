@@ -1,19 +1,26 @@
 <div class="folderdetail" *ngIf="folder.folderName">
     <div>
-        <p><label>Name : </label> <input [(ngModel)]="folder.folderName"></p>
-        <p><label>Created : </label> {{folder.created | date: 'short'}}</p>
-        <p><label>Deleted : </label> {{folder.deleted || "-"}}</p>
-        <p>
-            <button (click)="rename()" [disabled]="isValid()">Rename</button>
-            <button (click)="delete()" [disabled]="isValid()">Delete</button>
-        </p>
-        <p>
-            <button (click)=move() [disabled]="isValid()">Move</button>
-            <select [(ngModel)]="moveFolder"><option *ngFor="let folder of folders" [ngValue]="folder">{{ folder.folderName || 'Main' }}</option></select>
-        </p>
-        <p>
-            <button [disabled]="!isValid()" (click)="restore()">Restore</button>
-        </p>
+        <div class="form-group row">
+            <label>Name : </label>
+            <input [(ngModel)]="folder.folderName" class="form-control" [disabled]="isValid()">
+        </div>
+        <div class="form-group row">
+            <label>Created : </label> {{folder.created | date: 'short'}}</div>
+        <div class="form-group row">
+            <label>Deleted : </label> {{folder.deleted || "-"}}</div>
+        <div class="form-group row">
+            <button (click)="rename()" [disabled]="isValid()" class="btn btn-primary">Rename</button>
+            <button (click)="delete()" [disabled]="isValid()" class="btn btn-primary">Delete</button>
+        </div>
+        <div class="form-group row">
+            <button (click)=move() [disabled]="isValid()" class="btn btn-primary">Move</button>
+            <select [(ngModel)]="moveFolder" >
+                <option *ngFor="let folder of folders" [ngValue]="folder">{{ folder.folderName || 'Main' }}</option>
+            </select>
+        </div>
+        <div class="form-group row">
+            <button [disabled]="!isValid()" (click)="restore()" class="btn btn-primary">Restore</button>
+        </div>
         <ul class="logs">
             <li *ngFor="let log of logs">
                 <span class="badge">{{log.created | date: 'medium'}}</span> {{log.message}}

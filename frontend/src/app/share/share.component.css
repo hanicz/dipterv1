@@ -2,76 +2,37 @@
     position: absolute;
     z-index: 2;
     background: #FFFFFF;
-    max-width: 360px;
-    top: 50px;
-    margin: 0 auto 100px;
+    width: 5%px;
+    margin: auto;
+    top: 20%;
+    left:40%;
     border-radius: 8px;
     padding: 45px;
-    text-align: center;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 15px 20px 0 rgba(0, 0, 0, 0.6);
     list-style-type: none;
   }
   
 .fileshare button {
-    text-transform: uppercase;
-    outline: 0;
-    background: #339dcf;
     width: 100%;
-    border: 2px solid #fbfffb;
-    border-radius: 8px;
-    padding: 15px;
-    color: #FFFFFF;
-    font-size: 14px;
-    -webkit-transition: all 0.3 ease;
-    transition: all 0.3 ease;
-    cursor: pointer;
   }
   
-.fileshare button:hover,.fileshare button:active,.fileshare button:focus {
-    background: #509fcf;
-  }
   
 #close_share{
     float:right;
     color:#418BFA;
+    cursor: pointer;
+    
   }
 
   #delete_share{
     float:right;
     color:#418BFA;
-  }
-
-  .fileshare button:disabled {
-    text-transform: uppercase;
-    outline: 0;
-    background: #B3BCC0;
-    width: 40%;
-    border: 2px solid #fbfffb;
-    border-radius: 8px;
-    padding: 8px;
-    color: #FFFFFF;
-    font-size: 10px;
-    -webkit-transition: all 0.3 ease;
-    transition: all 0.3 ease;
     cursor: pointer;
   }
 
-  .fileshare li {
-    cursor: pointer;
-    position: relative;
-    left: 0;
-    background-color: #EEE;
-    margin: .5em;
-    padding: .3em 0;
-    height: 1.6em;
-    border-radius: 4px;
-  }
-  .fileshare li.selected:hover {
-    background-color: #BBD8DC !important;
-    color: white;
-  }
   .fileshare li:hover {
     color: #607D8B;
     background-color: #DDD;
     left: .1em;
+    cursor: pointer;
   }

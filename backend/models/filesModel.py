@@ -10,7 +10,7 @@ import threading
 
 from utils import NOT_ALLOWED_EXTENSIONS
 from .db import DBSession, File, FileShare, Folder, Role
-from sqlalchemy import exc, not_
+from sqlalchemy import exc, not_, func
 from sqlalchemy.sql.expression import func
 from sqlalchemy.orm import aliased
 from werkzeug.utils import secure_filename
@@ -95,7 +95,7 @@ def get_all_deleted_folders(user_id):
 def search_user_file(user_id, file_name):
     session = DBSession()
     try:
-        files = session.query(File).filter((File.user_id == user_id) & (File.file_name.startswith(file_name)) & (File.delete_date == None))
+        files = session.query(File).filter((File.user_id == user_id) & (File.file_name.contains(file_name)) & (File.delete_date == None))
         if files is not None:
             return [f.serialize() for f in files]
         return None
@@ -268,6 +268,7 @@ def crt_folder(user_id, input_dictionary):
 
                 session.add(new_folder)
                 os.makedirs(new_folder_path)
+                session.commit()
                 create_log_entry(user_id, 'Folder created', None, new_folder.id, session)
                 session.commit()
                 return new_folder.serialize()

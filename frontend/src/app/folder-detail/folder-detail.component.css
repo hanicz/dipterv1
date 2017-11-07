@@ -1,39 +1,11 @@
 .folderdetail {
-    background: #FFFFFF;
-    max-width: 30%;
-    border-radius: 8px;
-    padding: 45px;
-    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 15px 20px 0 rgba(0, 0, 0, 0.6);
-    display: inline-block;
-    float: right;
+  background: #FFFFFF;
+  margin-right:10%;
+  border-radius: 8px;
+  padding: 45px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 15px 20px 0 rgba(0, 0, 0, 0.6); 
   }
 
 .folderdetail button {
-    text-transform: uppercase;
-    outline: 0;
-    background: #339dcf;
-    width: 40%;
-    border: 2px solid #fbfffb;
-    border-radius: 8px;
-    padding: 8px;
-    color: #FFFFFF;
-    font-size: 10px;
-    -webkit-transition: all 0.3 ease;
-    transition: all 0.3 ease;
-    cursor: pointer;
-  }
-
-  .folderdetail button:disabled {
-    text-transform: uppercase;
-    outline: 0;
-    background: #B3BCC0;
-    width: 40%;
-    border: 2px solid #fbfffb;
-    border-radius: 8px;
-    padding: 8px;
-    color: #FFFFFF;
-    font-size: 10px;
-    -webkit-transition: all 0.3 ease;
-    transition: all 0.3 ease;
-    cursor: pointer;
+    width: 45%;
   }

@@ -1,67 +1,20 @@
 .notes {
-    background: #FFFFFF;
-    width: 50%;
-    margin: auto;
-    border-radius: 8px;
-    padding: 45px;
-    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 15px 20px 0 rgba(0, 0, 0, 0.6);
-    list-style-type: none;
-    text-align: center;
-  }
+  background: #FFFFFF;
+  width: 50%;
+  margin: auto;
+  border-radius: 8px;
+  padding: 45px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 15px 20px 0 rgba(0, 0, 0, 0.6);
+  list-style-type: none;
+}
 
-.notes button {
-    text-transform: uppercase;
-    outline: 0;
-    background: #339dcf;
-    width: 40%;
-    border: 2px solid #fbfffb;
-    border-radius: 8px;
-    padding: 8px;
-    color: #FFFFFF;
-    font-size: 10px;
-    -webkit-transition: all 0.3 ease;
-    transition: all 0.3 ease;
-    cursor: pointer;
-  }
+#image{
+  float: left;
+  margin-right: 3px;
+}
 
-  .notes button:disabled {
-    text-transform: uppercase;
-    outline: 0;
-    background: #B3BCC0;
-    width: 40%;
-    border: 2px solid #fbfffb;
-    border-radius: 8px;
-    padding: 8px;
-    color: #FFFFFF;
-    font-size: 10px;
-    -webkit-transition: all 0.3 ease;
-    transition: all 0.3 ease;
-    cursor: pointer;
-  }
-
-  .notes li {
-    cursor: pointer;
-    position: relative;
-    left: 0;
-    background-color: #EEE;
-    margin: .5em;
-    width: 50%;
-    padding: .3em 0;
-    height: 1.6em;
-    border-radius: 4px;
-    text-align: left;
-  }
-  .notes li.selected:hover {
-    background-color: #BBD8DC !important;
-    color: white;
-  }
-  .notes li:hover {
-    color: #607D8B;
-    background-color: #DDD;
-    left: .1em;
-  }
-  
-  #image{
-    float: left;
-    margin-right: 3px;
-  }
+.notes li:hover {
+  color: #607D8B;
+  background-color: #DDD;
+  cursor: pointer;
+}

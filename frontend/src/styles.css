@@ -5,12 +5,12 @@ h1 {
 }
 
 body{
-/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#4c4241+0,76dbed+0,0c7cf4+31,0c7cf4+31,000000+100 */
-background: #4c4241; /* Old browsers */
-background: -moz-linear-gradient(-45deg,  #4c4241 0%, #76dbed 0%, #0c7cf4 31%, #0c7cf4 31%, #000000 100%); /* FF3.6-15 */
-background: -webkit-linear-gradient(-45deg,  #4c4241 0%,#76dbed 0%,#0c7cf4 31%,#0c7cf4 31%,#000000 100%); /* Chrome10-25,Safari5.1-6 */
-background: linear-gradient(135deg,  #4c4241 0%,#76dbed 0%,#0c7cf4 31%,#0c7cf4 31%,#000000 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4241', endColorstr='#000000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+background: #4c4241; 
+background: -moz-linear-gradient(-45deg,  #4c4241 0%, #76dbed 0%, #0c7cf4 31%, #0c7cf4 31%, #000000 100%); 
+background: -webkit-linear-gradient(-45deg,  #4c4241 0%,#76dbed 0%,#0c7cf4 31%,#0c7cf4 31%,#000000 100%); 
+background: linear-gradient(135deg,  #4c4241 0%,#76dbed 0%,#0c7cf4 31%,#0c7cf4 31%,#000000 100%); 
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4241', endColorstr='#000000',GradientType=1 ); 
 
   height: 100%;
   margin: 0;
