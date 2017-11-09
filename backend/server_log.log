@@ -165,3 +165,4 @@ Failed to send email for: awd12d1d2@12hje12hj.hu Exception: (535, b'5.7.8 Userna
 2017-11-07 14:33:52.315920 Unhandled Exception: 
 2017-11-07 14:33:52.630839 Unhandled Exception: 
 2017-11-08 21:43:06.911671 Unhandled Exception: 
+2017-11-09 18:39:46.894803 Unhandled Exception: 'Query' object has no attribute 'user_id'
