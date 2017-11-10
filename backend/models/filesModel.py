@@ -148,7 +148,7 @@ def create_file(user_id, filename, sys_fname, folder_id):
     session = DBSession()
     try:
         max_versioned_file = session.query(func.max(File.version)).filter(
-            (File.user_id == user_id) & (File.file_name == filename) & (File.folder_id == folder_id))
+            (File.user_id == user_id) & (File.file_name == filename) & (File.folder_id == folder_id) & (File.delete_date == None))
 
         for max_version in max_versioned_file:
             if max_version[0] is None:
@@ -179,10 +179,19 @@ def remove_file(user_id, file_id):
             filter(((File.user_id == user_id) & (File.id == file_id)) | (
             (FileShare.user_id == user_id) & (Role.priority >= 3)) & (File.delete_date == None)).first()
         if file is not None:
+            versioned_files = session.query(File).filter(
+                (File.user_id == user_id) & (File.file_name == file.file_name)
+                & (File.folder_id == file.folder_id) & (File.version > file.version) & (File.delete_date == None))
+
+            if versioned_files is not None:
+                for f in versioned_files:
+                    f.version -= 1
+
             file.delete_date = datetime.datetime.now()
             delete_shares(user_id, file.id)
             session.commit()
             create_log_entry(user_id, 'File deleted', file_id, None, session)
+            session.commit()
             return True
         return False
     except exc.SQLAlchemyError as e:
@@ -291,8 +300,18 @@ def rename_file(user_id, input_dictionary):
             filter(((File.user_id == user_id) & (File.id == input_dictionary['id'])) | ((FileShare.user_id == user_id) & (Role.priority >= 2)) & (File.delete_date == None)).first()
 
         if file is not None:
-            create_log_entry(user_id, 'File renamed from: ' + file.file_name  + ' to:' + input_dictionary['fileName'], file.id, None, session)
+            max_version = session.query(func.max(File.version)).filter(
+                (File.user_id == user_id) & (File.file_name == input_dictionary['fileName'])
+                & (File.folder_id == file.folder_id) & (File.delete_date == None)).first()
+
+            if max_version[0] is not None:
+                file.version = max_version[0] + 1
+            else:
+                file.version = 0
+
             file.file_name = input_dictionary['fileName']
+            create_log_entry(user_id, 'File renamed from: ' + file.file_name + ' to:' + input_dictionary['fileName'],
+                             file.id, None, session)
             session.commit()
             return file.serialize()
         raise NotFoundException('File not found!')
@@ -312,8 +331,16 @@ def rename_folder(user_id, input_dictionary):
 
         if folder is not None and secure_filename(input_dictionary['folderName']) != "" and secure_filename(input_dictionary['folderName']) != '...':
 
+            existing_folder = session.query(Folder).filter(
+                (Folder.user_id == user_id) & (Folder.parent_folder == folder.id) & (
+                    Folder.folder_name == input_dictionary['folderName'])).first()
+
             if folder.parent_folder is None:
-                raise UnexpectedException('Unable to rename folder!')
+                raise UnexpectedException('You can''t rename your main folder')
+
+            if existing_folder is not None:
+                raise UnexpectedException('That folder name is already in use')
+
             path = ''.join(folder.path[:-1].rsplit(folder.folder_name, 1))
             os.rename(os.path.join(path, folder.folder_name), os.path.join(path, input_dictionary['folderName']))
 
@@ -497,9 +524,19 @@ def restore_file(user_id, file_id):
     try:
         file = session.query(File).join(Folder).filter((File.user_id == user_id) & (File.delete_date != None) & (File.id == file_id) & (File.folder_id == Folder.id) & (Folder.delete_date == None)).first()
         if file is not None:
+            max_version = session.query(func.max(File.version)).filter(
+                (File.user_id == user_id) & (File.file_name == file.file_name)
+                & (File.folder_id == file.folder_id) & (File.delete_date == None)).first()
+
+            if max_version[0] is not None:
+                file.version = max_version[0] + 1
+            else:
+                file.version = 0
+
             file.delete_date = None
             session.commit()
             create_log_entry(user_id, 'File restored', file.id, None, session)
+            session.commit()
             return file.serialize()
         raise NotFoundException('File not found!')
     except exc.SQLAlchemyError as e:
