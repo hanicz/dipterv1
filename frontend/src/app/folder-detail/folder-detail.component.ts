@@ -21,7 +21,7 @@ export class FolderDetailComponent {
   moveFolder: Folder;
   logs: Log[];
 
-  @Output() deleteEvent = new EventEmitter();
+  @Output() changeEvent: EventEmitter<String> = new EventEmitter<String>();
 
   constructor(
     private fileService: FileService,
@@ -58,8 +58,12 @@ export class FolderDetailComponent {
   rename(): void {
     this.fileService.rename_folder(this.folder).subscribe((json: Object) => {
       console.log(json);
+      this.changeEvent.emit("Folder renamed successfully");
     },
-      error => console.error('Error: ' + error)
+      error => {
+        console.error('Error: ' + error)
+        this.changeEvent.emit("Folder rename failed");
+      }
     );
   }
 
@@ -67,26 +71,46 @@ export class FolderDetailComponent {
     this.fileService.remove_folder(this.folder.id).subscribe((json: Object) => {
       console.log(json);
       this.folder = null;
-      this.deleteEvent.emit();
+      this.changeEvent.emit("Folder deleted successfully");
     },
-      error => console.error('Error: ' + error)
+      error => {
+        console.error('Error: ' + error)
+        this.changeEvent.emit("Folder delete failed");
+      }
     );
   }
 
   move(): void {
     this.fileService.move_folder(this.folder.id, this.moveFolder.id).subscribe((json: Object) => {
       console.log(json);
+      this.changeEvent.emit("Folder moved successfully");
     },
-      error => console.error('Error: ' + error)
+      error => {
+        console.error('Error: ' + error)
+        this.changeEvent.emit("Folder move failed");
+      }
     );
   }
 
   restore(): void {
     this.fileService.restore_folder(this.folder.id).subscribe((json: Object) => {
       console.log(json);
-      this.deleteEvent.emit();
+      this.changeEvent.emit("Folder restored successfully");
     },
-      error => console.error('Error: ' + error)
+      error => {
+        console.error('Error: ' + error)
+        this.changeEvent.emit("Folder restore failed");
+      }
     );
   }
+
+  download(): void {
+    
+        var newWindow = window.open('http://localhost:5000/files/download/folder/' + this.folder.id);
+    
+        /*this.fileService.download(this.file.id).subscribe(blob => {
+          this.changeEvent.emit("File download started successfully");
+          saveAs(blob, this.file.fileName.toString());
+        });*/
+      }
 }

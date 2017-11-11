@@ -30,8 +30,8 @@ def delete_note(user_id, note_id):
     try:
         note = session.query(File).outerjoin(FileShare, File.id == FileShare.file_id). \
             outerjoin(Role).filter(
-            ((File.user_id == user_id) | ((FileShare.user_id == user_id) & (Role.priority >= 3))) & (
-            File.id == note_id) & (File.content != None)).first()
+            ((File.user_id == user_id) & (File.id == note_id)& (File.content != None) & (File.delete_date == None)) |
+            ((FileShare.user_id == user_id) & (Role.priority >= 3) & (FileShare.file_id == note_id) & (File.content != None) & (File.delete_date == None))).first()
         if note is not None:
             note.delete_date = datetime.datetime.now()
             create_log_entry(user_id, 'Note deleted', note.id, None, session)
@@ -49,8 +49,11 @@ def delete_note(user_id, note_id):
 def update_note(user_id, input_dictionary):
     session = DBSession()
     try:
-        note = session.query(File).outerjoin(FileShare, File.id == FileShare.file_id).\
-            outerjoin(Role).filter(((File.user_id == user_id) | ((FileShare.user_id == user_id) & (Role.priority >= 2))) & (File.id == input_dictionary['id']) & (File.content != None)).first()
+        note = session.query(File).outerjoin(FileShare, File.id == FileShare.file_id). \
+            outerjoin(Role).filter(
+            ((File.user_id == user_id) & (File.id == input_dictionary['id']) & (File.content != None) & (File.delete_date == None)) |
+            ((FileShare.user_id == user_id) & (Role.priority >= 2) & (FileShare.file_id == input_dictionary['id']) & (
+            File.content != None) & (File.delete_date == None))).first()
         if note is not None:
             note.content = input_dictionary['content']
             note.file_name = input_dictionary['fileName']
@@ -66,7 +69,7 @@ def update_note(user_id, input_dictionary):
         session.close()
 
 
-def get_note(user_id, note_id):
+'''def get_note(user_id, note_id):
     session = DBSession()
     try:
         note = session.query(File).outerjoin(FileShare, File.id == FileShare.file_id). \
@@ -81,7 +84,7 @@ def get_note(user_id, note_id):
         session.rollback()
         return None
     finally:
-        session.close()
+        session.close()'''
 
 
 def get_all_notes(user_id):

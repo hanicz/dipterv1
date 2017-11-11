@@ -20,6 +20,7 @@ import { CreateFolderComponent } from './create-folder/create-folder.component';
 import { DropboxComponent } from './dropbox/dropbox.component';
 import { SharedWithMeComponent } from './shared-with-me/shared-with-me.component'
 import { SharedNotesComponent } from './shared-notes/shared-notes.component';
+import { ResponseComponent } from './reponse/response.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -37,6 +38,7 @@ const routes: Routes = [
   { path: 'deleted-files', component: DeletedFilesComponent },
   { path: 'create-folder', component: CreateFolderComponent },
   { path: 'dropbox', component: DropboxComponent },
+  { path: 'response', component: ResponseComponent },
   { path: 'shared-with-me', component: SharedWithMeComponent },
   { path: 'shared-notes', component: SharedNotesComponent },
   { path: '**', redirectTo: '/not-found' }

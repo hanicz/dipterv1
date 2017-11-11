@@ -19,22 +19,34 @@ export class SharedWithMeComponent {
     files: MyFile[];
     fileHidden: boolean = true;
     selectedFile: MyFile;
+    requestResponse: String;
+    responseHidden: boolean = true;
 
   constructor(
     private fileService: FileService
   ) { }
 
   ngOnInit(): void {
-    this.fileService.get_shared_with_me_files().subscribe((json: Object) => {
-        console.log(json);
-        this.files = json as MyFile[];
-      },
-        error => console.error('Error: ' + error)
-      );
+    this.get_shared_files();
   }
 
   onSelectFile(file: MyFile): void {
     this.fileHidden = false;
     this.selectedFile = file;
+  }
+
+  get_shared_files(): void{
+    this.fileService.get_shared_with_me_files().subscribe((json: Object) => {
+      console.log(json);
+      this.files = json as MyFile[];
+    },
+      error => console.error('Error: ' + error)
+    );
+  }
+
+  showResponse(event: String){
+    this.requestResponse = event;
+    this.responseHidden = false;
+    setTimeout(() => this.responseHidden = true, 2000);
   }
 }

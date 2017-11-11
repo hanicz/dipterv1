@@ -20,9 +20,10 @@
     </div>
   </div>
   <div class="col-xs-3">
-    <file-detail [hidden]="fileHidden" (deleteEvent)="file_restored()" [file]="selectedFile"></file-detail>
+    <file-detail [hidden]="fileHidden" (changeEvent)="showResponse($event); file_restored(); this.fileHidden=true;" [file]="selectedFile"></file-detail>
   </div>
   <div class="col-xs-3">
-    <folder-detail [hidden]="folderHidden" [folder]="selectedFolder"></folder-detail>
+    <folder-detail [hidden]="folderHidden" (changeEvent)="showResponse($event); file_restored(); this.folderHidden=true;" [folder]="selectedFolder"></folder-detail>
   </div>
 </div>
+<response [hidden]="responseHidden" [inresponse]="requestResponse" class="col"></response>

@@ -28,12 +28,13 @@
     </div>
   </div>
   <div class="col-xs-3">
-    <file-detail [hidden]="fileHidden" (deleteEvent)="get_files(0)" (shareEvent)="showShare()" [file]="selectedFile" class="col"></file-detail>
+    <file-detail [hidden]="fileHidden" (changeEvent)="showResponse($event); get_files(this.currentFolder.id); this.fileHidden=true;" (shareEvent)="showShare()" [file]="selectedFile" class="col"></file-detail>
   </div>
   <div class="col-xs-3">
-    <folder-detail [hidden]="folderHidden" [folder]="selectedFolder"></folder-detail>
+    <folder-detail [hidden]="folderHidden" [folder]="selectedFolder" (changeEvent)="showResponse($event); get_folders(this.currentFolder); this.folderHidden=true;"></folder-detail>
   </div>
 </div>
 <upload [hidden]="uploadHidden" (closeEvent)="close_upload()" [folder]="selectedFolder.id" class="col"></upload>
-<create-folder [hidden]="createFolderHidden" (closeEvent)="close_upload()" [folder]="selectedFolder.id" class="col"></create-folder>
+<create-folder [hidden]="createFolderHidden" (closeEvent)="close_upload()" [folder]="currentFolder.id" class="col"></create-folder>
 <share [hidden]="uploadShare" (closeEvent)="uploadShare = true;" [file]="selectedFile" class="col"></share>
+<response [hidden]="responseHidden" [inresponse]="requestResponse" class="col"></response>

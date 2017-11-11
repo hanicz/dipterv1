@@ -20,6 +20,7 @@
         </div>
         <div class="form-group row">
             <button [disabled]="!isValid()" (click)="restore()" class="btn btn-primary">Restore</button>
+            <button [disabled]="isValid()" (click)="download()" class="btn btn-primary">Download</button>
         </div>
         <ul class="logs">
             <li *ngFor="let log of logs">

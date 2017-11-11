@@ -7,6 +7,7 @@ import string
 import distutils.dir_util
 import shutil
 import threading
+import zipfile
 
 from utils import NOT_ALLOWED_EXTENSIONS
 from .db import DBSession, File, FileShare, Folder, Role
@@ -176,8 +177,8 @@ def remove_file(user_id, file_id):
         file = session.query(File). \
             outerjoin(FileShare, File.id == FileShare.file_id). \
             outerjoin(Role). \
-            filter(((File.user_id == user_id) & (File.id == file_id)) | (
-            (FileShare.user_id == user_id) & (Role.priority >= 3)) & (File.delete_date == None)).first()
+            filter(((File.user_id == user_id) & (File.id == file_id) & (File.delete_date == None)) | (
+            (FileShare.user_id == user_id) & (Role.priority >= 3)) & (File.delete_date == None) & (FileShare.file_id == file_id)).first()
         if file is not None:
             versioned_files = session.query(File).filter(
                 (File.user_id == user_id) & (File.file_name == file.file_name)
@@ -297,7 +298,8 @@ def rename_file(user_id, input_dictionary):
         file = session.query(File).\
             outerjoin(FileShare, File.id == FileShare.file_id).\
             outerjoin(Role).\
-            filter(((File.user_id == user_id) & (File.id == input_dictionary['id'])) | ((FileShare.user_id == user_id) & (Role.priority >= 2)) & (File.delete_date == None)).first()
+            filter(((File.user_id == user_id) & (File.id == input_dictionary['id']) & (File.delete_date == None)) |
+                   ((FileShare.user_id == user_id) & (Role.priority >= 2)) & (File.delete_date == None) & (FileShare.file_id == input_dictionary['id'])).first()
 
         if file is not None:
             max_version = session.query(func.max(File.version)).filter(
@@ -469,10 +471,52 @@ def get_file_data(user_id, file_id):
         file, folder = session.query(File, Folder)\
             .outerjoin(FileShare, File.id == FileShare.file_id)\
             .outerjoin(Role)\
-            .filter(((File.user_id == user_id) | ((FileShare.user_id == user_id) & (Role.priority >= 1)))
-                    & (File.id == file_id) & (Folder.id == File.folder_id)).first()
+            .filter(((File.user_id == user_id) & (File.id == file_id) & (Folder.id == File.folder_id) & (File.delete_date == None)) |
+                    ((FileShare.user_id == user_id) & (Role.priority >= 1) & (FileShare.file_id == file_id) & (Folder.id == File.folder_id) & (File.delete_date == None))).first()
         if file is not None and folder is not None:
             return folder.path, file.system_file_name, file.file_name
+        return None
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return None
+    finally:
+        session.close()
+
+
+def get_folder_data(user_id, folder_id):
+    session = DBSession()
+    try:
+        folder = session.query(Folder) \
+            .filter((Folder.id == folder_id) & (Folder.user_id == user_id) & (Folder.delete_date == None)).first()
+
+        if folder is not None :
+            temp_folder = UPLOAD_FOLDER + 'zip/' + str(user_id) + '/'
+
+            new_path = os.path.join(temp_folder, folder.folder_name)
+            os.makedirs(new_path)
+            distutils.dir_util.copy_tree(folder.path, new_path)
+
+            folders_to_zip = session.query(Folder).filter((Folder.user_id == user_id) & (Folder.path.startswith(folder.path)))
+            for fo in folders_to_zip:
+                zip_path = fo.path.replace(UPLOAD_FOLDER, UPLOAD_FOLDER + 'zip/', 1)
+                if fo.delete_date is not None:
+                    shutil.rmtree(zip_path, ignore_errors=True)
+
+                files_to_zip = session.query(File).filter((File.user_id == user_id) & (File.folder_id == fo.id))
+                for fi in files_to_zip:
+                    if fi.delete_date is not None:
+                        os.remove(os.path.join(zip_path, fi.system_file_name))
+                    else:
+                        os.rename(os.path.join(zip_path, fi.system_file_name), os.path.join(zip_path, fi.file_name))
+
+            zip_folder = UPLOAD_FOLDER + 'zip/' + str(user_id) + '/'
+            zip_file = folder.folder_name
+
+            shutil.make_archive(os.path.join(zip_folder, zip_file), 'zip', new_path)
+            shutil.rmtree(new_path, ignore_errors=True)
+
+            return zip_folder, zip_file + '.zip', zip_file + '.zip'
         return None
     except exc.SQLAlchemyError as e:
         print(e.__context__)

@@ -21,9 +21,11 @@ export class DeletedFilesComponent {
   folders: Folder[];
   selectedFile: MyFile;
   selectedFolder: Folder;
+  requestResponse: String;
 
   folderHidden: boolean = true;
   fileHidden: boolean = true;
+  responseHidden: boolean = true;
 
   constructor(
     private fileService: FileService
@@ -70,5 +72,11 @@ export class DeletedFilesComponent {
     this.selectedFile = null;
     this.get_deleted_folders();
     this.get_deleted_files();
+  }
+
+  showResponse(event: String){
+    this.requestResponse = event;
+    this.responseHidden = false;
+    setTimeout(() => this.responseHidden = true, 2000);
   }
 }

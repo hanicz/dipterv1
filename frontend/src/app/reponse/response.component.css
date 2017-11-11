@@ -1,0 +1,16 @@
+.response {
+    position: absolute;
+    z-index: 5;
+    background: rgb(111, 250, 56);
+    width: 20%;
+    margin: auto;
+    top: 6%;
+    right:1%;
+    border-radius: 8px;
+    padding: 45px;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 15px 20px 0 rgba(0, 0, 0, 0.6);
+    list-style-type: none;
+    border-style: solid;
+    border-color: green;
+    opacity: 0.7;
+  }

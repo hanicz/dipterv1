@@ -1,17 +1,17 @@
 from flask import Blueprint, request, jsonify
 from utils import limit_content_length, validate, HTTP_OK, HTTP_BAD_REQUEST, HTTP_CREATED, HTTP_NOT_FOUND
-from models import delete_note, create_note, decode_token, update_note, get_note, get_all_notes, get_shared_with_me_notes
+from models import delete_note, create_note, decode_token, update_note, get_all_notes, get_shared_with_me_notes
 from exception import InvalidParametersException
 
 notes_api = Blueprint('notes_api', __name__)
 
 
-@notes_api.route("/<note_id>", methods=['GET'])
+'''@notes_api.route("/<note_id>", methods=['GET'])
 def get_notes(note_id):
     data = get_note(decode_token(request.cookies.get('token')), note_id)
     if data is not None:
         return jsonify(data), HTTP_OK
-    return jsonify({'Response': 'Note not found'}), HTTP_NOT_FOUND
+    return jsonify({'Response': 'Note not found'}), HTTP_NOT_FOUND'''
 
 
 @notes_api.route("/note", methods=['PUT'])

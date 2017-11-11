@@ -12,6 +12,7 @@
     </div>
   </div>
   <div class="col-xs-3">
-    <file-detail [hidden]="fileHidden" [file]="selectedFile" class="col"></file-detail>
+    <file-detail [hidden]="fileHidden" [file]="selectedFile" (changeEvent)="showResponse($event); get_shared_files(); this.fileHidden=true;" class="col"></file-detail>
   </div>
 </div>
+<response [hidden]="responseHidden" [inresponse]="requestResponse" class="col"></response>

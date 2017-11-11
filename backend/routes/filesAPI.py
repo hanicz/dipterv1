@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, send_from_directory
 from utils import HTTP_OK, HTTP_BAD_REQUEST, validate, HTTP_NOT_FOUND, limit_content_length, user_file_limit, HTTP_UNAUTHORIZED
-from models import decode_token, get_all_files, upload_file, remove_file, remove_folder, crt_folder, get_all_deleted_files, search_user_file, move_file, move_folder, rename_folder, rename_file, get_file_data, get_public_file_data, get_all_folders, get_all_deleted_folders, get_folder_list, restore_file, get_parent_folder, restore_folder, get_shared_with_user_files
+from models import decode_token, get_all_files, upload_file, remove_file, remove_folder, crt_folder, get_all_deleted_files, search_user_file, move_file, move_folder, rename_folder, rename_file, get_file_data, get_public_file_data, get_all_folders, get_all_deleted_folders, get_folder_list, restore_file, get_parent_folder, restore_folder, get_shared_with_user_files, get_folder_data
 from exception import InvalidFileException, NotFoundException, UnexpectedException, InvalidParametersException
 
 
@@ -14,6 +14,16 @@ def get_file(file_id):
         return send_from_directory(path, system_filename, mimetype='multipart/form-data', attachment_filename=original_filename, as_attachment=True)
     else:
         return jsonify({'Response': 'Error downloading file'}), HTTP_UNAUTHORIZED
+
+
+@files_api.route("/download/folder/<folder_id>", methods=['GET'])
+def get_folder(folder_id):
+    path, system_filename, original_filename = get_folder_data(decode_token(request.cookies.get('token')), folder_id)
+    if None not in (path, system_filename, original_filename):
+        return send_from_directory(path, system_filename, mimetype='multipart/form-data',
+                                   attachment_filename=original_filename, as_attachment=True)
+    else:
+        return jsonify({'Response': 'Error downloading folder'}), HTTP_UNAUTHORIZED
 
 
 @files_api.route("/file/<folder_id>", methods=['GET'])

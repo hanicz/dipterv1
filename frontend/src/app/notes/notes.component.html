@@ -20,3 +20,4 @@
     <textarea class="form-control" style="resize: none;" [(ngModel)]="selectedNote.content" rows="10"></textarea>
     <share [hidden]="notesShare" (closeEvent)="notesShare = true;" [file]="selectedNote"></share>
 </div>
+<response [hidden]="responseHidden" [inresponse]="requestResponse" class="col"></response>

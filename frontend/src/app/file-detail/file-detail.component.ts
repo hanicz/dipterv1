@@ -23,9 +23,8 @@ export class FileDetailComponent {
   moveFolder: Folder;
   logs: Log[];
 
-
-  @Output() deleteEvent = new EventEmitter();
   @Output() shareEvent = new EventEmitter();
+  @Output() changeEvent: EventEmitter<String> = new EventEmitter<String>();
 
   constructor(
     private fileService: FileService,
@@ -59,8 +58,12 @@ export class FileDetailComponent {
   rename(): void {
     this.fileService.rename_file(this.file).subscribe((json: Object) => {
       console.log(json);
+      this.changeEvent.emit("File renamed successfully");
     },
-      error => console.error('Error: ' + error)
+      error => {
+        console.error('Error: ' + error)
+        this.changeEvent.emit("File rename failed");
+      }
     );
   }
 
@@ -68,9 +71,12 @@ export class FileDetailComponent {
     this.fileService.remove_file(this.file.id).subscribe((json: Object) => {
       console.log(json);
       this.file = null;
-      this.deleteEvent.emit();
+      this.changeEvent.emit("File deleted successfully");
     },
-      error => console.error('Error: ' + error)
+      error => {
+        console.error('Error: ' + error)
+        this.changeEvent.emit("File delete failed");
+      }
     );
   }
 
@@ -85,31 +91,46 @@ export class FileDetailComponent {
   move(): void {
     this.fileService.move_file(this.moveFolder.id, this.file.id).subscribe((json: Object) => {
       console.log(json);
+      this.changeEvent.emit("File moved successfully");
     },
-      error => console.error('Error: ' + error)
+      error => {
+        console.error('Error: ' + error)
+        this.changeEvent.emit("File move failed");
+      }
     );
   }
 
   restore(): void {
     this.fileService.restore_file(this.file.id).subscribe((json: Object) => {
       console.log(json);
-      this.deleteEvent.emit();
+      this.changeEvent.emit("File restored successfully");
     },
-      error => console.error('Error: ' + error)
+      error => {
+        console.error('Error: ' + error)
+        this.changeEvent.emit("File restore failed");
+      }
     );
   }
 
   dropbox(): void {
     this.dropboxService.upload_to_dropbox(this.file.id).subscribe((json: Object) => {
       console.log(json);
+      this.changeEvent.emit("File uploaded to dropbox successfully");
     },
-      error => console.error('Error: ' + error)
+      error => {
+        console.error('Error: ' + error)
+        this.changeEvent.emit("File upload to dropbox failed");
+      }
     );
   }
 
-  download(): void{
-    this.fileService.download(this.file.id).subscribe(blob =>{
-      saveAs(blob,this.file.fileName.toString());
-    });
+  download(): void {
+
+    var newWindow = window.open('http://localhost:5000/files/download/' + this.file.id);
+
+    /*this.fileService.download(this.file.id).subscribe(blob => {
+      this.changeEvent.emit("File download started successfully");
+      saveAs(blob, this.file.fileName.toString());
+    });*/
   }
 }

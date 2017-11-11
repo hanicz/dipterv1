@@ -19,6 +19,8 @@ export class SharedNotesComponent {
     notes: MyFile[];
     selectedNote: MyFile;
     notesShare: boolean = true;
+    requestResponse: String;
+    responseHidden: boolean = true;
 
     constructor(
         private fileService: FileService,
@@ -48,8 +50,12 @@ export class SharedNotesComponent {
     update_note(): void {
         this.noteService.update_note(this.selectedNote).subscribe((json: Object) => {
             console.log(json);
+            this.showResponse("Note updated successfully");
         },
-            error => console.error('Error: ' + error)
+            error => {
+                console.error('Error: ' + error);
+                this.showResponse("Note update failed");
+            }
         );
     }
 
@@ -58,8 +64,18 @@ export class SharedNotesComponent {
             console.log(json);
             this.notes.splice(this.notes.indexOf(this.selectedNote), 1);
             this.selectedNote = new MyFile();
+            this.showResponse("Note deleted successfully");
         },
-            error => console.error('Error: ' + error)
+            error => {
+                console.error('Error: ' + error);
+                this.showResponse("Note delete failed");
+            }
         );
+    }
+
+    showResponse(event: String) {
+        this.requestResponse = event;
+        this.responseHidden = false;
+        setTimeout(() => this.responseHidden = true, 1500);
     }
 }

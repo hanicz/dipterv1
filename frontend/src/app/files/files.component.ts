@@ -23,6 +23,7 @@ export class FilesComponent {
   selectedFolder: Folder;
   currentFolder: Folder;
   search: String;
+  requestResponse: String;
 
   uploadHidden: boolean = true;
   uploadShare: boolean = true;
@@ -30,6 +31,7 @@ export class FilesComponent {
   prevent: boolean = false;
   folderHidden: boolean = true;
   fileHidden: boolean = true;
+  responseHidden: boolean = true;
 
   constructor(
     private fileService: FileService
@@ -124,5 +126,11 @@ export class FilesComponent {
         error => console.error('Error: ' + error)
       );
     }
+  }
+
+  showResponse(event: String){
+    this.requestResponse = event;
+    this.responseHidden = false;
+    setTimeout(() => this.responseHidden = true, 2000);
   }
 }
