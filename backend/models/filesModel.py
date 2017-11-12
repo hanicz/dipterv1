@@ -180,8 +180,7 @@ def remove_file(user_id, file_id):
             filter(((File.user_id == user_id) & (File.id == file_id) & (File.delete_date == None)) | (
             (FileShare.user_id == user_id) & (Role.priority >= 3)) & (File.delete_date == None) & (FileShare.file_id == file_id)).first()
         if file is not None:
-            versioned_files = session.query(File).filter(
-                (File.user_id == user_id) & (File.file_name == file.file_name)
+            versioned_files = session.query(File).filter((File.file_name == file.file_name)
                 & (File.folder_id == file.folder_id) & (File.version > file.version) & (File.delete_date == None))
 
             if versioned_files is not None:
@@ -242,9 +241,9 @@ def delete_shares(user_id, file_id):
             delete_sh = session.query(FileShare).filter((FileShare.file_id == file.id))
             for s in delete_sh:
                 session.delete(s)
-                session.commit()
                 create_log_entry(user_id, 'File share revoked from: ' + get_user_data(delete_sh.user_id).email, file_id,
                              None, session)
+                session.commit()
             return True
         return False
     except exc.SQLAlchemyError as e:
@@ -302,6 +301,14 @@ def rename_file(user_id, input_dictionary):
                    ((FileShare.user_id == user_id) & (Role.priority >= 2)) & (File.delete_date == None) & (FileShare.file_id == input_dictionary['id'])).first()
 
         if file is not None:
+            versioned_files = session.query(File).filter((File.file_name == file.file_name)
+                & (File.folder_id == file.folder_id) & (File.version > file.version) & (File.delete_date == None))
+
+            if versioned_files is not None:
+                for f in versioned_files:
+                    f.version -= 1
+
+
             max_version = session.query(func.max(File.version)).filter(
                 (File.user_id == user_id) & (File.file_name == input_dictionary['fileName'])
                 & (File.folder_id == file.folder_id) & (File.delete_date == None)).first()
@@ -335,7 +342,7 @@ def rename_folder(user_id, input_dictionary):
 
             existing_folder = session.query(Folder).filter(
                 (Folder.user_id == user_id) & (Folder.parent_folder == folder.id) & (
-                    Folder.folder_name == input_dictionary['folderName'])).first()
+                    Folder.folder_name == input_dictionary['folderName']) & (Folder.delete_date == None)).first()
 
             if folder.parent_folder is None:
                 raise UnexpectedException('You can''t rename your main folder')
@@ -377,7 +384,7 @@ def move_folder(user_id, input_dictionary):
             if parent_folder is not None:
                 child_folder = session.query(Folder).filter(
                     (Folder.user_id == user_id) & (Folder.parent_folder == input_dictionary['parent_id']) & (
-                        Folder.folder_name == folder.folder_name)).first()
+                        Folder.folder_name == folder.folder_name) & (Folder.delete_date == None)).first()
                 if child_folder is None:
                     new_path = os.path.join(parent_folder.path, folder.folder_name)
                     os.makedirs(new_path)
@@ -411,6 +418,15 @@ def move_file(user_id, input_dictionary):
         new_folder = session.query(Folder).filter(
             (Folder.user_id == user_id) & (Folder.id == input_dictionary['new_folder_id']) & (Folder.delete_date == None)).first()
         if file is not None and new_folder is not None:
+            versioned_files = session.query(File).filter(
+                (File.user_id == user_id) & (File.file_name == file.file_name)
+                & (File.folder_id == file.folder_id) & (File.version > file.version) & (File.delete_date == None))
+
+            if versioned_files is not None:
+                for f in versioned_files:
+                    f.version -= 1
+
+
             max_version = session.query(func.max(File.version)).filter(
                 (File.user_id == user_id) & (File.file_name == file.file_name)
                 & (File.folder_id == new_folder.id)).first()
@@ -618,21 +634,26 @@ def restore_folder(user_id, folder_id):
             (Folder.user_id == user_id) & (Folder.id == folder_id) & (Folder.delete_date != None)).join(folderalias, Folder.parent_folder == folderalias.id).filter((folderalias.user_id == user_id) & (folderalias.delete_date == None)).first()
 
         if folder is not None:
-            deleted_folders = session.query(Folder).filter((Folder.user_id == user_id) &
-                                                           (Folder.path.startswith(folder.path)) & (
-                                                               Folder.delete_date != None))
-            for f in deleted_folders:
-                f.delete_date = None
-                create_log_entry(user_id, 'Folder restored', None, f.id, session)
+            child_folder = session.query(Folder).filter(
+                (Folder.user_id == user_id) & (Folder.parent_folder == folder.parent_folder) & (
+                    Folder.folder_name == folder.folder_name) & (Folder.delete_date == None)).first()
+            if child_folder is None:
+                deleted_folders = session.query(Folder).filter((Folder.user_id == user_id) &
+                                                               (Folder.path.startswith(folder.path)) & (
+                                                                   Folder.delete_date != None))
+                for f in deleted_folders:
+                    f.delete_date = None
+                    create_log_entry(user_id, 'Folder restored', None, f.id, session)
 
-                deleted_files = session.query(File).filter((File.user_id == user_id) &
-                                                           (File.folder_id == f.id) & (File.delete_date != None))
-                for files in deleted_files:
-                    files.delete_date = None
-                    create_log_entry(user_id, 'File restored', files.id, None, session)
+                    deleted_files = session.query(File).filter((File.user_id == user_id) &
+                                                               (File.folder_id == f.id) & (File.delete_date != None))
+                    for files in deleted_files:
+                        files.delete_date = None
+                        create_log_entry(user_id, 'File restored', files.id, None, session)
 
-            session.commit()
-            return folder.serialize()
+                session.commit()
+                return folder.serialize()
+            raise UnexpectedException('There is a folder with the same name')
         raise NotFoundException('Folder not found!')
     except exc.SQLAlchemyError as e:
         print(e.__context__)

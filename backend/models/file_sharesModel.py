@@ -11,7 +11,7 @@ from models import delete_shares, create_log_entry, get_user_data
 def public_file(user_id, file_id):
     session = DBSession()
     try:
-        file = session.query(File).filter((File.user_id == user_id) & (File.id == file_id)).first()
+        file = session.query(File).filter((File.user_id == user_id) & (File.id == file_id) & (File.delete_date == None) & (File.public_link == None)).first()
         if file is not None:
             delete_shares(user_id, file_id)
             public_link = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
