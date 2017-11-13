@@ -19,7 +19,8 @@ import { ShareService } from '../services/share.service';
 export class ShareComponent {
     @Input() file: MyFile;
 
-    @Output() closeEvent= new EventEmitter();
+    @Output() closeEvent = new EventEmitter();
+    @Output() changeEvent: EventEmitter<String> = new EventEmitter<String>();
 
     roles: Role[];
     selectedRole: Role;
@@ -60,8 +61,12 @@ export class ShareComponent {
             console.log(json);
             this.to_user = "";
             this.selectedRole = null;
+            this.changeEvent.emit("File successfully shared");
         },
-            error => console.error('Error: ' + error)
+            error => {
+                console.error('Error: ' + error)
+                this.changeEvent.emit("File sharing failed");
+            }
         );
     }
 
@@ -72,29 +77,37 @@ export class ShareComponent {
     makePublic() {
         this.shareService.makePublic(this.file.id).subscribe((json: Object) => {
             console.log(json);
+            this.changeEvent.emit("File made public successfully");
         },
-            error => console.error('Error: ' + error)
+            error => {
+                console.error('Error: ' + error)
+                this.changeEvent.emit("File public failed");
+            }
         );
     }
 
     revokePublic() {
         this.shareService.revokePublic(this.file.id).subscribe((json: Object) => {
             console.log(json);
+            this.changeEvent.emit("File made private successfully");
         },
-            error => console.error('Error: ' + error)
+            error => {
+                console.error('Error: ' + error)
+                this.changeEvent.emit("File private failed");
+            }
         );
     }
 
-    delete_share(share: FileShare): void{
+    delete_share(share: FileShare): void {
         this.shareService.revoke_share(share.id).subscribe((json: Object) => {
             console.log(json);
-            this.shares.splice(this.shares.indexOf(share),1);
+            this.shares.splice(this.shares.indexOf(share), 1);
         },
             error => console.error('Error: ' + error)
         );
     }
 
-    close(): void{
+    close(): void {
         this.closeEvent.emit();
     }
 }

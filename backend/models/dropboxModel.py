@@ -8,6 +8,8 @@ import random
 import string
 from models import create_log_entry, create_file, File
 from exception import UnexpectedException, NotFoundException
+from utils import UPLOAD_FOLDER
+from threading import Thread
 
 def auth_url():
     app_key = os.getenv('DROPBOX_KEY')
@@ -110,14 +112,40 @@ def download_from_dbx(user_id, input_dictionary):
     path = '/%s/%s' % (input_dictionary['path'], input_dictionary['file_name'])
     while '//' in path:
         path = path.replace('//', '/')
-    session = DBSession()
-    folder = session.query(Folder).filter((Folder.id == input_dictionary['folder_id']) & (Folder.delete_date == None) & (Folder.user_id == user_id)).first()
-    session.close()
-    if folder is not None:
-        system_file_name = ''.join(
-            random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
-        with open(os.path.join(folder.path, system_file_name), "wb") as f:
-            md, res = dbx.files_download(path)
-            file = create_file(user_id, input_dictionary['file_name'], system_file_name, folder.id)
-            create_log_entry(user_id, 'File downloaded from Dropbox', file.id, None, session)
-            f.write(res.content)
+
+    file_metadata = dbx.files_get_metadata(path)
+    if file_metadata.size <= 10485760000000:
+        session = DBSession()
+
+        if int(input_dictionary['folder_id']) == 0:
+            folder = session.query(Folder).filter((Folder.path == UPLOAD_FOLDER + str(user_id) + '/') & (Folder.user_id == user_id)).first()
+        else:
+            folder = session.query(Folder).filter((Folder.user_id == user_id) & (Folder.id == input_dictionary['folder_id'])).first()
+
+        session.close()
+        if folder is not None:
+            system_file_name = ''.join(
+                random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
+            with open(os.path.join(folder.path, system_file_name), "wb") as f:
+                md, res = dbx.files_download(path)
+                create_file(user_id, input_dictionary['file_name'], system_file_name, folder.id)
+                f.write(res.content)
+            '''thread = Thread(target=download_file_thread, args=(folder.path, user_id, input_dictionary['file_name'], folder.id, path, dbx))
+            thread.start()
+            print('ahoj')'''
+        else:
+            raise NotFoundException('Folder does not exist')
+    else:
+        raise UnexpectedException('File is too big')
+
+
+def download_file_thread(folder_path, user_id, file_name, folder_id, file_path, dbx):
+    system_file_name = ''.join(
+        random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
+
+    with open(os.path.join(folder_path, system_file_name), "wb") as f:
+        md, res = dbx.files_download(file_path)
+        create_file(user_id, file_name, system_file_name, folder_id)
+        print('ott')
+        f.write(res.content)
+        print('itt')

@@ -37,15 +37,27 @@ export class DropboxService {
         return this.http.post(url, JSON.stringify(data), {
             headers: this.headers,
             withCredentials: true
-        })
-            .map((res: Response) => res.json());
+        }).map((res: Response) => res.json());
     }
 
-    upload_to_dropbox(file_id: Number){
+    upload_to_dropbox(file_id: Number) {
         const url = `${this.userUrl}/upload/${file_id}`;
         return this.http.post(url, null, {
             withCredentials: true
-        })
-            .map((res: Response) => res.json());
+        }).map((res: Response) => res.json());
+    }
+
+    download_from_dropbox(path: String, filename: String, folder_id: Number) {
+        var data = {
+            'path': path,
+            'file_name': filename,
+            'folder_id': folder_id.toString()
+        };
+
+        const url = `${this.userUrl}/download`;
+        return this.http.post(url, JSON.stringify(data), {
+            headers: this.headers,
+            withCredentials: true
+        }).map((res: Response) => res.json());
     }
 }

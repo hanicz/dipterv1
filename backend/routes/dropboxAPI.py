@@ -55,7 +55,7 @@ def download():
             download_from_dbx(decode_token(request.cookies.get('token')), input_dictionary)
             return jsonify({'Response': 'File downloaded from Dropbox successfully'}), HTTP_OK
     except UnexpectedException as e:
-        return jsonify({'Response': str(e)}), HTTP_INT_ERROR
+        return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
     except NotFoundException as e:
         return jsonify({'Response': str(e)}), HTTP_NOT_FOUND
     except Exception as e:

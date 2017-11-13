@@ -3,7 +3,7 @@
         <div class="form-group">
             <span id="close_upload" (click)="close()">X</span>
         </div>
-        <input type="file" (change)="onChange($event)" placeholder="Upload file">
+        <input type="file" (change)="onChange($event)" placeholder="Upload file" #filePicker>
         <button type="submit" class="btn btn-primary">Upload</button>
     </form>
 </div>

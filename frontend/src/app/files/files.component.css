@@ -22,14 +22,9 @@
   margin-right: 3px;
 }
 
-#upload{
+#upload, #dropbox, #newFolder{
   float:right;
   color:#418BFA;
   margin: auto;
 }
 
-#newFolder{
-  float:right;
-  color:#418BFA;
-  margin: auto;
-}

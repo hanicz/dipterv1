@@ -32,6 +32,7 @@ export class FilesComponent {
   folderHidden: boolean = true;
   fileHidden: boolean = true;
   responseHidden: boolean = true;
+  dropboxHidden: boolean = true;
 
   constructor(
     private fileService: FileService
@@ -132,5 +133,9 @@ export class FilesComponent {
     this.requestResponse = event;
     this.responseHidden = false;
     setTimeout(() => this.responseHidden = true, 2000);
+  }
+
+  showDropbox(event: String){
+    this.dropboxHidden = false;
   }
 }
