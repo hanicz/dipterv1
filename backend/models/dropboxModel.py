@@ -114,7 +114,7 @@ def download_from_dbx(user_id, input_dictionary):
         path = path.replace('//', '/')
 
     file_metadata = dbx.files_get_metadata(path)
-    if file_metadata.size <= 10485760000000:
+    if file_metadata.size <= 104857600:
         session = DBSession()
 
         if int(input_dictionary['folder_id']) == 0:
@@ -124,15 +124,8 @@ def download_from_dbx(user_id, input_dictionary):
 
         session.close()
         if folder is not None:
-            system_file_name = ''.join(
-                random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
-            with open(os.path.join(folder.path, system_file_name), "wb") as f:
-                md, res = dbx.files_download(path)
-                create_file(user_id, input_dictionary['file_name'], system_file_name, folder.id)
-                f.write(res.content)
-            '''thread = Thread(target=download_file_thread, args=(folder.path, user_id, input_dictionary['file_name'], folder.id, path, dbx))
+            thread = Thread(target=download_file_thread, args=(folder.path, user_id, input_dictionary['file_name'], folder.id, path, dbx))
             thread.start()
-            print('ahoj')'''
         else:
             raise NotFoundException('Folder does not exist')
     else:
@@ -146,6 +139,4 @@ def download_file_thread(folder_path, user_id, file_name, folder_id, file_path, 
     with open(os.path.join(folder_path, system_file_name), "wb") as f:
         md, res = dbx.files_download(file_path)
         create_file(user_id, file_name, system_file_name, folder_id)
-        print('ott')
         f.write(res.content)
-        print('itt')
