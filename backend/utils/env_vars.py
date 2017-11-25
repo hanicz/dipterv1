@@ -10,7 +10,7 @@ class LEVEL(Enum):
 DB_ECHO = True
 log_level = LEVEL.INFO
 url = 'http://localhost:3000'
-auth = False
+auth = True
 
 #HTTP response
 HTTP_OK = 200
@@ -27,4 +27,4 @@ NOT_ALLOWED_EXTENSIONS = set(['php'])
 
 
 #Authentication
-secure_paths = ['/users/login', '/users/register', '/users/reset', '/users/activate', '/users/reset', '/dropbox']
+secure_paths = ['/users/login', '/users/register', '/users/reset', '/users/activate', '/files/getPublicFile']

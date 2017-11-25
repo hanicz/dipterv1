@@ -2,12 +2,15 @@
  * Created by Hanicz on 2/19/2017.
  */
 import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Http, Response, ResponseContentType, RequestOptions } from '@angular/http';
 import { MyFile } from '../entities/file';
 import { Folder } from '../entities/folder';
 import { FileService } from '../services/file.service';
 import { LogService } from '../services/log.service';
 import { Log } from '../entities/log';
 import { DropboxService } from '../services/dropbox.service';
+
+import 'rxjs/add/operator/toPromise';
 import saveAs = require('file-saver');
 
 @Component({
@@ -29,7 +32,8 @@ export class FileDetailComponent {
   constructor(
     private fileService: FileService,
     private logService: LogService,
-    private dropboxService: DropboxService
+    private dropboxService: DropboxService,
+    private http: Http
   ) { }
 
   ngOnInit(): void {
@@ -124,7 +128,23 @@ export class FileDetailComponent {
     );
   }
 
-  download(): void {
+  download() {
+
+    /*var userUrl = 'http://192.168.1.2:5000/files';
+    
+    const url = `${userUrl}/download/${this.file.id}`;
+    
+    var config = { responseType: ResponseContentType.Blob, withCredentials: true };
+        
+    return this.http.get(url, config).toPromise()
+            .then(function (response) {
+                var data = response.blob();
+                saveAs(data, name);
+            })
+            .catch(function (err) {
+                alert("It has happened an error. Downloading has been stopped") ;
+                throw err;
+            });*/
 
     var newWindow = window.open('http://localhost:5000/files/download/' + this.file.id);
 

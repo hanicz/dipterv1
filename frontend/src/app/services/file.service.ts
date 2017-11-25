@@ -50,6 +50,7 @@ export class FileService {
     let options = new RequestOptions({responseType: ResponseContentType.Blob,
                                       withCredentials: true});
     return this.http.get(url,options).map(res => res.blob());
+
   }
 
   get_files(folder_id: Number) {

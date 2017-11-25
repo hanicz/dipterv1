@@ -1,6 +1,5 @@
 import subprocess
 import sys
-
 import sqlite3
 
 
@@ -20,23 +19,33 @@ def execute_command(command, cwd):
 
 commands = ['sudo apt-get update',
             'sudo apt-get upgrade',
+            'sudo apt-get install sqlite3'
             'sudo apt-get install nodejs npm',
+            'sudo apt-get install libsqlite3-dev',
             'wget https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tgz',
             'tar xzvf Python-3.6.0.tgz',
             './configure --enable-loadable-sqlite-extensions',
             'make',
             'sudo make install',
-            'pip3.6 install -r /home/pi/dipterv1/backend/requirements.txt']
+            'pip3.6 install -r /home/pi/dipterv1/backend/requirements.txt',
+            'curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -',
+            'sudo apt-get install nodejs'
+            'npm install']
 
 cwds = [None,
         None,
         None,
         None,
         None,
+        None,
+        None,
         'Python-3.6.0/',
         'Python-3.6.0/',
         'Python-3.6.0/',
-        None]
+        None,
+        None,
+        None,
+        'dipterv1/frontend']
 
 
 for x in range(0, len(commands)):

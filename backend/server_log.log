@@ -169,3 +169,5 @@ Failed to send email for: awd12d1d2@12hje12hj.hu Exception: (535, b'5.7.8 Userna
 2017-11-11 12:03:47.746800 Unhandled Exception: 'Query' object has no attribute 'user_id'
 2017-11-11 12:04:07.189640 Unhandled Exception: 'Query' object has no attribute 'user_id'
 Sending activation email for: hanicz20@gmail.com
+Sending activation email for: hanicz20@gmail.com
+Sending activation email for: test2@d1212d12e12.hu

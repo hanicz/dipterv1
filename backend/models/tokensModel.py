@@ -36,18 +36,18 @@ def decode_token(token):
 def login_required(f):
     @wraps(f)
     def authenticate(*args, **kwargs):
-        if auth:
+        if request.method != 'OPTIONS':
 
-            if request.path in secure_paths:
+            if request.path.startswith(tuple(secure_paths)):
                 return f(*args, **kwargs)
 
             try:
                 if request.cookies.get('token') in session:
                     user = decode_token(request.cookies.get('token'))
                 else:
-                    return jsonify({'Response': 'Login failed'}), HTTP_UNAUTHORIZED
+                    return jsonify({'Response': 'Authentication failed1'}), HTTP_UNAUTHORIZED
             except Exception as e:
                 session.pop(request.cookies.get('token'), None)
-                return jsonify({'Response': 'Login failed'}), HTTP_UNAUTHORIZED
+                return jsonify({'Response': 'Authentication failed2'}), HTTP_UNAUTHORIZED
         return f(*args, **kwargs)
     return authenticate
