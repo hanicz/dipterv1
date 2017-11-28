@@ -19,7 +19,7 @@ def execute_command(command, cwd):
 
 commands = ['sudo apt-get update',
             'sudo apt-get upgrade',
-            'sudo apt-get install sqlite3'
+            'sudo apt-get install sqlite3',
             'sudo apt-get install nodejs npm',
             'sudo apt-get install libsqlite3-dev',
             'wget https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tgz',
