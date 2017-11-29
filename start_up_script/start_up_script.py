@@ -1,7 +1,7 @@
 import subprocess
 import sys
 import sqlite3
-
+import os
 
 def execute_command(command, cwd):
     process = subprocess.Popen(command.split(), stdout=subprocess.PIPE, cwd=cwd)
@@ -15,10 +15,18 @@ def execute_command(command, cwd):
             sys.stdout.write(out)
             sys.stdout.flush()
 
+def update_node():
+    process = subprocess.Popen(str('curl -sL https://deb.nodesource.com/setup_9.x').split(), stdout=subprocess.PIPE)
+    output, error = process.communicate()
+    with open('node.sh', 'w+') as f:
+        f.write(output)
+    os.chmod("/home/pi/node.sh", 0o777)
+    subprocess.call('/home/pi/node.sh', shell=True)
 
 
 commands = ['sudo apt-get update',
             'sudo apt-get upgrade',
+            'git clone https://github.com/hanicz/dipterv1.git',
             'sudo apt-get install sqlite3',
             'sudo apt-get install nodejs npm',
             'sudo apt-get install libsqlite3-dev',
@@ -28,8 +36,7 @@ commands = ['sudo apt-get update',
             'make',
             'sudo make install',
             'pip3.6 install -r /home/pi/dipterv1/backend/requirements.txt',
-            'curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -',
-            'sudo apt-get install nodejs'
+            'sudo apt-get install nodejs',
             'npm install']
 
 cwds = [None,
@@ -39,10 +46,10 @@ cwds = [None,
         None,
         None,
         None,
-        'Python-3.6.0/',
-        'Python-3.6.0/',
-        'Python-3.6.0/',
         None,
+        'Python-3.6.0/',
+        'Python-3.6.0/',
+        'Python-3.6.0/',
         None,
         None,
         'dipterv1/frontend']
@@ -54,6 +61,8 @@ for x in range(0, len(commands)):
     print(command)
     print(cwd)
     execute_command(command, cwd)
+    if x == 12:
+        update_node()
 
 
 conn = sqlite3.connect('/home/pi/dipterv1/backend/test.db')
@@ -96,4 +105,3 @@ cred_entries.append((4,'DROPBOX_SECRET',dbx_secret))
 c.executemany('INSERT INTO CREDENTIAL_STORE VALUES (?,?,?)', cred_entries)
 conn.commit()
 conn.close()
-
