@@ -17,9 +17,12 @@ import { CustomResponse } from '../utils/customResponse'
 })
 export class SettingsComponent{
 
+  model = new ChangeUser();
+
   constructor(
     private userService: UserService,private router: Router
-  ){}
+  ){
+  }
 
   changeData(): void {
     this.userService
@@ -31,6 +34,4 @@ export class SettingsComponent{
         error => console.error('Error: ' + error)
         );
   }
-
-  model = new ChangeUser();
 }

@@ -8,4 +8,9 @@ export class ChangeUser extends Serializable{
     public new_password: string;
     public new_email: string;
 
+    ChangeUser(){
+        this.new_password = "";
+        this.old_password = "";
+        this.new_email = "";
+    }
 }

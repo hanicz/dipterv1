@@ -139,7 +139,7 @@ def change_user_data(user_id, input_dictionary):
     if 'new_email' in input_dictionary and re.match("^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$", input_dictionary['new_email']):
         new_email = input_dictionary['new_email']
 
-    if 'new_password' in input_dictionary and input_dictionary['new_password'] == input_dictionary['old_password']:
+    if 'new_password' in input_dictionary:
         new_password = input_dictionary['new_password']
 
     try:
