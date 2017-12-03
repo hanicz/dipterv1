@@ -613,6 +613,7 @@ def get_parent_folder(user_id, folder_id):
         if int(folder_id) != 0:
             f = session.query(Folder).filter((Folder.id == folder_id) & (Folder.user_id == user_id)).first()
             parent_folder = session.query(Folder).filter((Folder.id == f.parent_folder) & (Folder.user_id == user_id)).first()
+            session.close()
             if parent_folder is not None:
                 parent_folder.folder_name = '...'
                 return parent_folder

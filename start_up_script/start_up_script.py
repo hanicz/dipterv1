@@ -61,7 +61,7 @@ for x in range(0, len(commands)):
     print(command)
     print(cwd)
     execute_command(command, cwd)
-    if x == 12:
+    if x == 11:
         update_node()
 
 
