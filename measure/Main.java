@@ -69,13 +69,13 @@ public class Main {
 		  try {
 			  long begin = System.currentTimeMillis();
 			  for(int i = 0; i < numberOfRequests; i++){
-				  URL url = new URL("http://192.168.1.4:5000/files/folder/0");
+				  URL url = new URL("URL");
 
 				  connection = (HttpURLConnection)url.openConnection();
 
 				  connection.setRequestMethod("GET");
 				  connection.setRequestProperty("Accept", "application/json");
-				  connection.setRequestProperty("Cookie", "token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MTA2MDM0MjcsInVzZXIiOjF9.Ng1l8--6hXsN6kjHZpn3kg17fF-v_A6WhJbsxPhZSLE;");
+				  connection.setRequestProperty("Cookie", "token=;");
 				  connection.setUseCaches(false);
 		
 				  //Get Response  

@@ -11,7 +11,6 @@ files_api = Blueprint('files_api', __name__)
 def get_file(file_id):
     path, system_filename, original_filename = get_file_data(decode_token(request.cookies.get('token')), file_id)
     if None not in (path, system_filename, original_filename):
-        #rename zip
         return send_from_directory(path, system_filename, mimetype='multipart/form-data', attachment_filename=original_filename, as_attachment=True)
     else:
         return jsonify({'Response': 'Error downloading file'}), HTTP_UNAUTHORIZED
@@ -77,8 +76,8 @@ def delete_folder(folder_id):
 
 
 @files_api.route("/file/<folder_id>", methods=['POST'])
-#@limit_content_length(1073741824)
-#@user_file_limit()
+@limit_content_length(1073741824)
+@user_file_limit()
 def create_file(folder_id):
     input_dictionary = {"folder_id": folder_id}
     validation_dictionary = {'folder_id': "^[0-9]*$"}

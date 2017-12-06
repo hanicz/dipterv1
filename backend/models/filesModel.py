@@ -1,4 +1,4 @@
-import os
+import os, errno
 import flask
 import werkzeug
 import datetime
@@ -96,7 +96,7 @@ def get_all_deleted_folders(user_id):
 def search_user_file(user_id, file_name):
     session = DBSession()
     try:
-        files = session.query(File).filter((File.user_id == user_id) & (File.file_name.contains(file_name)) & (File.delete_date == None))
+        files = session.query(File).filter((File.user_id == user_id) & (File.file_name.contains(file_name)) & (File.delete_date == None) & (File.content == None))
         if files is not None:
             return [f.serialize() for f in files]
         return None
@@ -506,16 +506,27 @@ def get_folder_data(user_id, folder_id):
         folder = session.query(Folder) \
             .filter((Folder.id == folder_id) & (Folder.user_id == user_id) & (Folder.delete_date == None)).first()
 
-        if folder is not None :
-            temp_folder = UPLOAD_FOLDER + 'zip/' + str(user_id) + '/'
+        temp_folder = UPLOAD_FOLDER + 'zip/' + str(user_id) + '/'
+
+        if folder is not None and not os.path.exists(temp_folder + folder.folder_name):
+
+            try:
+                os.remove(os.path.join(temp_folder, folder.folder_name + '.zip'))
+            except OSError as e:
+                if e.errno != errno.ENOENT:
+                    raise
 
             new_path = os.path.join(temp_folder, folder.folder_name)
             os.makedirs(new_path)
+
+            #clear cache
+            distutils.dir_util._path_created = {}
+
             distutils.dir_util.copy_tree(folder.path, new_path)
 
             folders_to_zip = session.query(Folder).filter((Folder.user_id == user_id) & (Folder.path.startswith(folder.path)))
             for fo in folders_to_zip:
-                zip_path = fo.path.replace(UPLOAD_FOLDER, UPLOAD_FOLDER + 'zip/', 1)
+                zip_path = fo.path.replace(folder.path, UPLOAD_FOLDER + 'zip/' + str(user_id) + '/' + folder.folder_name + '/', 1)
                 if fo.delete_date is not None:
                     shutil.rmtree(zip_path, ignore_errors=True)
 
