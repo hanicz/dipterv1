@@ -188,7 +188,7 @@ def remove_file(user_id, file_id):
                     f.version -= 1
 
             file.delete_date = datetime.datetime.now()
-            delete_shares(user_id, file.id)
+            delete_shares(file.id)
             session.commit()
             create_log_entry(user_id, 'File deleted', file_id, None, session)
             session.commit()
@@ -207,10 +207,11 @@ def remove_folder(user_id, folder_id):
     try:
         folder = session.query(Folder).filter((Folder.user_id == user_id) & (Folder.id == folder_id) & (Folder.delete_date == None) & (Folder.path != UPLOAD_FOLDER + str(user_id) + '/')).first()
         if folder is not None:
-            folder.delete_date = datetime.datetime.now()
-            create_log_entry(user_id, 'Folder deleted', None, folder_id, session)
+            #folder.delete_date = datetime.datetime.now()
+            #create_log_entry(user_id, 'Folder deleted', None, folder_id, session)
             deleted_folders = session.query(Folder).filter((Folder.user_id == user_id) &
-                                                           (Folder.path.startswith(folder.path)) & (Folder.delete_date == None) & (Folder.id != folder.id))
+                                                           (Folder.path.startswith(folder.path)) & (Folder.delete_date == None) )
+
             for f in deleted_folders:
                 f.delete_date = datetime.datetime.now()
                 create_log_entry(user_id, 'Folder deleted', None, f.id, session)
@@ -219,8 +220,9 @@ def remove_folder(user_id, folder_id):
                                                            (File.folder_id == f.id) & (File.delete_date == None))
                 for files in deleted_files:
                     files.delete_date = datetime.datetime.now()
+                    session.commit()
+                    delete_shares(files.id)
                     create_log_entry(user_id, 'File deleted', files.id, None, session)
-                    delete_shares(user_id, files.id)
 
             session.commit()
             return True
@@ -233,16 +235,17 @@ def remove_folder(user_id, folder_id):
         session.close()
 
 
-def delete_shares(user_id, file_id):
+def delete_shares(file_id):
     session = DBSession()
     try:
-        file = session.query(File).filter((File.user_id == user_id) & (File.id == file_id)).first()
+        file = session.query(File).filter(File.id == file_id).first()
         if file is not None:
             delete_sh = session.query(FileShare).filter((FileShare.file_id == file.id))
             for s in delete_sh:
+                create_log_entry(file.user_id, 'File share revoked from: ' + get_user_data(s.user_id).email,
+                                 file_id,
+                                 None, session)
                 session.delete(s)
-                create_log_entry(user_id, 'File share revoked from: ' + get_user_data(delete_sh.user_id).email, file_id,
-                             None, session)
                 session.commit()
             return True
         return False
@@ -318,9 +321,9 @@ def rename_file(user_id, input_dictionary):
             else:
                 file.version = 0
 
-            file.file_name = input_dictionary['fileName']
             create_log_entry(user_id, 'File renamed from: ' + file.file_name + ' to:' + input_dictionary['fileName'],
                              file.id, None, session)
+            file.file_name = input_dictionary['fileName']
             session.commit()
             return file.serialize()
         raise NotFoundException('File not found!')

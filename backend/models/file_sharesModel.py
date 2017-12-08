@@ -2,6 +2,8 @@ import random
 import string
 import datetime
 
+from builtins import list
+
 from .db import DBSession, File, FileShare, Role, User
 from sqlalchemy import exc
 from sqlalchemy.orm import aliased
@@ -13,7 +15,7 @@ def public_file(user_id, file_id):
     try:
         file = session.query(File).filter((File.user_id == user_id) & (File.id == file_id) & (File.delete_date == None) & (File.public_link == None) & (File.content == None)).first()
         if file is not None:
-            delete_shares(user_id, file_id)
+            delete_shares(file_id)
             public_link = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
             file.public_link = public_link
             create_log_entry(user_id, 'File made public', file.id, None, session)
@@ -51,7 +53,7 @@ def share_file(user_id,input_dictionary):
     try:
         file = session.query(File).filter((File.user_id == user_id) & (File.id == input_dictionary['file_id']) & (File.public_link == None)).first()
         role = session.query(Role).filter(Role.id == input_dictionary['role_id']).first()
-        user = session.query(User).filter(User.email == input_dictionary['to_user']).first()
+        user = session.query(User).filter((User.email == input_dictionary['to_user']) & (User.id != user_id)).first()
         if file is not None and role is not None and user is not None:
             exist_fs = session.query(FileShare).filter((FileShare.file_id == input_dictionary['file_id']) & (FileShare.user_id == user_id)).first()
             if exist_fs is not None:
