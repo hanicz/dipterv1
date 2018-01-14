@@ -2,7 +2,7 @@ from .db import DBSession, FinanceType
 from sqlalchemy import exc
 
 
-def create_finance_record(user_id, name):
+def create_finance_type_record(user_id, name):
     session = DBSession()
     try:
         new_finance_type = FinanceType(name=name)

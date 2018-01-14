@@ -216,17 +216,19 @@ class Finance(Base):
     finance_type = relationship(FinanceType)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
+    comment = Column(String(250), nullable=False)
 
     def __repr__(self):
-        return "Finance: (id='%i', amount='%i', finance_date='%s', finance_type_id='%i', user_id='%i')" \
-                % (self.id, self.amount, str(self.finance_date), self.finance_type_id, self.user_id)
+        return "Finance: (id='%i', amount='%i', finance_date='%s', finance_type_id='%i', user_id='%i', comment='%s')" \
+                % (self.id, self.amount, str(self.finance_date), self.finance_type_id, self.user_id, self.comment)
 
     def serialize(self):
         return{
             'id': self.id,
             'amount': self.amount,
             'finance_type_id': self.finance_type_id,
-            'finance_date': self.finance_date
+            'finance_date': self.finance_date,
+            'comment': self.comment
         }
 
 

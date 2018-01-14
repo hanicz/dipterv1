@@ -8,9 +8,10 @@ def create_finance_record(user_id, input_dictionary):
     session = DBSession()
     try:
         new_finance = Finance(user_id=user_id,
-                              finance_date=datetime.datetime.strptime(input_dictionary['finance_date'], '%d %b %Y'),
+                              finance_date=datetime.datetime.strptime(input_dictionary['finance_date'], '%Y-%m-%d'),
                               finance_type_id=input_dictionary['finance_type_id'],
-                              amount=input_dictionary['amount'])
+                              amount=input_dictionary['amount'],
+                              comment=input_dictionary['comment'])
         session.add(new_finance)
         session.commit()
         return new_finance.serialize()
@@ -49,6 +50,7 @@ def update_finance_record(user_id, input_dictionary):
             finance.amount = input_dictionary['amount']
             finance.finance_date = input_dictionary['finance_date']
             finance.finance_type_id = input_dictionary['finance_type_id']
+            finance.comment = input_dictionary['comment']
             session.commit()
             return finance.serialize()
         return None
