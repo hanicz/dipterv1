@@ -21,7 +21,6 @@ class User(Base):
     dropbox_auth = Column(String(250), nullable=True)
     main_folder = Column(Integer, nullable=True)
 
-
     files = relationship("File", cascade="all, delete-orphan")
     logs = relationship("Log", cascade="all, delete-orphan")
     fileShares = relationship("FileShare", cascade="all, delete-orphan")
