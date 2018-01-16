@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, NavigationEnd } from '@angular/router';
-import { UserService } from './services/user.service'
+import { UserService } from './services/user.service';
 
 @Component({
   moduleId: module.id,

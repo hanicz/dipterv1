@@ -31,8 +31,9 @@ import { DropboxComponent } from './dropbox/dropbox.component';
 import { SharedWithMeComponent } from './shared-with-me/shared-with-me.component'
 import { SharedNotesComponent } from './shared-notes/shared-notes.component';
 import { ResponseComponent } from './reponse/response.component';
+import { FinanceComponent } from './finance/finance.component';
 import { DropboxDownloadComponent } from './dropbox-download/dropbox-download.component';
-import {  TruncatePipe }   from './entities/pipe';
+import { TruncatePipe }   from './entities/pipe';
 
 @NgModule({
   imports:      [ BrowserModule,
@@ -60,7 +61,8 @@ import {  TruncatePipe }   from './entities/pipe';
                   SharedNotesComponent,
                   TruncatePipe,
                   ResponseComponent,
-                  DropboxDownloadComponent],
+                  DropboxDownloadComponent,
+                  FinanceComponent],
   bootstrap:    [ AppComponent ],
   providers: [ UserService,
                 FileService,

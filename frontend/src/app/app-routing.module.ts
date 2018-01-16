@@ -22,6 +22,7 @@ import { SharedWithMeComponent } from './shared-with-me/shared-with-me.component
 import { SharedNotesComponent } from './shared-notes/shared-notes.component';
 import { ResponseComponent } from './reponse/response.component';
 import { DropboxDownloadComponent } from './dropbox-download/dropbox-download.component';
+import { FinanceComponent } from './finance/finance.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -43,6 +44,7 @@ const routes: Routes = [
   { path: 'response', component: ResponseComponent },
   { path: 'shared-with-me', component: SharedWithMeComponent },
   { path: 'shared-notes', component: SharedNotesComponent },
+  { path: 'finance', component: FinanceComponent },
   { path: '**', redirectTo: '/not-found' }
 ];
 
