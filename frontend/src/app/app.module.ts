@@ -13,6 +13,7 @@ import { RoleService} from './services/role.service';
 import { NoteService} from './services/note.service';
 import { ShareService} from './services/share.service';
 import { DropboxService} from './services/dropbox.service';
+import { FinanceService} from './services/finance.service';
 import { RegisterComponent }  from './register/register.component';
 import { UploadComponent }  from './upload/upload.component';
 import { ActivateComponent }  from './activate/activate.component';
@@ -34,12 +35,15 @@ import { ResponseComponent } from './reponse/response.component';
 import { FinanceComponent } from './finance/finance.component';
 import { DropboxDownloadComponent } from './dropbox-download/dropbox-download.component';
 import { TruncatePipe }   from './entities/pipe';
+import { MatTableModule } from '@angular/material';
+
 
 @NgModule({
   imports:      [ BrowserModule,
                   AppRoutingModule,
                   HttpModule,
-                  FormsModule ],
+                  FormsModule,
+                  MatTableModule],
   declarations: [ AppComponent,
                   LoginComponent,
                   RegisterComponent,
@@ -70,6 +74,7 @@ import { TruncatePipe }   from './entities/pipe';
                 RoleService,
                 ShareService,
                 NoteService,
-                DropboxService ],
+                DropboxService,
+                FinanceService ],
 })
 export class AppModule { }

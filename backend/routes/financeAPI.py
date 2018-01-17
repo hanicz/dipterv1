@@ -1,6 +1,8 @@
 from flask import Blueprint, request, jsonify
 from utils import validate, HTTP_OK, HTTP_BAD_REQUEST, HTTP_CREATED, HTTP_NOT_FOUND
-from models import create_finance_record, decode_token, get_finance_type_records, update_finance_record, delete_finance_record, get_finance_records_by_month, get_finance_records_by_year
+from models import create_finance_record, decode_token, get_finance_type_records, update_finance_record, \
+    delete_finance_record, get_finance_records_by_month, get_finance_records_by_year, \
+    get_aggregated_finance_records_by_month, get_aggregated_finance_records_by_year
 from exception import InvalidParametersException
 
 finance_api = Blueprint('finance_api', __name__)
@@ -73,10 +75,40 @@ def get_finance_records_year(year):
         return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
 
 
-@finance_api.route("/month/<month>", methods=['GET'])
-def get_finance_records_month(month):
+@finance_api.route("/month", methods=['GET'])
+def get_finance_records_month():
+    input_dictionary = {'year': request.args.get('year'), 'month': request.args.get('month')}
+    validation_dictionary = {'year': "^[0-9]*$",
+                             'month': "^[0-9]*$"}
     try:
-        records = get_finance_records_by_month(decode_token(request.cookies.get('token')), month)
+        if validate(input_dictionary, validation_dictionary):
+            records = get_finance_records_by_month(decode_token(request.cookies.get('token')), input_dictionary)
+            if records is not None:
+                return jsonify(records), HTTP_OK
+        return jsonify({'Response': 'Finance type records failed to query'}), HTTP_BAD_REQUEST
+    except InvalidParametersException as e:
+        return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
+
+
+@finance_api.route("/month/aggregated", methods=['GET'])
+def get_aggregated_finance_records_month():
+    input_dictionary = {'year': request.args.get('year'), 'month': request.args.get('month')}
+    validation_dictionary = {'year': "^[0-9]*$",
+                             'month': "^[0-9]*$"}
+    try:
+        if validate(input_dictionary, validation_dictionary):
+            records = get_aggregated_finance_records_by_month(decode_token(request.cookies.get('token')), input_dictionary)
+            if records is not None:
+                return jsonify(records), HTTP_OK
+        return jsonify({'Response': 'Finance type records failed to query'}), HTTP_BAD_REQUEST
+    except InvalidParametersException as e:
+        return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
+
+
+@finance_api.route("/year/aggregated/<year>", methods=['GET'])
+def get_aggregated_finance_records_year(year):
+    try:
+        records = get_aggregated_finance_records_by_year(decode_token(request.cookies.get('token')), year)
         if records is not None:
             return jsonify(records), HTTP_OK
         return jsonify({'Response': 'Finance type records failed to query'}), HTTP_BAD_REQUEST

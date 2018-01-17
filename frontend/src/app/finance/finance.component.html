@@ -1,8 +1,38 @@
-<div class="notes">
-    <canvas baseChart
-    [data]="pieChartData"
-    [labels]="pieChartLabels"
-    [chartType]="pieChartType"
-    (chartHover)="chartHovered($event)"
-    (chartClick)="chartClicked($event)"></canvas>
+<div class="finance">
+    <button (click)="fill_chart()" class="btn btn-primary" >Chart</button>
+    <canvas id="canvas">{{ chart }}</canvas>
+    <div class="example-container mat-elevation-z8">
+        <div class="example-header">
+        </div>
+
+        <mat-table #table [dataSource]="dataSource">
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="type">
+                <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.finance_type_id}} </mat-cell>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="amount">
+                <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.amount}} </mat-cell>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="comment">
+                <mat-header-cell *matHeaderCellDef> Comment </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.comment}} </mat-cell>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="date">
+                <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.finance_date}} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+    </div>
 </div>

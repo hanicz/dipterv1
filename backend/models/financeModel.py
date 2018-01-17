@@ -1,6 +1,6 @@
 from .db import DBSession, Finance, FinanceType, User
 from models import create_log_entry
-from sqlalchemy import exc, extract
+from sqlalchemy import exc, extract, func
 import datetime
 
 
@@ -85,14 +85,70 @@ def get_finance_records_by_year(user_id, year):
         session.close()
 
 
-def get_finance_records_by_month(user_id, month):
+def get_finance_records_by_month(user_id, input_dictionary):
     session = DBSession()
     try:
         finances = session.query(Finance).filter((Finance.user_id == user_id) &
-                                                 (extract('month', Finance.finance_date) == month))
+                                                 (extract('month', Finance.finance_date) == input_dictionary['month']) &
+                                                 (extract('year', Finance.finance_date) == input_dictionary['year']))
         if finances is not None:
             return [f.serialize() for f in finances]
 
+        return None
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return None
+    finally:
+        session.close()
+
+
+def get_aggregated_finance_records_by_month(user_id, input_dictionary):
+    session = DBSession()
+    try:
+        finances = session.query(FinanceType.name, func.sum(Finance.amount))\
+            .filter((Finance.user_id == user_id) &
+                    (Finance.finance_type_id == FinanceType.id) &
+                    (extract('month', Finance.finance_date) == input_dictionary['month']) &
+                    (extract('year', Finance.finance_date) == input_dictionary['year']))\
+            .group_by(FinanceType.name)
+
+        if finances is not None:
+            data = []
+            for type, type_sum in finances:
+                result = {
+                    'type': type,
+                    'sum': type_sum
+                }
+                data.append(result)
+            return data
+        return None
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return None
+    finally:
+        session.close()
+
+
+def get_aggregated_finance_records_by_year(user_id, year):
+    session = DBSession()
+    try:
+        finances = session.query(FinanceType.name, func.sum(Finance.amount))\
+            .filter((Finance.user_id == user_id) &
+                    (Finance.finance_type_id == FinanceType.id) &
+                    (extract('year', Finance.finance_date) == 'year'))\
+            .group_by(FinanceType.name)
+
+        if finances is not None:
+            data = []
+            for type, type_sum in finances:
+                result = {
+                    'type': type,
+                    'sum': type_sum
+                }
+                data.append(result)
+            return data
         return None
     except exc.SQLAlchemyError as e:
         print(e.__context__)
