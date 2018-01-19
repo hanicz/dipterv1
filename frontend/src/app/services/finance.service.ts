@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 import { Headers, Http, URLSearchParams, Response } from '@angular/http';
 import { Finance } from '../entities/finance';
 import 'rxjs/add/operator/map';
+import { DatePipe } from '@angular/common';
 
 @Injectable()
 export class FinanceService {
@@ -16,7 +17,7 @@ export class FinanceService {
 
     private userUrl = 'http://localhost:5000/finances';
 
-    constructor(private http: Http) { }
+    constructor(private datePipe: DatePipe, private http: Http) { }
 
     get_finances_by_year(year: Number) {
         const url = `${this.userUrl}/year/${year}`;
@@ -68,10 +69,26 @@ export class FinanceService {
     }
 
     new_finance(finance: Finance) {
+
+        var data = {
+            'amount': finance.amount,
+            'comment': finance.comment,
+            'finance_date': this.datePipe.transform(finance.finance_date, 'yyyy-MM-dd'),
+            'finance_type_id': finance.finance_type_id
+        }
+
         const url = `${this.userUrl}/finance`;
-        return this.http.put(url, JSON.stringify(finance), {
+        return this.http.put(url, JSON.stringify(data), {
             headers: this.headers,
             withCredentials: true
+        })
+            .map((res: Response) => res.json());
+    }
+
+    get_finance_types() {
+        const url = `${this.userUrl}/types`;
+        return this.http.get(url, {
+            withCredentials: true,
         })
             .map((res: Response) => res.json());
     }

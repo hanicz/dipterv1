@@ -26,6 +26,8 @@
 
       '@angular/animations': 'npm:@angular/animations/bundles/animations.umd.js',
       '@angular/material': 'npm:@angular/material/bundles/material.umd.js',
+      '@angular/animations/browser':'node_modules/@angular/animations/bundles/animations-browser.umd.js',
+      '@angular/platform-browser/animations': 'node_modules/@angular/platform-browser/bundles/platform-browser-animations.umd.js',
       
        // CDK Secondary entry points
       '@angular/cdk/a11y': 'https://rawgit.com/angular/cdk-builds/master/bundles/cdk-a11y.umd.js',
@@ -50,7 +52,8 @@
       'rxjs':                      'npm:rxjs',
       'angular-in-memory-web-api': 'npm:angular-in-memory-web-api/bundles/in-memory-web-api.umd.js',
       'file-saver':                'npm:file-saver',
-      'chart.js':                  'npm:chart.js'
+      'chart.js':                  'npm:chart.js',
+      'hammerjs':                   'npm:hammerjs'
     },
     // packages tells the System loader how to load when no filename and/or no extension
     packages: {
@@ -66,6 +69,10 @@
       },
       'chart.js':{
         main: '/dist/Chart.bundle.js',
+        defaultExtension: 'js'
+      },
+      'hammerjs':{
+        main: './hammer.js',
         defaultExtension: 'js'
       }
     }

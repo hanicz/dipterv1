@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpModule }    from '@angular/http';
 import { FormsModule }   from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent }  from './app.component';
 import { LoginComponent }  from './login/login.component';
@@ -33,17 +34,85 @@ import { SharedWithMeComponent } from './shared-with-me/shared-with-me.component
 import { SharedNotesComponent } from './shared-notes/shared-notes.component';
 import { ResponseComponent } from './reponse/response.component';
 import { FinanceComponent } from './finance/finance.component';
+import { FinanceDialog } from './finance-dialog/finance-dialog.component';
 import { DropboxDownloadComponent } from './dropbox-download/dropbox-download.component';
 import { TruncatePipe }   from './entities/pipe';
-import { MatTableModule } from '@angular/material';
+import { DatePipe } from '@angular/common';
+
+import {
+  MatAutocompleteModule,
+  MatButtonModule,
+  MatButtonToggleModule,
+  MatCardModule,
+  MatCheckboxModule,
+  MatChipsModule,
+  MatDatepickerModule,
+  MatDialogModule,
+  MatExpansionModule,
+  MatGridListModule,
+  MatIconModule,
+  MatInputModule,
+  MatListModule,
+  MatMenuModule,
+  MatNativeDateModule,
+  MatPaginatorModule,
+  MatProgressBarModule,
+  MatProgressSpinnerModule,
+  MatRadioModule,
+  MatRippleModule,
+  MatSelectModule,
+  MatSidenavModule,
+  MatSliderModule,
+  MatSlideToggleModule,
+  MatSnackBarModule,
+  MatSortModule,
+  MatTableModule,
+  MatTabsModule,
+  MatToolbarModule,
+  MatTooltipModule,
+  MatStepperModule,
+  MatOptionModule,
+  MatFormFieldModule
+} from '@angular/material';
 
 
 @NgModule({
   imports:      [ BrowserModule,
+                  BrowserAnimationsModule,
                   AppRoutingModule,
                   HttpModule,
                   FormsModule,
-                  MatTableModule],
+                  MatAutocompleteModule,
+                  MatButtonModule,
+                  MatButtonToggleModule,
+                  MatCardModule,
+                  MatCheckboxModule,
+                  MatChipsModule,
+                  MatStepperModule,
+                  MatDatepickerModule,
+                  MatDialogModule,
+                  MatExpansionModule,
+                  MatGridListModule,
+                  MatIconModule,
+                  MatInputModule,
+                  MatListModule,
+                  MatMenuModule,
+                  MatNativeDateModule,
+                  MatPaginatorModule,
+                  MatProgressBarModule,
+                  MatProgressSpinnerModule,
+                  MatRadioModule,
+                  MatRippleModule,
+                  MatSelectModule,
+                  MatSidenavModule,
+                  MatSliderModule,
+                  MatSlideToggleModule,
+                  MatSnackBarModule,
+                  MatSortModule,
+                  MatTableModule,
+                  MatTabsModule,
+                  MatToolbarModule,
+                  MatTooltipModule],
   declarations: [ AppComponent,
                   LoginComponent,
                   RegisterComponent,
@@ -66,7 +135,8 @@ import { MatTableModule } from '@angular/material';
                   TruncatePipe,
                   ResponseComponent,
                   DropboxDownloadComponent,
-                  FinanceComponent],
+                  FinanceComponent,
+                  FinanceDialog],
   bootstrap:    [ AppComponent ],
   providers: [ UserService,
                 FileService,
@@ -75,6 +145,7 @@ import { MatTableModule } from '@angular/material';
                 ShareService,
                 NoteService,
                 DropboxService,
-                FinanceService ],
+                FinanceService,
+                DatePipe ],
 })
 export class AppModule { }

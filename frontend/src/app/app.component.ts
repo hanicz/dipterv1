@@ -3,6 +3,8 @@ import { Location } from '@angular/common';
 import { Router, NavigationEnd } from '@angular/router';
 import { UserService } from './services/user.service';
 
+import 'hammerjs';
+
 @Component({
   moduleId: module.id,
   selector: 'my-app',
