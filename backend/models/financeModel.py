@@ -137,7 +137,7 @@ def get_aggregated_finance_records_by_year(user_id, year):
         finances = session.query(FinanceType.name, func.sum(Finance.amount))\
             .filter((Finance.user_id == user_id) &
                     (Finance.finance_type_id == FinanceType.id) &
-                    (extract('year', Finance.finance_date) == 'year'))\
+                    (extract('year', Finance.finance_date) == year))\
             .group_by(FinanceType.name)
 
         if finances is not None:

@@ -12,3 +12,27 @@
   overflow: auto;
   max-height: 500px;
 }
+
+.example-header {
+  min-height: 64px;
+  padding: 8px 24px 0;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+input.ym-input::-webkit-inner-spin-button {
+  display: none;
+}
+
+.year-month-filter{
+  min-height: 64px;
+  padding: 8px 24px 0;
+}
+
+.ym{
+  font-size: 14px;
+  width: 20%;
+}

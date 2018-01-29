@@ -2,9 +2,28 @@
 
     <button mat-raised-button (click)="openDialog()">New</button>
     <button mat-raised-button (click)="fill_chart()">Chart</button>
+    <mat-form-field class="ym">
+            <input matInput placeholder="Year" type="number" [(ngModel)]="aggr_year" class="ym-input">
+        </mat-form-field>
+        <mat-form-field class="ym">
+            <input matInput placeholder="Month" type="number" [(ngModel)]="aggr_month" class="ym-input">
+        </mat-form-field>
     <canvas id="canvas">{{ chart }}</canvas>
-    <!--div class="example-container mat-elevation-z8">
+    <br>
+    <div class="example-container mat-elevation-z8">
+        <div class="year-month-filter">
+            <mat-form-field class="ym">
+                <input matInput placeholder="Year" type="number" [(ngModel)]="year" class="ym-input">
+            </mat-form-field>
+            <mat-form-field class="ym">
+                <input matInput placeholder="Month" type="number" [(ngModel)]="month" class="ym-input">
+            </mat-form-field>
+            <button mat-raised-button (click)="fillTable()">Aggregate</button>
+        </div>
         <div class="example-header">
+            <mat-form-field>
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Table Filter">
+            </mat-form-field>
         </div>
 
         <mat-table #table [dataSource]="dataSource">
@@ -32,5 +51,5 @@
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
         </mat-table>
-    </div-->
+    </div>
 </div>
