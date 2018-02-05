@@ -1,6 +1,7 @@
 <div class="finance">
 
     <button mat-raised-button (click)="openDialog()">New</button>
+    <br>
     <button mat-raised-button (click)="fill_chart()">Chart</button>
     <mat-form-field class="ym">
             <input matInput placeholder="Year" type="number" [(ngModel)]="aggr_year" class="ym-input">
@@ -8,7 +9,7 @@
         <mat-form-field class="ym">
             <input matInput placeholder="Month" type="number" [(ngModel)]="aggr_month" class="ym-input">
         </mat-form-field>
-    <canvas id="canvas">{{ chart }}</canvas>
+    <canvas hidden id="canvas">{{ chart }}</canvas>
     <br>
     <div class="example-container mat-elevation-z8">
         <div class="year-month-filter">
@@ -18,7 +19,7 @@
             <mat-form-field class="ym">
                 <input matInput placeholder="Month" type="number" [(ngModel)]="month" class="ym-input">
             </mat-form-field>
-            <button mat-raised-button (click)="fillTable()">Aggregate</button>
+            <button mat-raised-button (click)="fillTable()">Search</button>
         </div>
         <div class="example-header">
             <mat-form-field>
@@ -26,11 +27,11 @@
             </mat-form-field>
         </div>
 
-        <mat-table #table [dataSource]="dataSource">
+        <mat-table #table [dataSource]="dataSource" style="overflow: auto; max-height: 500px;">
 
             <ng-container matColumnDef="type">
                 <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.finance_type_id}} </mat-cell>
+                <mat-cell *matCellDef="let element"> {{ get_finance_type_name(element.finance_type_id) }} </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="amount">
@@ -45,7 +46,7 @@
 
             <ng-container matColumnDef="date">
                 <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.finance_date}} </mat-cell>
+                <mat-cell *matCellDef="let element"> {{ get_formatted_date(element.finance_date) }} </mat-cell>
             </ng-container>
 
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

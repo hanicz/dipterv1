@@ -1,4 +1,4 @@
-import { Serializable } from '../utils/serializable'
+import { Serializable } from '../utils/serializable';
 
 export class Finance{
     public id: Number;

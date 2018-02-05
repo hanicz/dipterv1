@@ -16,6 +16,7 @@ import { Finance } from '../entities/finance';
     financeTypes: FinanceType[];
     selectedType: FinanceType;
     finance: Finance;
+    newFinanceTypeName: String;
   
     constructor(
       private financeService: FinanceService,
@@ -26,14 +27,21 @@ import { Finance } from '../entities/finance';
           this.financeTypes = data.financeTypes;
       }
   
-      onCreateClick(): void {
+      createRecord(): void {
         this.finance.finance_type_id = this.selectedType.id;
         this.financeService.new_finance(this.finance).subscribe((json: Object) => {
-            console.log(json);
           },
             error => console.error('Error: ' + error)
           );
         this.dialogRef.close();
     }
+
+    createType(): void {
+      this.financeService.new_finance_type(this.newFinanceTypeName).subscribe((json: Object) => {
+          
+        },
+          error => console.error('Error: ' + error)
+        );
+  }
   
   }

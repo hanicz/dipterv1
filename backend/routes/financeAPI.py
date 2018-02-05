@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from utils import validate, HTTP_OK, HTTP_BAD_REQUEST, HTTP_CREATED, HTTP_NOT_FOUND
 from models import create_finance_record, decode_token, get_finance_type_records, update_finance_record, \
     delete_finance_record, get_finance_records_by_month, get_finance_records_by_year, \
-    get_aggregated_finance_records_by_month, get_aggregated_finance_records_by_year
+    get_aggregated_finance_records_by_month, get_aggregated_finance_records_by_year, create_finance_type_record
 from exception import InvalidParametersException
 
 finance_api = Blueprint('finance_api', __name__)
@@ -32,6 +32,17 @@ def get_types():
         if types is not None:
             return jsonify(types), HTTP_OK
         return jsonify({'Response': 'Finance type records failed to query'}), HTTP_BAD_REQUEST
+    except InvalidParametersException as e:
+        return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
+
+
+@finance_api.route("/type", methods=['PUT'])
+def create_type():
+    try:
+        type = create_finance_type_record(decode_token(request.cookies.get('token')), request.args.get('name'))
+        if type is not None:
+            return jsonify(type), HTTP_CREATED
+        return jsonify({'Response': 'Finance type failed to create'}), HTTP_BAD_REQUEST
     except InvalidParametersException as e:
         return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
 

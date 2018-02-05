@@ -8,6 +8,8 @@ import { forEach } from '@angular/router/src/utils/collection';
 import { MatTableDataSource } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FinanceDialog } from '../finance-dialog/finance-dialog.component';
+import { DatePipe } from '@angular/common';
+import { FinanceInterface } from '../entities/FinanceInterface';
 
 @Component({
   moduleId: module.id,
@@ -24,6 +26,7 @@ export class FinanceComponent {
   colors: string[];
   financeTypes: FinanceType[];
   chartFinances: AggrFinance[];
+  chartHidden: boolean = true;
 
   year: Number;
   month: Number;
@@ -35,7 +38,8 @@ export class FinanceComponent {
 
   constructor(
     private financeService: FinanceService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private datePipe: DatePipe
   ) { }
 
   ngOnInit() {
@@ -84,6 +88,20 @@ export class FinanceComponent {
     }
   }
 
+  get_formatted_date(date: Date){
+    return this.datePipe.transform(date, 'yyyy-MM-dd');
+  }
+
+  get_finance_type_name(id: Number) {
+    let retVal;
+    this.financeTypes.forEach((f) => {
+      if(f.id == id) {
+        retVal = f.name;
+      }
+    });
+    return retVal;
+  }
+
   build_chart() {
     this.dataSource = new MatTableDataSource(this.chartFinances);
     this.chartFinances.forEach((f) => {
@@ -126,8 +144,7 @@ export class FinanceComponent {
       data: { financeTypes: this.financeTypes }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+    dialogRef.afterClosed().subscribe((result: FinanceInterface) => {
     });
   }
 
@@ -142,16 +159,16 @@ export class FinanceComponent {
       if (this.month == null) {
         this.financeService.get_finances_by_year(this.year).subscribe((json: Object) => {
           console.log(json);
-          this.finances = json as Finance[];
-          this.dataSource = new MatTableDataSource(this.finances);
+          this.chartFinances = json as AggrFinance[];
+          this.dataSource = new MatTableDataSource(this.chartFinances);
         },
           error => console.error('Error: ' + error)
         );
       } else {
         this.financeService.get_finances_by_month(this.year, this.month).subscribe((json: Object) => {
           console.log(json);
-          this.finances = json as Finance[];
-          this.dataSource = new MatTableDataSource(this.finances);
+          this.chartFinances = json as AggrFinance[];
+          this.dataSource = new MatTableDataSource(this.chartFinances);
         },
           error => console.error('Error: ' + error)
         );

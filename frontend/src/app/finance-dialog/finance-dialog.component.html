@@ -1,23 +1,36 @@
-<div class="example-container">
-    <mat-form-field>
-        <input matInput placeholder="Comment" [(ngModel)]="finance.comment">
-    </mat-form-field>
+<mat-tab-group>
+    <mat-tab label="Record">
+        <div class="example-container">
+            <mat-form-field>
+                <input matInput placeholder="Comment" [(ngModel)]="finance.comment">
+            </mat-form-field>
 
-    <mat-form-field>
-        <input matInput placeholder="Amount" type="number" [(ngModel)]="finance.amount" class="amount-input">
-    </mat-form-field>
+            <mat-form-field>
+                <input matInput placeholder="Amount" type="number" [(ngModel)]="finance.amount" class="amount-input">
+            </mat-form-field>
 
-    <mat-form-field>
-        <mat-select placeholder="Type" [(ngModel)]="selectedType">
-            <mat-option *ngFor="let ftype of financeTypes" [value]="ftype">{{ ftype.name }}</mat-option>
-        </mat-select>
-    </mat-form-field>
+            <mat-form-field>
+                <mat-select placeholder="Type" [(ngModel)]="selectedType">
+                    <mat-option *ngFor="let ftype of financeTypes" [value]="ftype">{{ ftype.name }}</mat-option>
+                </mat-select>
+            </mat-form-field>
 
-    <mat-form-field>
-        <input matInput [matDatepicker]="picker" placeholder="Date" [(ngModel)]="finance.finance_date">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
+            <mat-form-field>
+                <input matInput [matDatepicker]="picker" placeholder="Date" [(ngModel)]="finance.finance_date">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
 
-    <button mat-raised-button (click)="onCreateClick()" style="background-color:#3a6efc">Create</button>
-</div>
+            <button mat-raised-button (click)="createRecord()" style="background-color:#3a6efc">Create</button>
+        </div>
+    </mat-tab>
+    <mat-tab label="Type">
+        <div class="example-container">
+            <mat-form-field>
+                <input matInput placeholder="Name" [(ngModel)]="newFinanceTypeName">
+            </mat-form-field>
+
+            <button mat-raised-button (click)="createType()" style="background-color:#3a6efc">Create</button>
+        </div>
+    </mat-tab>
+</mat-tab-group>

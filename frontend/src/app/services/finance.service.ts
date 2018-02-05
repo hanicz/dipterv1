@@ -92,4 +92,14 @@ export class FinanceService {
         })
             .map((res: Response) => res.json());
     }
+
+    new_finance_type(name: String) {
+
+        const url = `${this.userUrl}/type?name=${name}`;
+        return this.http.put(url, null, {
+            headers: this.headers,
+            withCredentials: true
+        })
+            .map((res: Response) => res.json());
+    }
 }
