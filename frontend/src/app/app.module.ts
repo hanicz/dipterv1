@@ -74,6 +74,7 @@ import {
   MatOptionModule,
   MatFormFieldModule
 } from '@angular/material';
+import { TravelComponent } from './travel/travel.component';
 
 
 @NgModule({
@@ -136,7 +137,8 @@ import {
                   ResponseComponent,
                   DropboxDownloadComponent,
                   FinanceComponent,
-                  FinanceDialog],
+                  FinanceDialog,
+                  TravelComponent],
   bootstrap:    [ AppComponent ],
   providers: [ UserService,
                 FileService,
