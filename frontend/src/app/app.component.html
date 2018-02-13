@@ -1,30 +1,30 @@
 <div *ngIf="menuHidden" style="max-width: none; width: 100vw; background-color: black; margin-bottom: 2%;" id="menuBar">
-    <button mat-button [matMenuTriggerFor]="filemenu" style="color: white">Files</button>
-    <mat-menu #filemenu="matMenu">
-        <button mat-menu-item (click)="this.router.navigate(['./files']);">My Files</button>
-        <button mat-menu-item (click)="this.router.navigate(['./shared-with-me']);">Shared with me</button>
-        <button mat-menu-item (click)="this.router.navigate(['./deleted-files']);">Deleted</button>
-    </mat-menu>
+  <button mat-button [matMenuTriggerFor]="filemenu" style="color: white">Files</button>
+  <mat-menu #filemenu="matMenu">
+      <button mat-menu-item (click)="this.router.navigate(['./files']);">My Files</button>
+      <button mat-menu-item (click)="this.router.navigate(['./shared-with-me']);">Shared with me</button>
+      <button mat-menu-item (click)="this.router.navigate(['./deleted-files']);">Deleted</button>
+  </mat-menu>
 
-    <button mat-button [matMenuTriggerFor]="notemenu" style="color: white">Notes</button>
-    <mat-menu #notemenu="matMenu">
-        <button mat-menu-item (click)="this.router.navigate(['./notes']);">My Notes</button>
-        <button mat-menu-item (click)="this.router.navigate(['./shared-notes']);">Shared with me</button>
-    </mat-menu>
+  <button mat-button [matMenuTriggerFor]="notemenu" style="color: white">Notes</button>
+  <mat-menu #notemenu="matMenu">
+      <button mat-menu-item (click)="this.router.navigate(['./notes']);">My Notes</button>
+      <button mat-menu-item (click)="this.router.navigate(['./shared-notes']);">Shared with me</button>
+  </mat-menu>
 
-    <button mat-button [matMenuTriggerFor]="financemenu" style="color: white">Finances</button>
-    <mat-menu #financemenu="matMenu">
-        <button mat-menu-item (click)="this.router.navigate(['./finance']);">My Finances</button>
-    </mat-menu>
+  <button mat-button [matMenuTriggerFor]="financemenu" style="color: white">Finances</button>
+  <mat-menu #financemenu="matMenu">
+      <button mat-menu-item (click)="this.router.navigate(['./finance']);">My Finances</button>
+  </mat-menu>
 
-    <button mat-button [matMenuTriggerFor]="usermenu" style="color: white; float: right;">User</button>
-    <mat-menu #usermenu="matMenu">
-            <button mat-menu-item (click)="this.router.navigate(['./settings']);">Change Data</button>
-            <button mat-menu-item (click)="this.router.navigate(['./dropbox']);">Dropbox</button>
-            <button mat-menu-item (click)="this.router.navigate(['./logs']);">Logs</button>
-            <button mat-menu-item (click)="logout();">Logout</button>
-            <button mat-menu-item (click)="delete();">Delete Account</button>
-    </mat-menu>
+  <button mat-button [matMenuTriggerFor]="usermenu" style="color: white; float: right;">User</button>
+  <mat-menu #usermenu="matMenu">
+          <button mat-menu-item (click)="this.router.navigate(['./settings']);">Change Data</button>
+          <button mat-menu-item (click)="this.router.navigate(['./dropbox']);">Dropbox</button>
+          <button mat-menu-item (click)="this.router.navigate(['./logs']);">Logs</button>
+          <button mat-menu-item (click)="logout();">Logout</button>
+          <button mat-menu-item (click)="delete();">Delete Account</button>
+  </mat-menu>
 </div>
 
 <router-outlet></router-outlet>

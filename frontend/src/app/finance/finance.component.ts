@@ -9,7 +9,6 @@ import { MatTableDataSource } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FinanceDialog } from '../finance-dialog/finance-dialog.component';
 import { DatePipe } from '@angular/common';
-import { FinanceInterface } from '../entities/FinanceInterface';
 
 @Component({
   moduleId: module.id,
@@ -144,7 +143,7 @@ export class FinanceComponent {
       data: { financeTypes: this.financeTypes }
     });
 
-    dialogRef.afterClosed().subscribe((result: FinanceInterface) => {
+    dialogRef.afterClosed().subscribe((result) => {
     });
   }
 

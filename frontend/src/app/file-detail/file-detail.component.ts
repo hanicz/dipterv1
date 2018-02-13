@@ -11,7 +11,6 @@ import { Log } from '../entities/log';
 import { DropboxService } from '../services/dropbox.service';
 
 import 'rxjs/add/operator/toPromise';
-import saveAs = require('file-saver');
 
 @Component({
   moduleId: module.id,
@@ -146,7 +145,7 @@ export class FileDetailComponent {
                 throw err;
             });*/
 
-    var newWindow = window.open('http://localhost:5000/files/download/' + this.file.id);
+    var newWindow = window.open('http://localhost:5000/files/download/' + this.file.id, "_self");
 
     /*this.fileService.download(this.file.id).subscribe(blob => {
       this.changeEvent.emit("File download started successfully");

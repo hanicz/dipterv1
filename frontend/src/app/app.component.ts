@@ -1,13 +1,11 @@
 import { Component } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, NavigationEnd } from '@angular/router';
+import 'hammerjs';
 import { UserService } from './services/user.service';
 
-import 'hammerjs';
-
 @Component({
-  moduleId: module.id,
-  selector: 'my-app',
+  selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -40,7 +38,7 @@ export class AppComponent {
   }
 
   delete(): void{
-    var del = window.confirm('Arey you sure you want to delete your account ?')
+    var del = window.confirm('Are you sure you want to delete your account ?')
     if (del == true) {
       this.userService
       .delete().subscribe((json: Object) => {
@@ -52,5 +50,4 @@ export class AppComponent {
       );
     }
   }
-
 }
