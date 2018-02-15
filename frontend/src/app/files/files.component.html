@@ -1,42 +1,42 @@
-<div class="row">
-  <div class="col-xs-9">
-    <div class="files">
-      <div class="form-group row">
-        <div class="col-sm-5">
-          <input type="text" class="form-control" id="search" placeholder="search" [ngModel]="search" (ngModelChange)="search_files($event)"
-            name="search">
-        </div>
-        <img id="upload" class="img-responsive" src="assets/images/file.png" (click)="showUpload()" width="15" height="20">
-        <img id="newFolder" class="img-responsive" src="assets/images/folder.png" (click)="showFolder()" width="25" height="40">
-        <img id="dropbox" class="img-responsive" src="assets/images/dropbox.png" (click)="showDropbox()" width="25" height="40">
-      </div>
-      <div class="list-group row ">
-        <li *ngFor="let folder of folders" (click)="onSelectFolder(folder)" (dblclick)="onDblSelectFolder(folder)" class="list-group-item col-sm-3">
-          <div id="image">
-            <img class="img-responsive" src="assets/images/folder.png" width="20" height="30">
-          </div>
-          <span> {{folder.folderName | limitTo: 27}} </span>
-        </li>
-      </div>
-      <div class="list-group row ">
-        <li *ngFor="let file of files" (click)="onSelectFile(file)" class="list-group-item col-sm-3">
-          <div id="image">
-            <img class="img-responsive" src="assets/images/file.png" width="15" height="10">
-          </div>
-          <span> {{ file.fileName | limitTo: 27 }}</span>
-        </li>
-      </div>
-    </div>
+<div id="wrapper">
+  <div class="files">
+    <mat-form-field>
+      <input matInput placeholder="search" [(ngModel)]="search" (ngModelChange)="search_files($event)">
+    </mat-form-field>
+    <img id="upload" class="img-responsive" src="assets/images/file.png" (click)="showUpload()" width="15" height="20">
+    <img id="newFolder" class="img-responsive" src="assets/images/folder.png" (click)="showFolder()" width="25" height="40">
+    <img id="dropbox" class="img-responsive" src="assets/images/dropbox.png" (click)="showDropbox()" width="25" height="40">
+    <mat-list>
+      <h3 mat-subheader>Folders</h3>
+      <mat-list-item *ngFor="let folder of folders" (click)="onSelectFolder(folder)" (dblclick)="onDblSelectFolder(folder)" style="display:inline-block;">
+        <mat-icon mat-list-icon>
+          <i class="fas fa-folder"></i>
+        </mat-icon>
+        <h4 mat-line> {{folder.folderName | limitTo: 27}} </h4>
+        <p mat-line> {{folder.created | date: 'short'}} </p>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      <h3 mat-subheader>Files</h3>
+      <mat-list-item *ngFor="let file of files" style="display:inline-block;" (click)="onSelectFile(file)">
+        <mat-icon mat-list-icon>
+          <i class="fas fa-file"></i>
+        </mat-icon>
+        <h4 mat-line> {{ file.fileName | limitTo: 27 }} </h4>
+        <p mat-line> {{file.created | date: 'short'}} </p>
+      </mat-list-item>
+    </mat-list>
   </div>
-  <div class="col-xs-3">
-    <file-detail [hidden]="fileHidden" (changeEvent)="showResponse($event); get_files(this.currentFolder.id); this.fileHidden=true;" (shareEvent)="showShare()" [file]="selectedFile" class="col"></file-detail>
-  </div>
-  <div class="col-xs-3">
+
+  <div>
     <folder-detail [hidden]="folderHidden" [folder]="selectedFolder" (changeEvent)="showResponse($event); get_folders(this.currentFolder); this.folderHidden=true;"></folder-detail>
+    <file-detail [hidden]="fileHidden" (changeEvent)="showResponse($event); get_files(this.currentFolder.id); this.fileHidden=true;"
+      (shareEvent)="showShare()" [file]="selectedFile" class="col"></file-detail>
   </div>
 </div>
 <upload [hidden]="uploadHidden" (closeEvent)="close_upload()" [folder]="selectedFolder.id" class="col"></upload>
 <create-folder [hidden]="createFolderHidden" (closeEvent)="close_upload()" [folder]="currentFolder.id" class="col"></create-folder>
-<share [hidden]="uploadShare" (closeEvent)="uploadShare = true;" (changeEvent)="showResponse($event); get_files(this.currentFolder.id); this.uploadShare=true;" [file]="selectedFile" class="col"></share>
+<share [hidden]="uploadShare" (closeEvent)="uploadShare = true;" (changeEvent)="showResponse($event); get_files(this.currentFolder.id); this.uploadShare=true;"
+  [file]="selectedFile" class="col"></share>
 <response [hidden]="responseHidden" [inresponse]="requestResponse" class="col"></response>
-<dropbox-download [hidden]="dropboxHidden" (closeEvent)="dropboxHidden = true;" (downloadEvent)="showResponse($event); get_files(this.currentFolder.id); this.dropboxHidden=true;" [folder]="currentFolder" class="col"></dropbox-download>
+<dropbox-download [hidden]="dropboxHidden" (closeEvent)="dropboxHidden = true;" (downloadEvent)="showResponse($event); get_files(this.currentFolder.id); this.dropboxHidden=true;"
+  [folder]="currentFolder" class="col"></dropbox-download>

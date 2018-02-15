@@ -1,16 +1,24 @@
 .files {
-  z-index: 1;
+  
   left:100px;
   top: 50px;
+  margin-bottom: 2%;
+  width: 80%;
+  float:left;
+  margin-right: 1%;
   background: #FFFFFF;
   margin-left: 1%;
-  border-radius: 8px;
   padding: 45px;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 15px 20px 0 rgba(0, 0, 0, 0.6);
   list-style-type: none;
 }
 
-.files li:hover {
+#wrapper {
+  width: 100%;
+  overflow: hidden;
+}
+
+.mat-list-item:hover {
   color: #607D8B;
   background-color: #DDD;
   cursor: pointer;

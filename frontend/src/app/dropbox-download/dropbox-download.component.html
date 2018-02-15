@@ -2,13 +2,15 @@
     <div class="form-group">
         <span id="close_dropbox" (click)="close()">X</span>
     </div>
-    <div>
-        <div class="form-group row">
-            <label>Path: </label> <input type="text" [(ngModel)]="path" class="form-control">
-            <label>Filename: </label> <input type="text" [(ngModel)]="filename" class="form-control">
-        </div>
-        <div class="form-group row">
-            <button (click)="download()" class="btn btn-primary">Download</button>
-        </div>
+    <div layout="row">
+        <mat-form-field>
+            <input matInput placeholder="Path" [(ngModel)]="path">
+        </mat-form-field>
     </div>
+    <div layout="row">
+        <mat-form-field>
+            <input matInput placeholder="Filename" [(ngModel)]="filename">
+        </mat-form-field>
+    </div>
+    <button mat-raised-button color="primary" (click)="download()">Download</button>
 </div>

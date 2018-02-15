@@ -1,21 +1,23 @@
 <div class="notes">
-    <div class="list-group row ">
-        <li *ngFor="let note of notes" (click)="onSelectNote(note)" class="list-group-item col-sm-3">
-            <div id="image">
-                <img class="img-responsive" src="assets/images/file.png" width="15" height="10">
-            </div>
-            <span> {{note.fileName}} </span>
-        </li>
-    </div>
-    <div class="form-group row">
-        <button (click)="new_note()" class="btn btn-primary">New</button>
-        <button (click)="update_note()" [disabled]="!isValid()" class="btn btn-primary">Update</button>
-        <button (click)="delete_note()" [disabled]="!isValid()" class="btn btn-primary">Delete</button>
-        <button (click)="showShare()" [disabled]="!isValid()" class="btn btn-primary">Share</button>
-        <label for="noteFileName" class="col-sm-1 col-form-label">Name</label>
-        <div class="col-sm-5">
-            <input class="form-control" id="noteFileName" [(ngModel)]="selectedNote.fileName">
-        </div>
+    <mat-list>
+        <h3 mat-subheader>Notes</h3>
+        <mat-list-item *ngFor="let note of notes" (click)="onSelectNote(note)" style="display:inline-block;">
+            <mat-icon mat-list-icon>
+                <i class="fas fa-sticky-note"></i>
+            </mat-icon>
+            <h4 mat-line> {{note.fileName | limitTo: 27}} </h4>
+            <p mat-line> {{note.created | date: 'short'}} </p>
+        </mat-list-item>
+    </mat-list>
+    <div layout="row">
+        <mat-form-field>
+            <input matInput placeholder="Name" [(ngModel)]="selectedNote.fileName" id="noteFileName">
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" (click)="new_note()">New</button>
+        <button mat-raised-button color="primary" (click)="update_note()" [disabled]="!isValid()">Update</button>
+        <button mat-raised-button color="primary" (click)="delete_note()" [disabled]="!isValid()">Delete</button>
+        <button mat-raised-button color="primary" (click)="showShare()" [disabled]="!isValid()">Share</button>
     </div>
     <textarea class="form-control" style="resize: none;" [(ngModel)]="selectedNote.content" rows="10"></textarea>
     <share [hidden]="notesShare" (closeEvent)="notesShare = true;" [file]="selectedNote"></share>

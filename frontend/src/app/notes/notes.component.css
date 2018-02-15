@@ -2,8 +2,7 @@
     background: #FFFFFF;
     width: 50%;
     margin: auto;
-    border-radius: 8px;
-    padding: 45px;
+    padding: 10px;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 15px 20px 0 rgba(0, 0, 0, 0.6);
     list-style-type: none;
   }
@@ -13,8 +12,9 @@
     margin-right: 3px;
   }
 
-  .notes li:hover {
+  .mat-list-item:hover {
     color: #607D8B;
     background-color: #DDD;
     cursor: pointer;
+    user-select: none;
   }
