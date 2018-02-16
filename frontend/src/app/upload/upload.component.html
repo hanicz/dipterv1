@@ -1,9 +1,48 @@
-<div class="container">
-    <form class="form" (ngSubmit)="upload()" #uploadForm="ngForm">
-        <div class="form-group">
-            <span id="close_upload" (click)="close()">X</span>
+<mat-tab-group>
+    <mat-tab label="File">
+        <ng-template mat-tab-label>
+            <mat-icon>
+                <i class="fas fa-file"></i>
+            </mat-icon>
+        </ng-template>
+        <div class="tab-container">
+            <input type="file" (change)="onChange($event)" placeholder="Upload file" #filePicker>
+            <button mat-raised-button color="primary" (click)="upload()" style="margin-top: 1%;">Upload</button>
         </div>
-        <input type="file" (change)="onChange($event)" placeholder="Upload file" #filePicker>
-        <button type="submit" class="btn btn-primary">Upload</button>
-    </form>
-</div>
+    </mat-tab>
+    <mat-tab label="Folder">
+        <ng-template mat-tab-label>
+            <mat-icon>
+                <i class="fas fa-folder"></i>
+            </mat-icon>
+        </ng-template>
+        <div class="tab-container">
+            <div layout="row">
+                <mat-form-field>
+                    <input matInput placeholder="Foldername" required [(ngModel)]="newFolder.folderName" #username="ngModel">
+                </mat-form-field>
+            </div>
+            <button mat-raised-button color="primary" (click)="createFolder()">Create</button>
+        </div>
+    </mat-tab>
+    <mat-tab label="Dropbox">
+        <ng-template mat-tab-label>
+            <mat-icon>
+                <i class="fab fa-dropbox"></i>
+            </mat-icon>
+        </ng-template>
+        <div class="tab-container">
+            <div layout="row">
+                <mat-form-field>
+                    <input matInput placeholder="Path" [(ngModel)]="path">
+                </mat-form-field>
+            </div>
+            <div layout="row">
+                <mat-form-field>
+                    <input matInput placeholder="Filename" [(ngModel)]="filename">
+                </mat-form-field>
+            </div>
+            <button mat-raised-button color="primary" (click)="download()">Download</button>
+        </div>
+    </mat-tab>
+</mat-tab-group>

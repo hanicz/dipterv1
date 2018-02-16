@@ -1,35 +1,21 @@
-<div class="container">
-    <form class="form" (ngSubmit)="register()" #registerForm="ngForm">
-      <div class="form-group">
-        <input type="text" class="form-control" id="username" placeholder="username"
-              required
-              [(ngModel)]="model.username" name="username"
-              #username="ngModel">
-      </div>
-      <div [hidden]="username.valid || username.pristine"
-             class="alert alert-danger">
-          Username is required
-      </div>
-      <div class="form-group">
-        <input type="text" class="form-control" id="email" placeholder="email"
-              required
-              [(ngModel)]="model.email" name="email" #email="ngModel" pattern="[^@]+@[^@]+\.[a-zA-Z]{2,6}">
+<div class="register-container">
+  <mat-form-field>
+    <input matInput placeholder="Username" [(ngModel)]="user.username" [formControl]="username">
+  </mat-form-field>
 
-      </div>
-      <div [hidden]="(email.valid || email.pristine)"
-             class="alert alert-danger">
-          Email is required
-      </div>
-      <div class="form-group">
-        <input type="password" class="form-control" id="password" placeholder="password"
-              required
-              [(ngModel)]="model.password" name="password" #password="ngModel">
-      </div>
-      <div [hidden]="password.valid || password.pristine"
-             class="alert alert-danger">
-          Password is required
-      </div>
-      <button type="submit" [disabled]="!registerForm.form.valid" click="registerForm.reset()">Register</button>
-      <p class="message">Already registered? <a routerLink="/login">Sign In</a></p>
-    </form>
+  <mat-form-field>
+    <input matInput placeholder="Email" [(ngModel)]="user.email" [formControl]="email">
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'" [(ngModel)]="user.password" [formControl]="password">
+    <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+  </mat-form-field>
+
+  <div class="button-row">
+    <button mat-raised-button color="primary" (click)="register()">Create</button>
+  </div>
+  <p class="message">Already have an account?
+    <a routerLink="/login">Log in</a>
+  </p>
 </div>

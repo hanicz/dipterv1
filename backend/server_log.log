@@ -175,3 +175,7 @@ Sending activation email for: hanicz20@gmail.com
 Sending activation email for: hanicz20@gmail.com
 Sending activation email for: hanicz20@gmail.com
 Failed to send email for: hanicz20@gmail.com Exception: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+Sending activation email for: test2@test2.hu
+Sending activation email for: test2@test2.hu
+Failed to send email for: test2@test2.hu Exception: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+Failed to send email for: test2@test2.hu Exception: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond

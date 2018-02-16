@@ -6,14 +6,13 @@
     margin: auto;
     top: 20%;
     left:40%;
-    border-radius: 8px;
-    padding: 45px;
+    padding: 1%;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 15px 20px 0 rgba(0, 0, 0, 0.6);
     list-style-type: none;
   }
   
 .fileshare button {
-    width: 100%;
+    margin-bottom: 2%;
   }
   
   

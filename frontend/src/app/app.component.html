@@ -11,11 +11,8 @@
       <button mat-menu-item (click)="this.router.navigate(['./notes']);">My Notes</button>
       <button mat-menu-item (click)="this.router.navigate(['./shared-notes']);">Shared with me</button>
   </mat-menu>
-
-  <button mat-button [matMenuTriggerFor]="financemenu" style="color: white">Finances</button>
-  <mat-menu #financemenu="matMenu">
-      <button mat-menu-item (click)="this.router.navigate(['./finance']);">My Finances</button>
-  </mat-menu>
+  <button mat-button (click)="this.router.navigate(['./finance']);" style="color: white">Finances</button>
+  <button mat-button (click)="this.router.navigate(['./travel']);" style="color: white">Travel</button>
 
   <button mat-button [matMenuTriggerFor]="usermenu" style="color: white; float: right;">User</button>
   <mat-menu #usermenu="matMenu">

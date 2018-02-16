@@ -2,36 +2,44 @@
  * Created by Hanicz on 2/19/2017.
  */
 import { Component, OnInit } from '@angular/core';
-import { Headers, Http, URLSearchParams  } from '@angular/http';
-import 'rxjs/add/operator/toPromise';
+import { Headers, Http, URLSearchParams } from '@angular/http';
 import { UserService } from '../services/user.service'
 import { User } from '../utils/user'
 import { Router } from '@angular/router';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   moduleId: module.id,
   selector: 'register',
   templateUrl: './register.component.html',
-  styleUrls: [ './register.component.css' ]
+  styleUrls: ['./register.component.css']
 })
-export class RegisterComponent{
+export class RegisterComponent {
+
+  hide = true;
+
+  user = new User();
+
+  email = new FormControl('', [Validators.required, Validators.email]);
+  password = new FormControl('', [Validators.required]);
+  username = new FormControl('', [Validators.required]);
 
   constructor(
-    private userService: UserService,private router: Router
-  ){}
+    private userService: UserService, private router: Router
+  ) { }
 
   register(): void {
-    this.userService
-      .register_user(this.model)
-      .subscribe(
-        (json: Object) => {
-            this.model = new User().fromJSON(json);
-            console.log(this.model.username);
+    if (this.username.valid && this.password.valid && this.email.valid) {
+      this.userService
+        .register_user(this.user)
+        .subscribe(
+          (json: Object) => {
+            this.user = json as User;
+            console.log(this.user.username);
             this.router.navigate(["/login"]);
-        },
-        error => console.error('Error: ' + error)
+          },
+          error => console.error('Error: ' + error)
         );
+    }
   }
-
-  model = new User();
 }

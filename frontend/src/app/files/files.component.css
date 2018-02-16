@@ -25,12 +25,7 @@
   user-select: none;
 }
 
-#image{
-  float: left;
-  margin-right: 3px;
-}
-
-#upload, #dropbox, #newFolder{
+#upload{
   float:right;
   color:#418BFA;
   margin: auto;

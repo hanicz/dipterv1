@@ -2,11 +2,10 @@ import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpModule }    from '@angular/http';
-import { FormsModule }   from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent }  from './app.component';
-import { LoginComponent }  from './login/login.component';
 import { UserService} from './services/user.service';
 import { FileService} from './services/file.service';
 import { LogService} from './services/log.service';
@@ -28,16 +27,15 @@ import { FolderDetailComponent } from './folder-detail/folder-detail.component';
 import { DeletedFilesComponent } from './deleted-files/deleted-files.component';
 import { ShareComponent } from './share/share.component';
 import { NotesComponent } from './notes/notes.component';
-import { CreateFolderComponent } from './create-folder/create-folder.component';
-import { DropboxComponent } from './dropbox/dropbox.component';
 import { SharedWithMeComponent } from './shared-with-me/shared-with-me.component'
 import { SharedNotesComponent } from './shared-notes/shared-notes.component';
 import { ResponseComponent } from './reponse/response.component';
 import { FinanceComponent } from './finance/finance.component';
 import { FinanceDialog } from './finance-dialog/finance-dialog.component';
-import { DropboxDownloadComponent } from './dropbox-download/dropbox-download.component';
+import { DropboxComponent } from './dropbox/dropbox.component';
 import { TruncatePipe }   from './entities/pipe';
 import { DatePipe } from '@angular/common';
+import { LoginComponent }  from './login/login.component';
 
 import {
   MatAutocompleteModule,
@@ -83,6 +81,7 @@ import { TravelComponent } from './travel/travel.component';
                   AppRoutingModule,
                   HttpModule,
                   FormsModule,
+                  ReactiveFormsModule,
                   MatAutocompleteModule,
                   MatButtonModule,
                   MatButtonToggleModule,
@@ -115,7 +114,6 @@ import { TravelComponent } from './travel/travel.component';
                   MatToolbarModule,
                   MatTooltipModule],
   declarations: [ AppComponent,
-                  LoginComponent,
                   RegisterComponent,
                   ActivateComponent,
                   NotFoundComponent,
@@ -129,16 +127,15 @@ import { TravelComponent } from './travel/travel.component';
                   DeletedFilesComponent,
                   ShareComponent,
                   NotesComponent,
-                  CreateFolderComponent,
-                  DropboxComponent,
                   SharedWithMeComponent,
                   SharedNotesComponent,
                   TruncatePipe,
                   ResponseComponent,
-                  DropboxDownloadComponent,
                   FinanceComponent,
                   FinanceDialog,
-                  TravelComponent],
+                  TravelComponent,
+                  LoginComponent,
+                  DropboxComponent],
   bootstrap:    [ AppComponent ],
   providers: [ UserService,
                 FileService,
