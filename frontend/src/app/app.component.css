@@ -1,3 +1,46 @@
-#menuBar {
-	border-bottom:1px solid white;
+.menu_content {
+    background: #FFFFFF;
+    width: 80%;
+	margin: auto;
+	margin-top: 1%;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 15px 20px 0 rgba(0, 0, 0, 0.6);
+	list-style-type: none;
+	overflow: hidden;
+  }
+
+  .menu-header{
+	background: rgb(88, 130, 247);
+	align-items: center;
+	justify-content: center;
+	color: rgb(255, 255, 255);
 }
+
+.contento{
+	width: 85%;
+	float:right;
+}
+
+.sidenavvero{
+	width: 15%;
+	float:left;
+}
+
+.services-header{
+	align-items: center;
+	justify-content: center;
+}
+
+.mat-list-item:hover {
+    color: #607D8B;
+    background-color: #DDD;
+  }
+
+  .mat-list-item{
+	  width: 100%;
+	  font-size: 13px;
+  }
+
+  .mat-list{
+	cursor: pointer;
+    user-select: none;
+  }

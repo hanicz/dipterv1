@@ -76,8 +76,8 @@ def delete_folder(folder_id):
 
 
 @files_api.route("/file/<folder_id>", methods=['POST'])
-@limit_content_length(1073741824)
-@user_file_limit()
+#@limit_content_length(1073741824)
+#@user_file_limit()
 def create_file(folder_id):
     input_dictionary = {"folder_id": folder_id}
     validation_dictionary = {'folder_id': "^[0-9]*$"}

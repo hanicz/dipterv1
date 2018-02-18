@@ -5,17 +5,8 @@ from exception import InvalidParametersException
 
 notes_api = Blueprint('notes_api', __name__)
 
-
-'''@notes_api.route("/<note_id>", methods=['GET'])
-def get_notes(note_id):
-    data = get_note(decode_token(request.cookies.get('token')), note_id)
-    if data is not None:
-        return jsonify(data), HTTP_OK
-    return jsonify({'Response': 'Note not found'}), HTTP_NOT_FOUND'''
-
-
 @notes_api.route("/note", methods=['PUT'])
-@limit_content_length(300)
+#@limit_content_length(300)
 def create_notes():
     input_dictionary = request.get_json()
     validation_dictionary = {'content': None, 'fileName': None}
@@ -30,7 +21,7 @@ def create_notes():
 
 
 @notes_api.route("/update", methods=['POST'])
-@limit_content_length(300)
+#@limit_content_length(300)
 def update_notes():
     input_dictionary = request.get_json()
     validation_dictionary = {'content': None, 'fileName': None,

@@ -1,15 +1,10 @@
 .files {
   
-  left:100px;
-  top: 50px;
-  margin-bottom: 2%;
   width: 80%;
   float:left;
   margin-right: 1%;
   background: #FFFFFF;
-  margin-left: 1%;
-  padding: 45px;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 15px 20px 0 rgba(0, 0, 0, 0.6);
+  padding: 10px;
   list-style-type: none;
 }
 

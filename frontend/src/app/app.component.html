@@ -1,27 +1,31 @@
-<div *ngIf="menuHidden" style="max-width: none; width: 100vw; background-color: black; margin-bottom: 2%;" id="menuBar">
-  <button mat-button [matMenuTriggerFor]="filemenu" style="color: white">Files</button>
-  <mat-menu #filemenu="matMenu">
-      <button mat-menu-item (click)="this.router.navigate(['./files']);">My Files</button>
-      <button mat-menu-item (click)="this.router.navigate(['./shared-with-me']);">Shared with me</button>
-      <button mat-menu-item (click)="this.router.navigate(['./deleted-files']);">Deleted</button>
-  </mat-menu>
+<login [hidden]="!(this.router.url == '/login')"></login>
+<register [hidden]="!(this.router.url == '/register')"></register>
 
-  <button mat-button [matMenuTriggerFor]="notemenu" style="color: white">Notes</button>
-  <mat-menu #notemenu="matMenu">
-      <button mat-menu-item (click)="this.router.navigate(['./notes']);">My Notes</button>
-      <button mat-menu-item (click)="this.router.navigate(['./shared-notes']);">Shared with me</button>
-  </mat-menu>
-  <button mat-button (click)="this.router.navigate(['./finance']);" style="color: white">Finances</button>
-  <button mat-button (click)="this.router.navigate(['./travel']);" style="color: white">Travel</button>
+<div class="menu_content" *ngIf="menuHidden">
+    <mat-toolbar class="menu-header">
+        <div layout="row">
+            <button mat-button (click)="this.router.navigate(['./files']);" style="color: white">Files</button>
+            <button mat-button (click)="this.router.navigate(['./notes']);" style="color: white">Notes</button>
+            <button mat-button (click)="this.router.navigate(['./finance']);" style="color: white">Finances</button>
+            <button mat-button (click)="this.router.navigate(['./travel']);" style="color: white">Travel</button>
+            <button mat-button (click)="this.router.navigate(['./settings']);" style="color: white">User</button>
+        </div>
+    </mat-toolbar>
+    <div class="sidenavvero">
+        <mat-toolbar class="services-header">
+            Services
+        </mat-toolbar>
+        <mat-list>
+            <mat-list-item *ngFor="let item of selectedList" (click)="clickMenuItem(item.router);" style="display:inline-block;">
+                <h4 mat-line>
+                    <mat-icon mat-list-icon>
+                        <i class="{{item.icon}}" style="font-size: 0.70em;"></i>
+                    </mat-icon>{{item.text}} </h4>
+            </mat-list-item>
+        </mat-list>
+    </div>
+    <div class="contento">
+        <router-outlet></router-outlet>
+    </div>
 
-  <button mat-button [matMenuTriggerFor]="usermenu" style="color: white; float: right;">User</button>
-  <mat-menu #usermenu="matMenu">
-          <button mat-menu-item (click)="this.router.navigate(['./settings']);">Change Data</button>
-          <button mat-menu-item (click)="this.router.navigate(['./dropbox']);">Dropbox</button>
-          <button mat-menu-item (click)="this.router.navigate(['./logs']);">Logs</button>
-          <button mat-menu-item (click)="logout();">Logout</button>
-          <button mat-menu-item (click)="delete();">Delete Account</button>
-  </mat-menu>
 </div>
-
-<router-outlet></router-outlet>
