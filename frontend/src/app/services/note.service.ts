@@ -18,7 +18,7 @@ export class NoteService {
     'Accept': 'application/json'
   });
 
-  private userUrl = 'http://localhost:5000/notes';
+  private userUrl = '/resources/notes';
 
   constructor(private http: Http) { }
 

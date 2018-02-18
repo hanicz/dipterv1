@@ -3,7 +3,7 @@
  */
 import { Injectable } from '@angular/core';
 import { Headers, Http, URLSearchParams, Response } from '@angular/http';
-import { Finance } from '../entities/finance';
+import { Finance } from '../entities/Finance';
 import 'rxjs/add/operator/map';
 import { DatePipe } from '@angular/common';
 
@@ -15,7 +15,7 @@ export class FinanceService {
         'Accept': 'application/json'
     });
 
-    private userUrl = 'http://localhost:5000/finances';
+    private userUrl = '/resources/finances';
 
     constructor(private datePipe: DatePipe, private http: Http) { }
 

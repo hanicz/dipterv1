@@ -18,14 +18,14 @@ os.environ['MAIL'] = get_code('MAIL')
 os.environ['DROPBOX_KEY'] = get_code('DROPBOX_KEY')
 os.environ['DROPBOX_SECRET'] = get_code('DROPBOX_SECRET')
 
-app.register_blueprint(users_api, url_prefix='/users')
-app.register_blueprint(files_api, url_prefix='/files')
-app.register_blueprint(notes_api, url_prefix='/notes')
-app.register_blueprint(roles_api, url_prefix='/roles')
-app.register_blueprint(file_shares_api, url_prefix='/shares')
-app.register_blueprint(logs_api, url_prefix='/logs')
-app.register_blueprint(dropbox_api, url_prefix='/dropbox')
-app.register_blueprint(finance_api, url_prefix='/finances')
+app.register_blueprint(users_api, url_prefix='/resources/users')
+app.register_blueprint(files_api, url_prefix='/resources/files')
+app.register_blueprint(notes_api, url_prefix='/resources/notes')
+app.register_blueprint(roles_api, url_prefix='/resources/roles')
+app.register_blueprint(file_shares_api, url_prefix='/resources/shares')
+app.register_blueprint(logs_api, url_prefix='/resources/logs')
+app.register_blueprint(dropbox_api, url_prefix='/resources/dropbox')
+app.register_blueprint(finance_api, url_prefix='/resources/finances')
 
 @app.before_request
 @login_required

@@ -16,7 +16,7 @@ export class RoleService {
     'Content-Type': 'application/json',
     'Accept': 'application/json'
   });
-  private userUrl = 'http://localhost:5000/roles';
+  private userUrl = '/resources/roles';
 
   constructor(private http: Http) { }
 

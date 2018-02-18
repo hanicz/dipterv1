@@ -25,7 +25,7 @@ export class FileService {
     'Accept': 'application/json'
   });
 
-  private userUrl = 'http://localhost:5000/files';
+  private userUrl = '/resources/files';
 
   constructor(private http: Http) { }
 
