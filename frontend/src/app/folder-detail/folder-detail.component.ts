@@ -105,8 +105,7 @@ export class FolderDetailComponent {
   }
 
   download(): void {
-    
-        var newWindow = window.open('http://localhost:5000/files/download/folder/' + this.folder.id);
+        var newWindow = window.open('/resources/files/download/folder/' + this.folder.id, "_self");
     
         /*this.fileService.download(this.file.id).subscribe(blob => {
           this.changeEvent.emit("File download started successfully");
