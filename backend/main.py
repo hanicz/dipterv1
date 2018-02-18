@@ -27,6 +27,10 @@ app.register_blueprint(logs_api, url_prefix='/resources/logs')
 app.register_blueprint(dropbox_api, url_prefix='/resources/dropbox')
 app.register_blueprint(finance_api, url_prefix='/resources/finances')
 
+app.secret_key = os.getenv('SECRET_KEY')
+
+delete_job()
+
 @app.before_request
 @login_required
 def before_request():
@@ -48,7 +52,4 @@ def unhandled_exception(e):
 
 
 if __name__ == '__main__':
-    delete_job()
-
-    app.secret_key = os.getenv('SECRET_KEY')
     app.run(host='0.0.0.0', threaded=True)
