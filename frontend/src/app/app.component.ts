@@ -62,7 +62,9 @@ export class AppComponent {
   }
 
   clickMenuItem(routeString){
-    this.router.navigate(['./' + routeString]);
+    if(routeString == 'logout') this.logout();
+    else if(routeString == 'delete') this.delete();
+    else this.router.navigate(['./' + routeString]);
   }
 
   delete(): void{
