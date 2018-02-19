@@ -1,6 +1,10 @@
 .dropbox-container {
-    background: #FFFFFF;
-    width: 100%;
-    margin: auto;
-    padding: 10px;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  padding: 10px;
+  max-width: 40%;
+  margin-top: 1%;
+  margin-left: auto;
+  margin-right: auto;
   }

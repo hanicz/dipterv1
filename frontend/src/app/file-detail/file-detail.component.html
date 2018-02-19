@@ -1,10 +1,16 @@
 <div class="filedetail" *ngIf="file">
     <div>
-        <mat-form-field>
-            <input matInput placeholder="Name" [(ngModel)]="file.fileName" id="fileName" [disabled]="isValid()">
-        </mat-form-field>
-        <label>Created : </label> {{file.created | date: 'short'}}
-        <label>Version : </label> {{file.version}}
+        <div layout="row">
+            <mat-form-field>
+                <input matInput placeholder="Name" [(ngModel)]="file.fileName" id="fileName" [disabled]="isValid()">
+            </mat-form-field>
+        </div>
+        <div layout="row">
+            <label>Created : </label> {{file.created | date: 'short'}}
+        </div>
+        <div layout="row">
+            <label>Version : </label> {{file.version}}
+        </div>
         <div layout="row">
             <label>Deleted : </label> {{file.deleted || "-"}}
         </div>
@@ -15,7 +21,7 @@
         <button mat-raised-button color="primary" (click)="share()" [disabled]="isValid()">Share</button>
         <button mat-raised-button color="primary" (click)="move()" [disabled]="isValid()">Move</button>
         <mat-form-field>
-            <mat-select placeholder="Folder" [(ngModel)]="moveFolder">
+            <mat-select placeholder="Folder" [disabled]="isValid()" [(ngModel)]="moveFolder">
                 <mat-option *ngFor="let folder of folders" [value]="folder">
                     {{ folder.folderName || 'Main' }}
                 </mat-option>
@@ -27,9 +33,11 @@
         <mat-list>
             <h4 mat-subheader>Logs</h4>
             <mat-list-item *ngFor="let log of logs">
-                <mat-icon mat-list-icon><i class="fas fa-angle-right"></i></mat-icon>
+                <mat-icon mat-list-icon>
+                    <i class="fas fa-angle-right"></i>
+                </mat-icon>
                 <h4 mat-line>{{log.message}}</h4>
-                <p mat-line> {{log.created | date: 'medium'}} </p>
+                <p mat-line> {{log.created | date: 'short'}} </p>
             </mat-list-item>
         </mat-list>
     </div>

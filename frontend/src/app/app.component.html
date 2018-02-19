@@ -3,13 +3,11 @@
 
 <div class="menu_content" *ngIf="menuHidden">
     <mat-toolbar class="menu-header">
-        <div layout="row">
-            <button mat-button (click)="this.router.navigate(['./files']);" style="color: white">Files</button>
-            <button mat-button (click)="this.router.navigate(['./notes']);" style="color: white">Notes</button>
-            <button mat-button (click)="this.router.navigate(['./finance']);" style="color: white">Finances</button>
-            <button mat-button (click)="this.router.navigate(['./travel']);" style="color: white">Travel</button>
-            <button mat-button (click)="this.router.navigate(['./settings']);" style="color: white">User</button>
-        </div>
+        <button mat-button (click)="this.router.navigate(['./files']);" style="color: white;"><i class="far fa-file"></i> Files</button>|
+        <button mat-button (click)="this.router.navigate(['./notes']);" style="color: white;"><i class="far fa-sticky-note"></i> Notes</button>|
+        <button mat-button (click)="this.router.navigate(['./finance']);" style="color: white;"><i class="far fa-money-bill-alt"></i> Finances</button>|
+        <button mat-button (click)="this.router.navigate(['./travel']);" style="color: white;"><i class="far fa-map"></i> Travel</button>|
+        <button mat-button (click)="this.router.navigate(['./settings']);" style="color: white;"><i class="far fa-user"></i> User</button>
     </mat-toolbar>
     <div class="sidenavvero">
         <mat-toolbar class="services-header">
@@ -27,5 +25,4 @@
     <div class="contento">
         <router-outlet></router-outlet>
     </div>
-
 </div>

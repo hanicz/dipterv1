@@ -1,10 +1,13 @@
 <div class="folderdetail" *ngIf="folder.folderName">
     <div>
-        <mat-form-field>
-            <input matInput placeholder="Name" [(ngModel)]="folder.folderName" [disabled]="isValid()">
-        </mat-form-field>
-
-        <label>Created : </label> {{folder.created | date: 'short'}}
+        <div layout="row">
+            <mat-form-field>
+                <input matInput placeholder="Name" [(ngModel)]="folder.folderName" [disabled]="isValid()">
+            </mat-form-field>
+        </div>
+        <div layout="row">
+            <label>Created : </label> {{folder.created | date: 'short'}}
+        </div>
         <div layout="row">
             <label>Deleted : </label> {{folder.deleted || "-"}}
         </div>
@@ -13,7 +16,7 @@
         <button mat-raised-button color="primary" (click)="delete()" [disabled]="isValid()">Delete</button>
         <button mat-raised-button color="primary" (click)="dropbox()" [disabled]="isValid()">Move</button>
         <mat-form-field>
-            <mat-select placeholder="Folder" [(ngModel)]="moveFolder">
+            <mat-select [disabled]="isValid()" placeholder="Folder" [(ngModel)]="moveFolder">
                 <mat-option *ngFor="let folder of folders" [value]="folder">
                     {{ folder.folderName || 'Main' }}
                 </mat-option>

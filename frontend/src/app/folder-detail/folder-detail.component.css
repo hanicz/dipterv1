@@ -1,12 +1,10 @@
 .folderdetail {
   background: #FFFFFF;
-  margin-right: 1%;
-  padding: 45px;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 15px 20px 0 rgba(0, 0, 0, 0.6); 
+  padding-top: 30px;
   overflow: hidden;
   }
 
 .folderdetail button {
-    width: 45%;
+    width: 10%;
     margin-bottom: 2%;
   }

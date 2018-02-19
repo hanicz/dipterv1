@@ -17,7 +17,7 @@ export class DropboxService {
         'Accept': 'application/json'
     });
 
-    private userUrl = '/resources/dropbox';
+    private userUrl = 'http://localhost:5000/resources/dropbox';
 
     constructor(private http: Http) { }
 

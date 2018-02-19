@@ -18,7 +18,7 @@ export class ShareService {
         'Accept': 'application/json'
     });
 
-    private userUrl = '/resources/shares';
+    private userUrl = 'http://localhost:5000/resources/shares';
 
     constructor(private http: Http) { }
 

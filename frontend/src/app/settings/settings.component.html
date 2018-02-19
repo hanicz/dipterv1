@@ -1,32 +1,19 @@
-<div class="container">
-    <form class="form" (ngSubmit)="changeData()" #settingsForm="ngForm">
-      <div class="form-group">
-        <input type="text" class="form-control" id="email" placeholder="new email"
-              [(ngModel)]="model.new_email" name="email" #email="ngModel" pattern="[^@]+@[^@]+\.[a-zA-Z]{2,6}">
+<div class="settings_container">
+  <mat-form-field>
+    <input matInput placeholder="New Email" [(ngModel)]="model.new_email" [formControl]="email">
+  </mat-form-field>
 
-      </div>
-      <div [hidden]="(email.valid || email.pristine)"
-             class="alert alert-danger">
-          Email is required
-      </div>
-      <div class="form-group">
-        <input type="password" class="form-control" id="password" placeholder="new password"
-              [(ngModel)]="model.new_password" name="password" #password="ngModel">
-      </div>
-      <div [hidden]="password.valid || password.pristine"
-             class="alert alert-danger">
-          Password is required
-      </div>
-      <div class="form-group">
-        <input type="password" class="form-control" id="oldpassword" placeholder="old password"
-              required
-              [(ngModel)]="model.old_password" name="oldpassword" #oldpassword="ngModel">
-      </div>
-      <div [hidden]="oldpassword.valid || oldpassword.pristine"
-             class="alert alert-danger">
-          Old Password is required
-      </div>
-      <button type="submit" [disabled]="!settingsForm.form.valid" click="settingsForm.changeData()">Send</button>
-      <p class="message"> <a routerLink="/files">Back</a></p>
-    </form>
+  <mat-form-field>
+    <input matInput placeholder="New Pasword" [type]="hidenew ? 'password' : 'text'" [(ngModel)]="model.new_password">
+    <mat-icon matSuffix (click)="hidenew = !hidenew">{{hidenew ? 'visibility' : 'visibility_off'}}</mat-icon>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="Current Password" [type]="hideold ? 'password' : 'text'" [(ngModel)]="model.old_password" [formControl]="password">
+    <mat-icon matSuffix (click)="hideold = !hideold">{{hideold ? 'visibility' : 'visibility_off'}}</mat-icon>
+  </mat-form-field>
+
+  <div class="button-row">
+    <button mat-raised-button color="primary" (click)="changeData();">Save</button>
+  </div>
 </div>

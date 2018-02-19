@@ -23,7 +23,6 @@ export class DropboxComponent {
 
   ngOnInit(): void {
     this.dropboxService.get_url().subscribe((json: Object) => {
-      console.log(json);
       this.url = JSON.parse(JSON.stringify(json)).url;
     },
     error => console.error('Error: ' + error)
@@ -32,7 +31,6 @@ export class DropboxComponent {
 
   finish_auth(): void{
     this.dropboxService.finish_auth(this.token).subscribe((json: Object) => {
-        console.log(json);
       },
       error => console.error('Error: ' + error)
       );
