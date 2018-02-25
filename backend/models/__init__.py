@@ -8,3 +8,5 @@ from models.rolesModel import *
 from models.file_sharesModel import *
 from models.noteModel import *
 from models.dropboxModel import *
+from models.financeModel import *
+from models.financeTypeModel import *

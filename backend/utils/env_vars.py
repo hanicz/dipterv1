@@ -27,4 +27,4 @@ NOT_ALLOWED_EXTENSIONS = set(['php'])
 
 
 #Authentication
-secure_paths = ['/users/login', '/users/register', '/users/reset', '/users/activate', '/files/getPublicFile']
+secure_paths = ['/resources/users/login', '/resources/users/register', '/resources/users/reset', '/resources/users/activate', '/resources/files/getPublicFile', '/resources/finances/finance']

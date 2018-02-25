@@ -1,19 +1,23 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
 h1 {
-  color: #369;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 250%;
-}
-
-body{
-
-background: #4c4241; 
-background: -moz-linear-gradient(-45deg,  #4c4241 0%, #76dbed 0%, #0c7cf4 31%, #0c7cf4 31%, #000000 100%); 
-background: -webkit-linear-gradient(-45deg,  #4c4241 0%,#76dbed 0%,#0c7cf4 31%,#0c7cf4 31%,#000000 100%); 
-background: linear-gradient(135deg,  #4c4241 0%,#76dbed 0%,#0c7cf4 31%,#0c7cf4 31%,#000000 100%); 
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4241', endColorstr='#000000',GradientType=1 ); 
-
-  height: 100%;
-  margin: 0;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-}
+    color: #369;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 250%;
+  }
+  
+  body{
+  
+  /*background: #4c4241; 
+  background: -moz-linear-gradient(-45deg,  #4c4241 0%, #76dbed 0%, #0c7cf4 31%, #0c7cf4 31%, #000000 100%); 
+  background: -webkit-linear-gradient(-45deg,  #4c4241 0%,#76dbed 0%,#0c7cf4 31%,#0c7cf4 31%,#000000 100%); 
+  background: linear-gradient(135deg,  #4c4241 0%,#76dbed 0%,#0c7cf4 31%,#0c7cf4 31%,#000000 100%); 
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4241', endColorstr='#000000',GradientType=1 ); */
+  background: #369;
+  
+    height: 100%;
+    margin: 0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }

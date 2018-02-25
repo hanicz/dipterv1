@@ -1,7 +1,14 @@
-<div class="container">
-  <ul class="logs">
-    <li *ngFor="let log of logs">
-      <span class="badge badge-secondary">{{log.created | date: 'medium'}}</span> <b *ngIf="log.folder"> {{log.folder}} </b><b *ngIf="log.file"> {{log.file}} </b>      {{log.message}}
-    </li>
-  </ul>
+<div class="logs">
+    <h2 mat-subheader>Logs</h2>
+  <mat-list>
+    <mat-list-item *ngFor="let log of logs">
+      <mat-icon mat-list-icon>
+        <i class="fas fa-angle-right"></i>
+      </mat-icon>
+      <h5 mat-line>
+        <b *ngIf="log.folder"> {{log.folder}} </b>
+        <b *ngIf="log.file"> {{log.file}} </b>{{log.message}}</h5>
+      <p mat-line> {{log.created | date: 'medium'}} </p>
+    </mat-list-item>
+  </mat-list>
 </div>

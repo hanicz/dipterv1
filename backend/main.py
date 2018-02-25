@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask, request, jsonify
-from routes import users_api, files_api, notes_api, roles_api, file_shares_api, logs_api, dropbox_api
+from routes import users_api, files_api, notes_api, roles_api, file_shares_api, logs_api, dropbox_api, finance_api
 from models import init_db, login_required
 from models import get_code, delete_job
 from flask_cors import CORS
@@ -18,14 +18,18 @@ os.environ['MAIL'] = get_code('MAIL')
 os.environ['DROPBOX_KEY'] = get_code('DROPBOX_KEY')
 os.environ['DROPBOX_SECRET'] = get_code('DROPBOX_SECRET')
 
-app.register_blueprint(users_api, url_prefix='/users')
-app.register_blueprint(files_api, url_prefix='/files')
-app.register_blueprint(notes_api, url_prefix='/notes')
-app.register_blueprint(roles_api, url_prefix='/roles')
-app.register_blueprint(file_shares_api, url_prefix='/shares')
-app.register_blueprint(logs_api, url_prefix='/logs')
-app.register_blueprint(dropbox_api, url_prefix='/dropbox')
+app.register_blueprint(users_api, url_prefix='/resources/users')
+app.register_blueprint(files_api, url_prefix='/resources/files')
+app.register_blueprint(notes_api, url_prefix='/resources/notes')
+app.register_blueprint(roles_api, url_prefix='/resources/roles')
+app.register_blueprint(file_shares_api, url_prefix='/resources/shares')
+app.register_blueprint(logs_api, url_prefix='/resources/logs')
+app.register_blueprint(dropbox_api, url_prefix='/resources/dropbox')
+app.register_blueprint(finance_api, url_prefix='/resources/finances')
 
+app.secret_key = os.getenv('SECRET_KEY')
+
+delete_job()
 
 @app.before_request
 @login_required
@@ -48,7 +52,4 @@ def unhandled_exception(e):
 
 
 if __name__ == '__main__':
-    delete_job()
-
-    app.secret_key = os.getenv('SECRET_KEY')
     app.run(host='0.0.0.0', threaded=True)

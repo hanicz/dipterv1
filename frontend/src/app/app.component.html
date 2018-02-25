@@ -1,36 +1,28 @@
-<nav *ngIf="menuHidden" class="navbar navbar-inverse">
-    <div class="container-fluid" id="menuBar">
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Files<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a style="cursor: pointer;" (click)="this.router.navigate(['./files']);">My Files</a></li>
-                        <li><a style="cursor: pointer;" (click)="this.router.navigate(['./shared-with-me']);">Shared with me</a></li>
-                        <li><a style="cursor: pointer;" (click)="this.router.navigate(['./deleted-files']);">Deleted</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Notes<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a style="cursor: pointer;" (click)="this.router.navigate(['./notes']);">My Notes</a></li>
-                        <li><a style="cursor: pointer;" (click)="this.router.navigate(['./shared-notes']);">Shared with me</a></li>
-                    </ul>
-                </li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">User<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a style="cursor: pointer;" (click)="this.router.navigate(['./settings']);">Change Data</a></li>
-                        <li><a style="cursor: pointer;" (click)="this.router.navigate(['./dropbox']);">Dropbox</a></li>
-                        <li><a style="cursor: pointer;" (click)="this.router.navigate(['./logs']);">Logs</a></li>
-                        <li><a style="cursor: pointer;" (click)="logout()">Logout</a></li>
-                        <li><a style="cursor: pointer;" (click)="delete()">Delete Account</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
+<login [hidden]="!(this.router.url == '/login')"></login>
+<register [hidden]="!(this.router.url == '/register')"></register>
+
+<div class="menu_content" *ngIf="menuHidden">
+    <mat-toolbar class="menu-header">
+        <button mat-button (click)="this.router.navigate(['./files']);" style="color: white;"><i class="far fa-file"></i> Files</button>|
+        <button mat-button (click)="this.router.navigate(['./notes']);" style="color: white;"><i class="far fa-sticky-note"></i> Notes</button>|
+        <button mat-button (click)="this.router.navigate(['./finance']);" style="color: white;"><i class="far fa-money-bill-alt"></i> Finances</button>|
+        <button mat-button (click)="this.router.navigate(['./travel']);" style="color: white;"><i class="far fa-map"></i> Travel</button>|
+        <button mat-button (click)="this.router.navigate(['./settings']);" style="color: white;"><i class="far fa-user"></i> User</button>
+    </mat-toolbar>
+    <div class="sidenavvero">
+        <mat-toolbar class="services-header">
+            Services
+        </mat-toolbar>
+        <mat-list>
+            <mat-list-item *ngFor="let item of selectedList" (click)="clickMenuItem(item.router);" style="display:inline-block;">
+                <h4 mat-line>
+                    <mat-icon mat-list-icon>
+                        <i class="{{item.icon}}" style="font-size: 0.70em;"></i>
+                    </mat-icon>{{item.text}} </h4>
+            </mat-list-item>
+        </mat-list>
     </div>
-</nav>
-<router-outlet></router-outlet>
+    <div class="contento">
+        <router-outlet></router-outlet>
+    </div>
+</div>

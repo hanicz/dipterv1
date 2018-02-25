@@ -1,29 +1,29 @@
-<div class="row">
-  <div class="col-xs-9">
-    <div class="files">
-      <div class="list-group row ">
-        <li *ngFor="let folder of folders" (click)="onSelectFolder(folder)" class="list-group-item col-sm-3">
-          <div id="image">
-            <img class="img-responsive" src="assets/images/folder.png" width="20" height="30">
-          </div>
-          <span> {{folder.folderName | limitTo: 27}} </span>
-        </li>
-      </div>
-      <div class="list-group row ">
-        <li *ngFor="let file of files" (click)="onSelectFile(file)" class="list-group-item col-sm-3">
-          <div id="image">
-            <img class="img-responsive" src="assets/images/file.png" width="15" height="10">
-          </div>
-          <span> {{file.fileName | limitTo: 27}}</span>
-        </li>
-      </div>
-    </div>
+<div id="wrapper">
+  <div class="files">
+    <mat-list>
+      <h3 mat-subheader>Folders</h3>
+      <mat-list-item *ngFor="let folder of folders" (click)="onSelectFolder(folder)" (dblclick)="onDblSelectFolder(folder)" style="display:inline-block;">
+        <mat-icon mat-list-icon>
+          <i class="fas fa-folder"></i>
+        </mat-icon>
+        <h4 mat-line> {{folder.folderName | limitTo: 27}} </h4>
+        <p mat-line> {{folder.created | date: 'short'}} </p>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      <h3 mat-subheader>Files</h3>
+      <mat-list-item *ngFor="let file of files" style="display:inline-block;" (click)="onSelectFile(file)">
+        <mat-icon mat-list-icon>
+          <i class="fas fa-file"></i>
+        </mat-icon>
+        <h4 mat-line> {{ file.fileName | limitTo: 27 }} </h4>
+        <p mat-line> {{file.created | date: 'short'}} </p>
+      </mat-list-item>
+    </mat-list>
   </div>
-  <div class="col-xs-3">
-    <file-detail [hidden]="fileHidden" (changeEvent)="showResponse($event); file_restored(); this.fileHidden=true;" [file]="selectedFile"></file-detail>
-  </div>
-  <div class="col-xs-3">
+
+  <div>
     <folder-detail [hidden]="folderHidden" (changeEvent)="showResponse($event); file_restored(); this.folderHidden=true;" [folder]="selectedFolder"></folder-detail>
+    <file-detail [hidden]="fileHidden" (changeEvent)="showResponse($event); file_restored(); this.fileHidden=true;" [file]="selectedFile"></file-detail>
   </div>
 </div>
 <response [hidden]="responseHidden" [inresponse]="requestResponse" class="col"></response>

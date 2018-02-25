@@ -21,11 +21,11 @@ class User(Base):
     dropbox_auth = Column(String(250), nullable=True)
     main_folder = Column(Integer, nullable=True)
 
-
     files = relationship("File", cascade="all, delete-orphan")
     logs = relationship("Log", cascade="all, delete-orphan")
     fileShares = relationship("FileShare", cascade="all, delete-orphan")
     folders = relationship("Folder", cascade="all, delete-orphan")
+    finances = relationship("Finance", cascade="all, delete-orphan")
 
     def __repr__(self):
         return "User: (id='%i', name='%s', email='%s', password_hash='%s', created='%s')" \
@@ -184,6 +184,51 @@ class CredentialStore(Base):
     def __repr__(self):
         return "Credential Store: (id='%i', environment='%s', code='%s')" \
                 % (self.id, self.environment, self.code)
+
+
+class FinanceType(Base):
+    __tablename__ = 'finance_type'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable=False, unique=True)
+
+    finances = relationship("Finance", cascade="all, delete-orphan")
+
+    def __repr__(self):
+        return "Finance Type: (id='%i', name='%s')" \
+                % (self.id, self.name)
+
+    def serialize(self):
+        return{
+            'id': self.id,
+            'name': self.name
+        }
+
+
+class Finance(Base):
+    __tablename__ = 'finance'
+
+    id = Column(Integer, primary_key=True)
+    finance_date = Column(DateTime, nullable=False)
+    amount = Column(Integer, nullable=False)
+    finance_type_id = Column(Integer, ForeignKey('finance_type.id'))
+    finance_type = relationship(FinanceType)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
+    comment = Column(String(250), nullable=False)
+
+    def __repr__(self):
+        return "Finance: (id='%i', amount='%i', finance_date='%s', finance_type_id='%i', user_id='%i', comment='%s')" \
+                % (self.id, self.amount, str(self.finance_date), self.finance_type_id, self.user_id, self.comment)
+
+    def serialize(self):
+        return{
+            'id': self.id,
+            'amount': self.amount,
+            'finance_type_id': self.finance_type_id,
+            'finance_date': self.finance_date,
+            'comment': self.comment
+        }
 
 
 def init_db():

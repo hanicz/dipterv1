@@ -6,6 +6,8 @@ import { FileService } from '../services/file.service';
 import { CustomResponse } from '../utils/customResponse';
 import { MyFile } from '../entities/file';
 import { Folder } from '../entities/folder';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { UploadComponent } from '../upload/upload.component';
 
 
 @Component({
@@ -25,17 +27,15 @@ export class FilesComponent {
   search: String;
   requestResponse: String;
 
-  uploadHidden: boolean = true;
   uploadShare: boolean = true;
-  createFolderHidden: boolean = true;
   prevent: boolean = false;
   folderHidden: boolean = true;
   fileHidden: boolean = true;
   responseHidden: boolean = true;
-  dropboxHidden: boolean = true;
 
   constructor(
-    private fileService: FileService
+    private fileService: FileService,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -93,22 +93,18 @@ export class FilesComponent {
   }
 
   showUpload(): void {
-    this.uploadHidden = false;
+    let dialogRef = this.dialog.open(UploadComponent, {
+      data: { folderId: this.currentFolder.id }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.get_files(this.currentFolder.id);
+      this.get_folders(this.currentFolder);
+    });
   }
 
   showShare(): void {
     this.uploadShare = false;
-  }
-
-  showFolder(): void {
-    this.createFolderHidden = false;
-  }
-
-  close_upload(): void {
-    this.uploadHidden = true;
-    this.createFolderHidden = true;
-    this.get_files(this.currentFolder.id);
-    this.get_folders(this.currentFolder);
   }
 
   search_files(newValue: String): void {
@@ -133,9 +129,5 @@ export class FilesComponent {
     this.requestResponse = event;
     this.responseHidden = false;
     setTimeout(() => this.responseHidden = true, 2000);
-  }
-
-  showDropbox(event: String){
-    this.dropboxHidden = false;
   }
 }
