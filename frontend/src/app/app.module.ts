@@ -73,6 +73,7 @@ import {
   MatFormFieldModule
 } from '@angular/material';
 import { TravelComponent } from './travel/travel.component';
+import { FileDirective } from './directives/file.directive';
 
 
 @NgModule({
@@ -135,7 +136,8 @@ import { TravelComponent } from './travel/travel.component';
                   FinanceDialog,
                   TravelComponent,
                   LoginComponent,
-                  DropboxComponent],
+                  DropboxComponent,
+                  FileDirective],
   bootstrap:    [ AppComponent ],
   providers: [ UserService,
                 FileService,

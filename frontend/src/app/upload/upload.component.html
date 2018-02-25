@@ -6,7 +6,7 @@
             </mat-icon>
         </ng-template>
         <div class="tab-container">
-            <input type="file" (change)="onChange($event)" placeholder="Upload file" #filePicker>
+            <input type="file" (change)="onChange($event)" placeholder="Upload file" #filePicker multiple>
             <button mat-raised-button color="primary" (click)="upload()" style="margin-top: 1%;">Upload</button>
         </div>
     </mat-tab>
