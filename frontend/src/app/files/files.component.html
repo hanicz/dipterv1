@@ -1,5 +1,5 @@
 <div id="wrapper">
-  <div class="files">
+  <div class="files" appFile [currentFolder]="currentFolder.id">
     <mat-form-field>
       <input matInput placeholder="search" [(ngModel)]="search" (ngModelChange)="search_files($event)">
     </mat-form-field>

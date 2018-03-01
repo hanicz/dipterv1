@@ -32,11 +32,11 @@ export class FileService {
   upload_file(file: File[], folder_id: Number) {
     let headers = new Headers();
     let formData: FormData = new FormData();
-    formData.append('file', file[0], file[0].name);
-    console.log(file[0].name)
-    // for (let i = 0; i < files.length; i++) {
-    //     formData.append(`files[]`, files[i], files[i].name);
-    // }
+    //formData.append('file', file[0], file[0].name);
+    //console.log(file[0].name)
+     for (let i = 0; i < file.length; i++) {
+         formData.append(`files[]`, file[i], file[i].name);
+     }
 
     const url = `${this.userUrl}/file/${folder_id}`;
     return this.http.post(url, formData, {
