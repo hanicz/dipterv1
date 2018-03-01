@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask, request, jsonify
-from routes import users_api, files_api, notes_api, roles_api, file_shares_api, logs_api, dropbox_api, finance_api
+from routes import users_api, files_api, notes_api, roles_api, file_shares_api, logs_api, dropbox_api, finance_api, travel_api
 from models import init_db, login_required
 from models import get_code, delete_job
 from flask_cors import CORS
@@ -26,6 +26,7 @@ app.register_blueprint(file_shares_api, url_prefix='/resources/shares')
 app.register_blueprint(logs_api, url_prefix='/resources/logs')
 app.register_blueprint(dropbox_api, url_prefix='/resources/dropbox')
 app.register_blueprint(finance_api, url_prefix='/resources/finances')
+app.register_blueprint(travel_api, url_prefix='/resources/travels')
 
 app.secret_key = os.getenv('SECRET_KEY')
 

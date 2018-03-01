@@ -74,6 +74,7 @@ import {
 } from '@angular/material';
 import { TravelComponent } from './travel/travel.component';
 import { FileDirective } from './directives/file.directive';
+import { TravelService } from './services/travel.service';
 
 
 @NgModule({
@@ -147,6 +148,7 @@ import { FileDirective } from './directives/file.directive';
                 NoteService,
                 DropboxService,
                 FinanceService,
-                DatePipe ],
+                DatePipe,
+                TravelService ],
 })
 export class AppModule { }
