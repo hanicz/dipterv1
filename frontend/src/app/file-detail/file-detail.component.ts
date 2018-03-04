@@ -145,7 +145,7 @@ export class FileDetailComponent {
                 throw err;
             });*/
 
-    var newWindow = window.open('http://localhost:5000/resources/files/download/' + this.file.id, "_self");
+    var newWindow = window.open('/resources/files/download/' + this.file.id, "_self");
 
     /*this.fileService.download(this.file.id).subscribe(blob => {
       this.changeEvent.emit("File download started successfully");
