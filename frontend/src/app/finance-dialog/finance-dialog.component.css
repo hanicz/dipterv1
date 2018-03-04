@@ -1,4 +1,4 @@
-  .example-container {
+  .dialog-container {
     display: flex;
     flex-direction: column;
     min-width: 300px;
@@ -8,8 +8,4 @@
   .mat-form-field {
     font-size: 14px;
     width: 100%;
-  }
-  
-  input.amount-input::-webkit-inner-spin-button {
-    display: none;
   }

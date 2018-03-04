@@ -70,7 +70,7 @@ export class FinanceChartComponent implements OnInit {
     });
 
     if (this.chart !== undefined) {
-      this.chart.ngOnDestroy();
+      this.chart.destroy();
     }
 
     this.chart = new Chart('canvas', {

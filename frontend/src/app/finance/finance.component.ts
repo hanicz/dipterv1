@@ -34,6 +34,7 @@ export class FinanceComponent {
   ) { }
 
   ngOnInit() {
+    this.fill_finance_types();
   }
 
   get_formatted_date(date: Date){
