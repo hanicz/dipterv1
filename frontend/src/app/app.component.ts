@@ -31,6 +31,11 @@ export class AppComponent {
     {text: 'Delete account', icon: 'fas fa-trash-alt', router: 'delete'}
   ];
 
+  financemenuitems = [
+    {text: 'Chart', icon: 'fas fa-chart-pie', router: 'finance-chart'},
+    {text: 'Table', icon: 'far fa-money-bill-alt', router: 'finance'}
+  ];
+
   selectedList = [];
 
   constructor(
@@ -45,6 +50,7 @@ export class AppComponent {
         if((['/files','/shared-with-me', '/deleted-files'].indexOf(location.path()) > -1)) this.selectedList = this.filemenuitems;
         else if((['/notes','/shared-notes'].indexOf(location.path()) > -1)) this.selectedList = this.notemenuitems;
         else if((['/settings','/dropbox', '/logs'].indexOf(location.path()) > -1)) this.selectedList = this.usermenuitems;
+        else if((['/finance','/finance-chart'].indexOf(location.path()) > -1)) this.selectedList = this.financemenuitems;
         else this.selectedList = [];
       }
   });

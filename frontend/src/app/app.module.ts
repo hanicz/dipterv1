@@ -75,6 +75,7 @@ import {
 import { TravelComponent } from './travel/travel.component';
 import { FileDirective } from './directives/file.directive';
 import { TravelService } from './services/travel.service';
+import { FinanceChartComponent } from './finance-chart/finance-chart.component';
 
 
 @NgModule({
@@ -138,7 +139,8 @@ import { TravelService } from './services/travel.service';
                   TravelComponent,
                   LoginComponent,
                   DropboxComponent,
-                  FileDirective],
+                  FileDirective,
+                  FinanceChartComponent],
   bootstrap:    [ AppComponent ],
   providers: [ UserService,
                 FileService,

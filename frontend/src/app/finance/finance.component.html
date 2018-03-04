@@ -1,16 +1,5 @@
 <div class="finance">
-
     <button mat-raised-button color="primary" (click)="openDialog()">New</button>
-    <div layout="row" mat-line>
-        <button mat-raised-button color="primary" (click)="fill_chart()">Chart</button>
-        <mat-form-field class="ym">
-            <input matInput placeholder="Year" type="number" [(ngModel)]="aggr_year" class="ym-input">
-        </mat-form-field>
-        <mat-form-field class="ym">
-            <input matInput placeholder="Month" type="number" [(ngModel)]="aggr_month" class="ym-input">
-        </mat-form-field>
-    </div>
-    <canvas hidden id="canvas">{{ chart }}</canvas>
     <br>
     <div class="example-container mat-elevation-z8">
         <div class="year-month-filter">

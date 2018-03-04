@@ -1,5 +1,4 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { Chart, ChartPoint } from 'chart.js';
 import { FinanceService } from '../services/finance.service';
 import { Finance } from '../entities/Finance';
 import { FinanceType } from '../entities/finance-type';
@@ -18,19 +17,12 @@ import { DatePipe } from '@angular/common';
 })
 export class FinanceComponent {
 
-  chart: Chart;
   finances: Finance[];
-  labels: string[];
-  amounts: Number[];
-  colors: string[];
   financeTypes: FinanceType[];
   chartFinances: AggrFinance[];
-  chartHidden: boolean = true;
 
   year: Number;
   month: Number;
-  aggr_year: Number;
-  aggr_month: Number;
 
   displayedColumns = ['type', 'amount', 'comment', 'date'];
   dataSource = new MatTableDataSource(this.chartFinances);
@@ -42,49 +34,6 @@ export class FinanceComponent {
   ) { }
 
   ngOnInit() {
-
-    this.labels = [];
-    this.amounts = [];
-    this.colors = [];
-
-    this.financeService.get_finance_types().subscribe((json: Object) => {
-      console.log(json);
-      this.financeTypes = json as FinanceType[];
-    },
-      error => console.error('Error: ' + error)
-    );
-  }
-
-  fill_chart() {
-    if (this.aggr_year != null) {
-      if (this.aggr_month != null) {
-        this.financeService.get_finances_by_month_aggregated(this.aggr_year, this.aggr_month).subscribe((json: Object) => {
-          console.log(json);
-
-          this.labels = [];
-          this.amounts = [];
-          this.colors = [];
-
-          this.chartFinances = json as AggrFinance[];
-          this.build_chart();
-        },
-          error => console.error('Error: ' + error)
-        );
-      } else {
-        this.financeService.get_finances_by_year_aggregated(this.aggr_year).subscribe((json: Object) => {
-          console.log(json);
-
-          this.labels = [];
-          this.amounts = [];
-          this.colors = [];
-
-          this.chartFinances = json as AggrFinance[];
-          this.build_chart();
-        },
-          error => console.error('Error: ' + error)
-        );
-      }
-    }
   }
 
   get_formatted_date(date: Date){
@@ -101,41 +50,13 @@ export class FinanceComponent {
     return retVal;
   }
 
-  build_chart() {
-    this.dataSource = new MatTableDataSource(this.chartFinances);
-    this.chartFinances.forEach((f) => {
-      this.labels.push(f.type as string);
-      this.amounts.push(f.sum);
-      this.colors.push(this.getRandomColor());
-    });
-
-    this.chart = new Chart('canvas', {
-      type: 'pie',
-      data: {
-        labels: this.labels,
-        datasets: [
-          {
-            data: this.amounts as ChartPoint[],
-            backgroundColor: this.colors
-          }
-        ]
-      },
-      options: {
-        title: {
-          display: true,
-          text: 'Finance records'
-        }
-      }
-    });
-  }
-
-  getRandomColor() {
-    var letters = '0123456789ABCDEF'.split('');
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
+  fill_finance_types(){
+    this.financeService.get_finance_types().subscribe((json: Object) => {
+      console.log(json);
+      this.financeTypes = json as FinanceType[];
+    },
+      error => console.error('Error: ' + error)
+    );
   }
 
   openDialog(): void {
@@ -144,6 +65,7 @@ export class FinanceComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      this.fill_finance_types();
     });
   }
 

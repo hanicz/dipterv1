@@ -42,6 +42,7 @@ import { Finance } from '../entities/Finance';
         },
           error => console.error('Error: ' + error)
         );
+        this.dialogRef.close();
   }
   
   }

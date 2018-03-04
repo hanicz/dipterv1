@@ -23,6 +23,7 @@ import { DropboxComponent } from './dropbox/dropbox.component';
 import { FinanceComponent } from './finance/finance.component';
 import { FinanceDialog } from './finance-dialog/finance-dialog.component';
 import { TravelComponent } from './travel/travel.component';
+import { FinanceChartComponent } from './finance-chart/finance-chart.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -45,6 +46,7 @@ const routes: Routes = [
   { path: 'finance', component: FinanceComponent },
   { path: 'finance-dialog', component: FinanceDialog },
   { path: 'travel', component: TravelComponent },
+  { path: 'finance-chart', component: FinanceChartComponent },
   { path: '**', redirectTo: '/not-found' }
 ];
 

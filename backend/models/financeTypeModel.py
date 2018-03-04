@@ -20,7 +20,7 @@ def create_finance_type_record(user_id, name):
 def get_finance_type_records():
     session = DBSession()
     try:
-        finance_types = session.query(FinanceType)
+        finance_types = session.query(FinanceType).order_by(FinanceType.name.asc())
 
         if finance_types is not None:
             return [f.serialize() for f in finance_types]

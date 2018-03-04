@@ -72,7 +72,8 @@ def get_finance_records_by_year(user_id, year):
     session = DBSession()
     try:
         finances = session.query(Finance).filter((Finance.user_id == user_id) &
-                                                 (extract('year', Finance.finance_date) == year))
+                                                 (extract('year', Finance.finance_date) == year))\
+                                         .order_by(Finance.finance_date.asc())
         if finances is not None:
             return [f.serialize() for f in finances]
         
@@ -90,7 +91,8 @@ def get_finance_records_by_month(user_id, input_dictionary):
     try:
         finances = session.query(Finance).filter((Finance.user_id == user_id) &
                                                  (extract('month', Finance.finance_date) == input_dictionary['month']) &
-                                                 (extract('year', Finance.finance_date) == input_dictionary['year']))
+                                                 (extract('year', Finance.finance_date) == input_dictionary['year']))\
+                                         .order_by(Finance.finance_date.asc())
         if finances is not None:
             return [f.serialize() for f in finances]
 
