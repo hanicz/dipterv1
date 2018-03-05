@@ -1,5 +1,5 @@
 <div class="finance">
-    <button mat-raised-button color="primary" (click)="openDialog()">New</button>
+    <button mat-raised-button color="primary" (click)="openDialog()" style="margin-bottom: 1%;">New</button>
     <br>
     <div class="example-container mat-elevation-z8">
         <div class="year-month-filter">
@@ -38,6 +38,11 @@
                 <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{ get_formatted_date(element.finance_date) }} </mat-cell>
             </ng-container>
+
+            <ng-container matColumnDef="update">
+                    <mat-header-cell *matHeaderCellDef> Update </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> <span (click)="updateFinance(element);"><i class="far fa-edit"> </i></span> <span (click)="deleteFinance(element);"><i class="fas fa-trash-alt"></i></span></mat-cell>
+                </ng-container>
 
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>

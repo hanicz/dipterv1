@@ -54,7 +54,7 @@ def update_finance_record(user_id, input_dictionary):
 
             if finance is not None:
                 finance.amount = input_dictionary['amount']
-                finance.finance_date = input_dictionary['finance_date']
+                finance.finance_date = datetime.datetime.strptime(input_dictionary['finance_date'], '%Y-%m-%d')
                 finance.finance_type_id = input_dictionary['finance_type_id']
                 finance.comment = input_dictionary['comment']
                 session.commit()

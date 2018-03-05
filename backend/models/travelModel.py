@@ -9,8 +9,8 @@ def create_travel(user_id, input_dictionary):
     session = DBSession()
     try:
         new_travel = Travel(user_id=user_id,
-                            created=datetime.datetime.strptime(input_dictionary['travelDate'], '%Y-%d-%m'),
-                            descrtiption=input_dictionary['description'])
+                            travel_date=datetime.datetime.strptime(input_dictionary['travelDate'], '%Y-%d-%m'),
+                            description=input_dictionary['description'])
         session.add(new_travel)
         create_log_entry(user_id, 'New travel created: ' + new_travel.description, new_travel.id, None, session)
         session.commit()

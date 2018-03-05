@@ -69,7 +69,7 @@ def update_finance():
 def delete_finance(finance_id):
     try:
         if delete_finance_record(decode_token(request.cookies.get('token')), finance_id):
-            return jsonify({'Response': 'Finance record deleted successfully'}), HTTP_CREATED
+            return jsonify({'Response': 'Finance record deleted successfully'}), HTTP_OK
         return jsonify({'Response': 'Finance record deletion failed'}), HTTP_BAD_REQUEST
     except InvalidParametersException as e:
         return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST

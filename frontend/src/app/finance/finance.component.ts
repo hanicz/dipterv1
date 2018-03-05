@@ -24,14 +24,15 @@ export class FinanceComponent {
   year: Number;
   month: Number;
 
-  displayedColumns = ['type', 'amount', 'comment', 'date'];
-  dataSource = new MatTableDataSource(this.chartFinances);
+  displayedColumns = ['type', 'amount', 'comment', 'date', 'update'];
+  dataSource = new MatTableDataSource(this.finances);
 
   constructor(
     private financeService: FinanceService,
     public dialog: MatDialog,
     private datePipe: DatePipe
-  ) { }
+  ) { 
+   }
 
   ngOnInit() {
     this.fill_finance_types();
@@ -62,7 +63,20 @@ export class FinanceComponent {
 
   openDialog(): void {
     let dialogRef = this.dialog.open(FinanceDialog, {
-      data: { financeTypes: this.financeTypes }
+      data: { financeTypes: this.financeTypes,
+              type: 'new' }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.fill_finance_types();
+    });
+  }
+
+  updateFinance(finance: Finance): void{
+    let dialogRef = this.dialog.open(FinanceDialog, {
+      data: { finance: finance,
+              financeTypes: this.financeTypes,
+              type: 'update' }
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -81,21 +95,29 @@ export class FinanceComponent {
       if (this.month == null) {
         this.financeService.get_finances_by_year(this.year).subscribe((json: Object) => {
           console.log(json);
-          this.chartFinances = json as AggrFinance[];
-          this.dataSource = new MatTableDataSource(this.chartFinances);
+          this.finances = json as Finance[];
+          this.dataSource = new MatTableDataSource(this.finances);
         },
           error => console.error('Error: ' + error)
         );
       } else {
         this.financeService.get_finances_by_month(this.year, this.month).subscribe((json: Object) => {
           console.log(json);
-          this.chartFinances = json as AggrFinance[];
-          this.dataSource = new MatTableDataSource(this.chartFinances);
+          this.finances = json as Finance[];
+          this.dataSource = new MatTableDataSource(this.finances);
         },
           error => console.error('Error: ' + error)
         );
       }
     }
+  }
+
+  deleteFinance(finance: Finance){
+    this.financeService.delete_finance(finance.id).subscribe((json: Object) => {
+      this.fillTable();
+    },
+      error => console.error('Error: ' + error)
+    );
   }
 
 }

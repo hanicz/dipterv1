@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http, URLSearchParams, Response } from '@angular/http';
 import { Travel } from '../entities/travel';
+import { DatePipe } from '@angular/common';
 
 @Injectable()
 export class TravelService {
@@ -13,7 +14,9 @@ export class TravelService {
   private userUrl = '/resources/travels';
 
 
-  constructor(private http: Http) { }
+  constructor(
+    private http: Http,
+    private datePipe: DatePipe) { }
 
 
   get_travels() {
@@ -34,8 +37,14 @@ export class TravelService {
   }
 
   create_travel(travel: Travel){
+
+    var data = {
+      'description': travel.description,
+      'travelDate': this.datePipe.transform(travel.travelDate, 'yyyy-MM-dd')
+  }
+
     const url = `${this.userUrl}`;
-    return this.http.put(url,JSON.stringify(travel), {
+    return this.http.put(url,JSON.stringify(data), {
       headers: this.headers,
       withCredentials: true
     })
