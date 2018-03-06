@@ -20,6 +20,7 @@ export class FinanceChartComponent implements OnInit {
   chartHidden: boolean = true;
   chart: Chart;
   dataSource = new MatTableDataSource(this.chartFinances);
+  totalSpent: number = 0;
 
   constructor(private financeService: FinanceService) { }
 
@@ -62,11 +63,13 @@ export class FinanceChartComponent implements OnInit {
   }
 
   build_chart() {
+    this.totalSpent = 0;
     this.dataSource = new MatTableDataSource(this.chartFinances);
     this.chartFinances.forEach((f) => {
       this.labels.push(f.type as string);
       this.amounts.push(f.sum);
       this.colors.push(this.getRandomColor());
+      this.totalSpent +=  f.sum.valueOf();
     });
 
     if (this.chart !== undefined) {

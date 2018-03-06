@@ -22,12 +22,12 @@ export class TravelComponent implements OnInit {
     this.fill_travels();
   }
 
-  fill_travels(){
+  fill_travels() {
     this.travelService.get_travels().subscribe((json: Object) => {
       this.travels = json as Travel[];
-  },
+    },
       error => console.error('Error: ' + error)
-  );
+    );
   }
 
   openDialog(): void {

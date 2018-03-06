@@ -5,6 +5,8 @@ import { HttpModule }    from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { AgmCoreModule } from '@agm/core';
+
 import { AppComponent }  from './app.component';
 import { UserService} from './services/user.service';
 import { FileService} from './services/file.service';
@@ -77,6 +79,9 @@ import { FileDirective } from './directives/file.directive';
 import { TravelService } from './services/travel.service';
 import { FinanceChartComponent } from './finance-chart/finance-chart.component';
 import { TravelDialogComponent } from './travel-dialog/travel-dialog.component';
+import { TravelPlanComponent } from './travel-plan/travel-plan.component';
+import { TravelPlanDialogComponent } from './travel-plan-dialog/travel-plan-dialog.component';
+import { ToDoFlowComponent } from './to-do-flow/to-do-flow.component';
 
 
 @NgModule({
@@ -116,7 +121,10 @@ import { TravelDialogComponent } from './travel-dialog/travel-dialog.component';
                   MatTableModule,
                   MatTabsModule,
                   MatToolbarModule,
-                  MatTooltipModule],
+                  MatTooltipModule,
+                  AgmCoreModule.forRoot({
+                    apiKey: 'key'
+                  })],
   declarations: [ AppComponent,
                   RegisterComponent,
                   ActivateComponent,
@@ -142,7 +150,10 @@ import { TravelDialogComponent } from './travel-dialog/travel-dialog.component';
                   DropboxComponent,
                   FileDirective,
                   FinanceChartComponent,
-                  TravelDialogComponent],
+                  TravelDialogComponent,
+                  TravelPlanComponent,
+                  TravelPlanDialogComponent,
+                  ToDoFlowComponent],
   bootstrap:    [ AppComponent ],
   providers: [ UserService,
                 FileService,

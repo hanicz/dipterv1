@@ -36,6 +36,12 @@ export class AppComponent {
     {text: 'Table', icon: 'far fa-money-bill-alt', router: 'finance'}
   ];
 
+  travelmenuitems = [
+    {text: 'Travels', icon: 'far fa-map', router: 'travel'},
+    {text: 'Images', icon: 'far fa-images', router: 'travel'},
+    {text: 'Plans', icon: 'fas fa-map-marker', router: 'travel-plan'}
+  ];
+
   selectedList = [];
 
   constructor(
@@ -51,6 +57,7 @@ export class AppComponent {
         else if((['/notes','/shared-notes'].indexOf(location.path()) > -1)) this.selectedList = this.notemenuitems;
         else if((['/settings','/dropbox', '/logs'].indexOf(location.path()) > -1)) this.selectedList = this.usermenuitems;
         else if((['/finance','/finance-chart'].indexOf(location.path()) > -1)) this.selectedList = this.financemenuitems;
+        else if((['/travel','/travel-plan'].indexOf(location.path()) > -1)) this.selectedList = this.travelmenuitems;
         else this.selectedList = [];
       }
   });

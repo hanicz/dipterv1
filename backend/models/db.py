@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, BLOB, ForeignKey, TEXT, create_engine
+from sqlalchemy import Column, Integer, String, Float, DateTime, BLOB, ForeignKey, TEXT, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 
@@ -27,6 +27,7 @@ class User(Base):
     folders = relationship("Folder", cascade="all, delete-orphan")
     finances = relationship("Finance", cascade="all, delete-orphan")
     travels = relationship("Travel", cascade="all, delete-orphan")
+    travel_plans = relationship("TravelPlan", cascade="all, delete-orphan")
 
     def __repr__(self):
         return "User: (id='%i', name='%s', email='%s', password_hash='%s', created='%s')" \
@@ -278,6 +279,25 @@ class TravelPhoto(Base):
             'file_name': self.file_name,
             'comment': self.comment,
             'delete_date': self.delete_date
+        }
+
+
+class TravelPlan(Base):
+    __tablename__ = 'travel_plan'
+
+    id = Column(Integer, primary_key=True)
+    lat = Column(Float, nullable=False)
+    lng = Column(Float, nullable=False)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
+    label = Column(String(250), nullable=True)
+
+    def serialize(self):
+        return{
+            'id': self.id,
+            'lat': self.lat,
+            'lng': self.lng,
+            'label': self.label
         }
 
 

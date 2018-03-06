@@ -25,6 +25,8 @@ import { FinanceDialog } from './finance-dialog/finance-dialog.component';
 import { TravelComponent } from './travel/travel.component';
 import { FinanceChartComponent } from './finance-chart/finance-chart.component';
 import { TravelDialogComponent } from './travel-dialog/travel-dialog.component';
+import { TravelPlanComponent } from './travel-plan/travel-plan.component';
+import { TravelPlanDialogComponent } from './travel-plan-dialog/travel-plan-dialog.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -49,6 +51,8 @@ const routes: Routes = [
   { path: 'travel-dialog', component: TravelDialogComponent },
   { path: 'travel', component: TravelComponent },
   { path: 'finance-chart', component: FinanceChartComponent },
+  { path: 'travel-plan', component: TravelPlanComponent },
+  { path: 'travel-plan-dialog', component: TravelPlanDialogComponent },
   { path: '**', redirectTo: '/not-found' }
 ];
 

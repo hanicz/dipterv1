@@ -11,3 +11,4 @@ from models.dropboxModel import *
 from models.financeModel import *
 from models.financeTypeModel import *
 from models.travelModel import *
+from models.travelPlanModel import *
