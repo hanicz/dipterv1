@@ -123,7 +123,7 @@ import { ToDoFlowComponent } from './to-do-flow/to-do-flow.component';
                   MatToolbarModule,
                   MatTooltipModule,
                   AgmCoreModule.forRoot({
-                    apiKey: 'key'
+                    apiKey: 'AIzaSyB4eZnZDPhEaI3DxglicEqyhwK-cWCJmqg'
                   })],
   declarations: [ AppComponent,
                   RegisterComponent,

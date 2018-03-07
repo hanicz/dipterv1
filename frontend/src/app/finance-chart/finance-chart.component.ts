@@ -22,6 +22,8 @@ export class FinanceChartComponent implements OnInit {
   dataSource = new MatTableDataSource(this.chartFinances);
   totalSpent: number = 0;
 
+  displayedColumns = ['type', 'amount'];
+
   constructor(private financeService: FinanceService) { }
 
   ngOnInit() {
