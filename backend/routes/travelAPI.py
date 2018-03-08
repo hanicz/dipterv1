@@ -1,7 +1,8 @@
-from flask import Blueprint, request, jsonify
-from utils import validate, HTTP_OK, HTTP_BAD_REQUEST, HTTP_CREATED, HTTP_NOT_FOUND
+from flask import Blueprint, request, jsonify, send_from_directory
+from utils import validate, HTTP_OK, HTTP_BAD_REQUEST, HTTP_CREATED, HTTP_NOT_FOUND, HTTP_UNAUTHORIZED
+from exception import InvalidFileException
 from models import delete_travel, create_travel, decode_token, update_travel, get_all_travels, get_all_travel_plans,\
-    create_travel_plan, delete_travel_plan, update_travel_plan
+    create_travel_plan, delete_travel_plan, update_travel_plan, upload_travel_image, get_image_data
 from exception import InvalidParametersException
 
 travel_api = Blueprint('travel_api', __name__)
@@ -91,3 +92,29 @@ def delete_user_travel_plan(travel_plan_id):
         return jsonify({'Response': 'Travel plan deleted successfully'}), HTTP_OK
     else:
         return jsonify({'Response': 'Travel plan deletion failed'}), HTTP_BAD_REQUEST
+
+
+@travel_api.route("/image/<travel_id>", methods=['POST'])
+def upload_user_travel_image(travel_id):
+    input_dictionary = {"travel_id": travel_id}
+    validation_dictionary = {'travel_id': "^[0-9]+$"}
+    try:
+        if validate(input_dictionary, validation_dictionary):
+            upload_travel_image(decode_token(request.cookies.get('token')), input_dictionary['travel_id'])
+        else:
+            return jsonify({'Response': 'Creating image failed.'}), HTTP_BAD_REQUEST
+    except InvalidFileException as e:
+        return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
+    except InvalidParametersException as e:
+        return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
+    return jsonify({'Response': 'Image uploaded successfully'}), HTTP_OK
+
+
+@travel_api.route("/download/<image_id>", methods=['GET'])
+def get_file(image_id):
+    path, system_filename, original_filename = get_image_data(decode_token(request.cookies.get('token')), image_id)
+    if None not in (path, system_filename, original_filename):
+        return send_from_directory(path, system_filename, mimetype='multipart/form-data',
+                                   attachment_filename=original_filename, as_attachment=True)
+    else:
+        return jsonify({'Response': 'Error downloading file'}), HTTP_UNAUTHORIZED

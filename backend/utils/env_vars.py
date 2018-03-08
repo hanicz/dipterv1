@@ -24,6 +24,7 @@ HTTP_INT_ERROR = 500
 #File upload
 UPLOAD_FOLDER = 'C:/temp/'
 NOT_ALLOWED_EXTENSIONS = set(['php'])
+IMAGE_EXTENSIONS = set(['jpg', 'png'])
 
 
 #Authentication

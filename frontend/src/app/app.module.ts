@@ -82,6 +82,7 @@ import { TravelDialogComponent } from './travel-dialog/travel-dialog.component';
 import { TravelPlanComponent } from './travel-plan/travel-plan.component';
 import { TravelPlanDialogComponent } from './travel-plan-dialog/travel-plan-dialog.component';
 import { ToDoFlowComponent } from './to-do-flow/to-do-flow.component';
+import { TravelImagesComponent } from './travel-images/travel-images.component';
 
 
 @NgModule({
@@ -153,7 +154,8 @@ import { ToDoFlowComponent } from './to-do-flow/to-do-flow.component';
                   TravelDialogComponent,
                   TravelPlanComponent,
                   TravelPlanDialogComponent,
-                  ToDoFlowComponent],
+                  ToDoFlowComponent,
+                  TravelImagesComponent],
   bootstrap:    [ AppComponent ],
   providers: [ UserService,
                 FileService,
