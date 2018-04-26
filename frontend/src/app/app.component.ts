@@ -38,7 +38,7 @@ export class AppComponent {
 
   travelmenuitems = [
     {text: 'Travels', icon: 'far fa-map', router: 'travel'},
-    {text: 'Images', icon: 'far fa-images', router: 'travel'},
+    {text: 'Images', icon: 'far fa-images', router: 'travel-images'},
     {text: 'Plans', icon: 'fas fa-map-marker', router: 'travel-plan'}
   ];
 

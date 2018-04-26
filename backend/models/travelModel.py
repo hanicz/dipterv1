@@ -16,8 +16,9 @@ from exception import InvalidFileException
 def create_travel(user_id, input_dictionary):
     session = DBSession()
     try:
+        print(input_dictionary['travelDate'])
         new_travel = Travel(user_id=user_id,
-                            travel_date=datetime.datetime.strptime(input_dictionary['travelDate'], '%Y-%d-%m'),
+                            travel_date=datetime.datetime.strptime(input_dictionary['travelDate'], '%Y-%m-%d'),
                             description=input_dictionary['description'])
         session.add(new_travel)
         create_log_entry(user_id, 'New travel created: ' + new_travel.description, new_travel.id, None, session)
@@ -57,7 +58,7 @@ def update_travel(user_id, input_dictionary):
             (Travel.user_id == user_id) & (Travel.id == input_dictionary['id']) & (Travel.delete_date == None)).first()
         if travel is not None:
             travel.description = input_dictionary['description']
-            travel.travel_date = datetime.datetime.strptime(input_dictionary['travelDate'], '%Y-%d-%m')
+            travel.travel_date = datetime.datetime.strptime(input_dictionary['travelDate'], '%Y-%m-%d')
             create_log_entry(user_id, 'Travel updated: ' + travel.description, travel.id, None, session)
             session.commit()
             return travel.serialize()
@@ -74,7 +75,7 @@ def get_all_travels(user_id):
     session = DBSession()
     try:
         travels = session.query(Travel).filter(
-                (Travel.user_id == user_id) & (Travel.delete_date == None))
+                (Travel.user_id == user_id) & (Travel.delete_date == None)).order_by(Travel.travel_date.asc())
         if travels is not None:
             return [t.serialize() for t in travels]
     except exc.SQLAlchemyError as e:
@@ -129,7 +130,7 @@ def upload_travel_image(user_id, travel_id):
 def create_image(user_id, filename, sys_fname, travel_id):
     session = DBSession()
     try:
-            new_image = TravelPhoto(user_id=user_id, file_name=filename,
+            new_image = TravelPhoto(file_name=filename,
                             system_file_name=sys_fname, travel_id=travel_id)
             session.add(new_image)
             session.commit()
@@ -151,7 +152,39 @@ def get_image_data(user_id, image_id):
             .filter((Travel.user_id == user_id) & (TravelPhoto.id == image_id) & (Travel.id == TravelPhoto.travel_id)
                      & (TravelPhoto.delete_date == None) & (Travel.delete_date == None)).first()
         if photo is not None and travel is not None:
-            return UPLOAD_FOLDER + str(user_id) + '/travel/' + travel.id + '/', photo.system_file_name, photo.file_name
+            return UPLOAD_FOLDER + str(user_id) + '/travel/' + str(travel.id) + '/', photo.system_file_name, photo.file_name
+        return None
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return None
+    finally:
+        session.close()
+
+
+def get_images_from_travel(user_id, travel_id):
+    session = DBSession()
+    try:
+        photos = session.query(TravelPhoto).join(Travel).filter((Travel.user_id == user_id) & (Travel.id == travel_id) & (Travel.id == TravelPhoto.travel_id)
+                & (TravelPhoto.delete_date == None) & (Travel.delete_date == None))
+
+        if photos is not None:
+            data = []
+            row = 1
+            col = 1
+            for photo in photos:
+                result = {
+                    "id": photo.id,
+                    "rows": row,
+                    "cols": col,
+                    "src": "http://localhost:5000/resources/travels/download/" + str(photo.id)
+                }
+                data.append(result)
+                if col == 4:
+                    row += 1
+                    col = 1
+            return data
+        return False
         return None
     except exc.SQLAlchemyError as e:
         print(e.__context__)

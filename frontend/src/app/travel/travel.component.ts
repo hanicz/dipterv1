@@ -30,8 +30,28 @@ export class TravelComponent implements OnInit {
     );
   }
 
+  deleteTravel(travel: Travel){
+    this.travelService.delete_travel(travel.id).subscribe((json: Object) => {
+      this.fill_travels();
+    },
+      error => console.error('Error: ' + error)
+    );
+  }
+
+  updateTravel(travel: Travel){
+    let dialogRef = this.dialog.open(TravelDialogComponent, {
+      data: { travel: travel, type: 'update' }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.fill_travels();
+    });
+  }
+
   openDialog(): void {
-    let dialogRef = this.dialog.open(TravelDialogComponent, {});
+    let dialogRef = this.dialog.open(TravelDialogComponent, {
+      data: { type: 'new' }
+    });
 
     dialogRef.afterClosed().subscribe((result) => {
       this.fill_travels();

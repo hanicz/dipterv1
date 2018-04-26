@@ -11,11 +11,14 @@ import { TravelService } from '../services/travel.service';
 export class TravelDialogComponent implements OnInit {
 
   travel: Travel;
+  type: String;
 
   constructor(private travelService: TravelService,
     public dialogRef: MatDialogRef<TravelDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
-    this.travel = new Travel();
+    this.type = data.type;
+    if(this.type == 'new') this.travel = new Travel();
+    else this.travel = data.travel;
   }
 
   ngOnInit() {
@@ -23,10 +26,18 @@ export class TravelDialogComponent implements OnInit {
 
 
   createRecord(): void {
-    this.travelService.create_travel(this.travel).subscribe((json: Object) => {
-    },
-      error => console.error('Error: ' + error)
-    );
-    this.dialogRef.close();
+    if (this.type == 'new') {
+      this.travelService.create_travel(this.travel).subscribe((json: Object) => {
+      },
+        error => console.error('Error: ' + error)
+      );
+      this.dialogRef.close();
+    } else if (this.type == 'update') {
+      this.travelService.update_travel(this.travel).subscribe((json: Object) => {
+      },
+        error => console.error('Error: ' + error)
+      );
+      this.dialogRef.close();
+    }
   }
 }

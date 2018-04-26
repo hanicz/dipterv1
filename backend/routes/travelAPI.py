@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify, send_from_directory
 from utils import validate, HTTP_OK, HTTP_BAD_REQUEST, HTTP_CREATED, HTTP_NOT_FOUND, HTTP_UNAUTHORIZED
 from exception import InvalidFileException
 from models import delete_travel, create_travel, decode_token, update_travel, get_all_travels, get_all_travel_plans,\
-    create_travel_plan, delete_travel_plan, update_travel_plan, upload_travel_image, get_image_data
+    create_travel_plan, delete_travel_plan, update_travel_plan, upload_travel_image, get_image_data, get_images_from_travel
 from exception import InvalidParametersException
 
 travel_api = Blueprint('travel_api', __name__)
@@ -43,7 +43,7 @@ def create_user_travel():
     validation_dictionary = {'description': None, 'travelDate': None}
     try:
         if validate(input_dictionary, validation_dictionary):
-            data = create_travel(decode_token(request.cookies.get('token')),input_dictionary)
+            data = create_travel(decode_token(request.cookies.get('token')), input_dictionary)
             if data is not None:
                 return jsonify(data), HTTP_CREATED
         return jsonify({'Response': 'Travel creation failed'}), HTTP_BAD_REQUEST
@@ -60,7 +60,7 @@ def get_user_travel_plans():
 @travel_api.route("/plan", methods=['PUT'])
 def create_user_travel_plan():
     input_dictionary = request.get_json()
-    validation_dictionary = {'label': None, 'lat': "^[0-9]+(\.[0-9]+)?$", 'lng': "^[0-9]+(\.[0-9]+)?$"}
+    validation_dictionary = {'label': None, 'lat': "^-?[0-9]+(\.[0-9]+)?$", 'lng': "^-?[0-9]+(\.[0-9]+)?$"}
     try:
         if validate(input_dictionary, validation_dictionary):
             data = create_travel_plan(decode_token(request.cookies.get('token')),input_dictionary)
@@ -109,6 +109,11 @@ def upload_user_travel_image(travel_id):
         return jsonify({'Response': str(e)}), HTTP_BAD_REQUEST
     return jsonify({'Response': 'Image uploaded successfully'}), HTTP_OK
 
+
+@travel_api.route("/images/<travel_id>", methods=['GET'])
+def get_images_for_travel(travel_id):
+    data = get_images_from_travel(decode_token(request.cookies.get('token')), travel_id)
+    return jsonify(data), HTTP_OK
 
 @travel_api.route("/download/<image_id>", methods=['GET'])
 def get_file(image_id):

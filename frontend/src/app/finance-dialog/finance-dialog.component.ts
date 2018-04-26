@@ -30,7 +30,6 @@ export class FinanceDialog {
       this.finance = new Finance();
       this.finance.finance_date = new Date();
     } else if (this.type == 'update') {
-      console.log(data.finance.finance_date)
       this.finance = data.finance;
       this.financeTypes.forEach(ft => {
         if (ft.id == this.finance.finance_type_id)

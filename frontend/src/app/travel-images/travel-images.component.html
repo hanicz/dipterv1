@@ -1,10 +1,19 @@
-<div class="travel-images">
+<div class="travel-images" appImage [currentTravel]="selectedTravel.id">
+    <div layout="row">
+        <mat-form-field>
+            <mat-select placeholder="Travel" [(ngModel)]="selectedTravel">
+                <mat-option *ngFor="let travel of travels" [value]="travel">
+                    {{ travel.description }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
   <mat-grid-list cols="4" rowHeight="200px" rowWidth="200px">
     <mat-grid-tile
         *ngFor="let image of images"
         [colspan]="image.cols"
         [rowspan]="image.rows">
-        <img src="image.src" height="100%" width="100%">
+        <img [src]="image.src" height="100%" width="100%">
     </mat-grid-tile>
   </mat-grid-list>
 </div>

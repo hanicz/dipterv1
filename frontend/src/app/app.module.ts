@@ -83,6 +83,7 @@ import { TravelPlanComponent } from './travel-plan/travel-plan.component';
 import { TravelPlanDialogComponent } from './travel-plan-dialog/travel-plan-dialog.component';
 import { ToDoFlowComponent } from './to-do-flow/to-do-flow.component';
 import { TravelImagesComponent } from './travel-images/travel-images.component';
+import { ImageDirective } from './directives/image.directive';
 
 
 @NgModule({
@@ -124,7 +125,7 @@ import { TravelImagesComponent } from './travel-images/travel-images.component';
                   MatToolbarModule,
                   MatTooltipModule,
                   AgmCoreModule.forRoot({
-                    apiKey: 'key'
+                    apiKey: 'AIzaSyAeER-KF8qM-2hfCpNB6CHTJBtfMVg0Glg'
                   })],
   declarations: [ AppComponent,
                   RegisterComponent,
@@ -155,7 +156,8 @@ import { TravelImagesComponent } from './travel-images/travel-images.component';
                   TravelPlanComponent,
                   TravelPlanDialogComponent,
                   ToDoFlowComponent,
-                  TravelImagesComponent],
+                  TravelImagesComponent,
+                  ImageDirective],
   bootstrap:    [ AppComponent ],
   providers: [ UserService,
                 FileService,
