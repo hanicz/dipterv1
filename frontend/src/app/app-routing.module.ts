@@ -28,6 +28,7 @@ import { TravelDialogComponent } from './travel-dialog/travel-dialog.component';
 import { TravelPlanComponent } from './travel-plan/travel-plan.component';
 import { TravelPlanDialogComponent } from './travel-plan-dialog/travel-plan-dialog.component';
 import { TravelImagesComponent } from './travel-images/travel-images.component';
+import { TravelImagesDialog } from './travel-images/travel-images.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -55,6 +56,7 @@ const routes: Routes = [
   { path: 'finance-chart', component: FinanceChartComponent },
   { path: 'travel-plan', component: TravelPlanComponent },
   { path: 'travel-plan-dialog', component: TravelPlanDialogComponent },
+  { path: 'travel-images-dialog', component: TravelImagesDialog },
   { path: '**', redirectTo: '/not-found' }
 ];
 

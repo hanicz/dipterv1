@@ -57,7 +57,7 @@ export class AppComponent {
         else if((['/notes','/shared-notes'].indexOf(location.path()) > -1)) this.selectedList = this.notemenuitems;
         else if((['/settings','/dropbox', '/logs'].indexOf(location.path()) > -1)) this.selectedList = this.usermenuitems;
         else if((['/finance','/finance-chart'].indexOf(location.path()) > -1)) this.selectedList = this.financemenuitems;
-        else if((['/travel','/travel-plan'].indexOf(location.path()) > -1)) this.selectedList = this.travelmenuitems;
+        else if((['/travel','/travel-plan', '/travel-images'].indexOf(location.path()) > -1)) this.selectedList = this.travelmenuitems;
         else this.selectedList = [];
       }
   });
@@ -81,7 +81,7 @@ export class AppComponent {
   }
 
   delete(): void{
-    var del = window.confirm('Are you sure you want to delete your account ?')
+    var del = window.confirm('Are you sure you want to delete your account?')
     if (del == true) {
       this.userService
       .delete().subscribe((json: Object) => {

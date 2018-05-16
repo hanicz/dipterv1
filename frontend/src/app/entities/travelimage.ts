@@ -5,4 +5,5 @@ export class TravelImage{
     public cols: Number;
     public rows: Number;
     public src: String;
+    public title: String;
 }

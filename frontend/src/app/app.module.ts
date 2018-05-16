@@ -38,6 +38,7 @@ import { DropboxComponent } from './dropbox/dropbox.component';
 import { TruncatePipe }   from './entities/pipe';
 import { DatePipe } from '@angular/common';
 import { LoginComponent }  from './login/login.component';
+import { TravelImagesDialog } from './travel-images/travel-images.component';
 
 import {
   MatAutocompleteModule,
@@ -157,6 +158,7 @@ import { ImageDirective } from './directives/image.directive';
                   TravelPlanDialogComponent,
                   ToDoFlowComponent,
                   TravelImagesComponent,
+                  TravelImagesDialog,
                   ImageDirective],
   bootstrap:    [ AppComponent ],
   providers: [ UserService,

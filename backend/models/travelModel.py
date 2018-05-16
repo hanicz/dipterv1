@@ -177,7 +177,8 @@ def get_images_from_travel(user_id, travel_id):
                     "id": photo.id,
                     "rows": row,
                     "cols": col,
-                    "src": "http://localhost:5000/resources/travels/download/" + str(photo.id)
+                    "src": "http://localhost:5000/resources/travels/download/" + str(photo.id),
+                    "title": photo.file_name
                 }
                 data.append(result)
                 if col == 4:
@@ -185,7 +186,6 @@ def get_images_from_travel(user_id, travel_id):
                     col = 1
             return data
         return False
-        return None
     except exc.SQLAlchemyError as e:
         print(e.__context__)
         session.rollback()

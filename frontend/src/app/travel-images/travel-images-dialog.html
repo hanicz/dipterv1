@@ -1,0 +1,10 @@
+<div mat-dialog-content>
+    <mat-card>
+        <mat-card-title>{{image.title}}</mat-card-title>
+        <img mat-card-image [src]="image.src">
+    </mat-card>
+</div>
+<div mat-dialog-actions style="float: right;">
+    <button mat-raised-button color="primary" (click)="delete()">Delete</button>
+    <button mat-raised-button color="primary" [mat-dialog-close] cdkFocusInitial>Close</button>
+</div>
