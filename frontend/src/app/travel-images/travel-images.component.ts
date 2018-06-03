@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { TravelImage } from '../entities/travelimage';
 import { TravelService } from '../services/travel.service';
 import { Travel } from '../entities/travel';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'travel-images',
@@ -18,7 +18,7 @@ export class TravelImagesComponent implements OnInit {
   cardHidden: boolean = false;
 
   constructor(private travelService: TravelService,
-              public dialog: MatDialog) { }
+    public dialog: MatDialog) { }
 
   ngOnInit() {
     this.selectedTravel = new Travel();
@@ -28,7 +28,7 @@ export class TravelImagesComponent implements OnInit {
 
   openDialog(image: TravelImage): void {
     let dialogRef = this.dialog.open(TravelImagesDialog, {
-      
+
       data: { image: image }
     });
 
@@ -68,9 +68,9 @@ export class TravelImagesDialog {
 
   constructor(
     public dialogRef: MatDialogRef<TravelImagesDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: any) { 
-      this.image = data.image;
-    }
+    @Inject(MAT_DIALOG_DATA) public data: any) {
+    this.image = data.image;
+  }
 
   delete(): void {
     this.dialogRef.close();
