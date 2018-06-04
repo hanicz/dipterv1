@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { FinanceType } from '../entities/finance-type';
 import { FinanceService } from '../services/finance.service';
 import { Finance } from '../entities/Finance';
@@ -21,6 +21,7 @@ export class FinanceDialog {
 
   constructor(
     private financeService: FinanceService,
+    public snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<FinanceDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
     this.financeTypes = data.financeTypes;
@@ -42,25 +43,50 @@ export class FinanceDialog {
     if (this.type == 'new') {
       this.finance.finance_type_id = this.selectedType.id;
       this.financeService.new_finance(this.finance).subscribe((json: Object) => {
+        let extraClasses = ['background-green'];
+        this.snackBar.open("Finance record successfully created", null, {
+          duration: 1000,
+          extraClasses: extraClasses
+        });
+        this.dialogRef.close();
       },
-        error => console.error('Error: ' + error)
+        error => {
+          if (error.status == 409) {
+            let extraClasses = ['background-red'];
+            this.snackBar.open("Finance record already exists", null, {
+              duration: 1000,
+              extraClasses: extraClasses
+            });
+          }
+        }
       );
     }
     else {
       this.finance.finance_type_id = this.selectedType.id;
       this.financeService.update_finance(this.finance).subscribe((json: Object) => {
+        let extraClasses = ['background-green'];
+        this.snackBar.open("Finance record successfully updated", null, {
+          duration: 1000,
+          extraClasses: extraClasses
+        });
+        this.dialogRef.close();
       },
-        error => console.error('Error: ' + error)
+        error => {
+          let extraClasses = ['background-red'];
+          this.snackBar.open("Finance record update failed", null, {
+            duration: 1000,
+            extraClasses: extraClasses
+          });
+        }
       );
     }
-    this.dialogRef.close();
   }
 
   createType(): void {
     this.financeService.new_finance_type(this.newFinanceTypeName).subscribe((json: Object) => {
 
     },
-      error => console.error('Error: ' + error)
+      error => console.log('Error: ' + error)
     );
     this.dialogRef.close();
   }

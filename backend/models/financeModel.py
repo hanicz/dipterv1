@@ -26,6 +26,24 @@ def create_finance_record(user_id, input_dictionary):
         session.close()
 
 
+def check_for_existing_record(user_id, input_dictionary):
+    session = DBSession()
+    try:
+        existing_finance = session.query(Finance).filter((Finance.user_id == user_id) & (Finance.amount == input_dictionary['amount'])
+                                                         & (Finance.finance_date == datetime.datetime.strptime(input_dictionary['finance_date'], '%Y-%m-%d'))
+                                                         & (Finance.finance_type_id == input_dictionary['finance_type_id']))\
+                                                 .first()
+        if existing_finance is not None:
+            return True
+        return False
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return False
+    finally:
+        session.close()
+
+
 def delete_finance_record(user_id, finance_id):
     session = DBSession()
     try:

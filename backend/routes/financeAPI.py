@@ -1,8 +1,9 @@
 from flask import Blueprint, request, jsonify
-from utils import validate, HTTP_OK, HTTP_BAD_REQUEST, HTTP_CREATED, HTTP_NOT_FOUND
+from utils import validate, HTTP_OK, HTTP_BAD_REQUEST, HTTP_CREATED, HTTP_CONFLICT
 from models import create_finance_record, decode_token, get_finance_type_records, update_finance_record, \
     delete_finance_record, get_finance_records_by_month, get_finance_records_by_year, \
-    get_aggregated_finance_records_by_month, get_aggregated_finance_records_by_year, create_finance_type_record
+    get_aggregated_finance_records_by_month, get_aggregated_finance_records_by_year, create_finance_type_record, \
+    check_for_existing_record, get_finance_records_by_month_and_type, get_finance_records_by_year_and_type
 from exception import InvalidParametersException
 
 finance_api = Blueprint('finance_api', __name__)
@@ -17,6 +18,10 @@ def create_finance():
                              'finance_date': '^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$'}
     try:
         if validate(input_dictionary, validation_dictionary):
+
+            if check_for_existing_record(decode_token(request.cookies.get('token')), input_dictionary):
+                return jsonify({'Response': 'Finance record already exists'}), HTTP_CONFLICT
+
             data = create_finance_record(decode_token(request.cookies.get('token')), input_dictionary)
             if data is not None:
                 return jsonify(data), HTTP_CREATED
