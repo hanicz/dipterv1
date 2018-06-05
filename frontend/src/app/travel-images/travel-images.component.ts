@@ -13,7 +13,10 @@ export class TravelImagesComponent implements OnInit {
 
   images: TravelImage[];
   travels: Travel[];
+  paginatedImages: TravelImage[];
   selectedTravel: Travel;
+  numberOfPictures: Number;
+  index: number;
 
   cardHidden: boolean = false;
 
@@ -28,7 +31,8 @@ export class TravelImagesComponent implements OnInit {
 
   openDialog(image: TravelImage): void {
     let dialogRef = this.dialog.open(TravelImagesDialog, {
-
+      height: '90vh',
+      width: '160vh',
       data: { image: image }
     });
 
@@ -51,9 +55,38 @@ export class TravelImagesComponent implements OnInit {
   fill_images() {
     this.travelService.get_image_src(this.selectedTravel.id).subscribe((json: Object) => {
       this.images = json as TravelImage[];
+      this.paginatedImages = [];
+      for (let i = 0; i < 12; i++) {
+        this.paginatedImages.push(this.images[i]);
+      }
+      this.index = 12;
+      this.numberOfPictures = this.images.length;
     },
       error => console.error('Error: ' + error)
     );
+  }
+
+  next() {
+    if (this.index < this.images.length) {
+      this.paginatedImages = [];
+      let limit = (this.index + 12 < this.images.length) ? this.index + 12 : this.images.length;
+      for (let i = this.index; i < limit; i++) {
+        this.paginatedImages.push(this.images[i]);
+      }
+      this.index += 12;
+    }
+  }
+
+  previous() {
+    if (this.index - 12 > 0) {
+      this.paginatedImages = [];
+      let limit = (this.index - 24 > 0) ? (this.index - 24) : 0;
+
+      for (let i = limit; i < limit + 12; i++) {
+        this.paginatedImages.push(this.images[i]);
+      }
+      this.index -= 12;
+    }
   }
 
 }
@@ -61,10 +94,12 @@ export class TravelImagesComponent implements OnInit {
 @Component({
   selector: 'travel-images-dialog',
   templateUrl: 'travel-images-dialog.html',
+  styleUrls: ['travel-images-dialog.css']
 })
 export class TravelImagesDialog {
 
   image: TravelImage;
+  angle = 0;
 
   constructor(
     public dialogRef: MatDialogRef<TravelImagesDialog>,
@@ -74,6 +109,12 @@ export class TravelImagesDialog {
 
   delete(): void {
     this.dialogRef.close();
+  }
+
+  rotate(): void {
+    let img = document.getElementById('image');
+    this.angle = (this.angle + 90) % 360;
+    img.className = "rotate" + this.angle;
   }
 
 }

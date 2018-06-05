@@ -1,5 +1,9 @@
 <div class="settings_container">
   <mat-form-field>
+    <input matInput placeholder="New Username" [(ngModel)]="model.new_username">
+  </mat-form-field>
+  
+  <mat-form-field>
     <input matInput placeholder="New Email" [(ngModel)]="model.new_email" [formControl]="email">
   </mat-form-field>
 

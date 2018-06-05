@@ -25,6 +25,7 @@ export class SettingsComponent {
   email = new FormControl('', [Validators.pattern('^$|^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$')]);
   password = new FormControl('', [Validators.required]);
 
+  
   constructor(
     private userService: UserService, private router: Router
   ) {

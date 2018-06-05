@@ -7,10 +7,28 @@
                 </mat-option>
             </mat-select>
         </mat-form-field>
+        <mat-accordion>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        {{ selectedTravel.description }}
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        {{ selectedTravel.travelDate | date: 'shortDate' }}
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                # of images {{ numberOfPictures }}
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+    <div layout="row" style="margin-top: 5px; margin-bottom: 5px; text-align: center;">
+            <span (click)="previous()"><i class="fas fa-angle-left"></i></span>
+            {{ index -12 }} - {{index}}
+            <span (click)="next()"><i class="fas fa-angle-right"></i></span>
     </div>
     <div style="overflow-y: auto; max-height: 80vh;">
         <mat-grid-list cols="4" rowHeight="200px" rowWidth="200px">
-            <mat-grid-tile *ngFor="let image of images" [colspan]="image.cols" [rowspan]="image.rows">
+            <mat-grid-tile *ngFor="let image of paginatedImages" [colspan]="image.cols" [rowspan]="image.rows">
                 <img [src]="image.src" height="100%" width="100%" (click)="openDialog(image)">
             </mat-grid-tile>
         </mat-grid-list>

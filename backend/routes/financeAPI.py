@@ -3,7 +3,7 @@ from utils import validate, HTTP_OK, HTTP_BAD_REQUEST, HTTP_CREATED, HTTP_CONFLI
 from models import create_finance_record, decode_token, get_finance_type_records, update_finance_record, \
     delete_finance_record, get_finance_records_by_month, get_finance_records_by_year, \
     get_aggregated_finance_records_by_month, get_aggregated_finance_records_by_year, create_finance_type_record, \
-    check_for_existing_record, get_finance_records_by_month_and_type, get_finance_records_by_year_and_type
+    check_for_existing_record
 from exception import InvalidParametersException
 
 finance_api = Blueprint('finance_api', __name__)

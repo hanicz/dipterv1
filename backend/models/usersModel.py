@@ -142,6 +142,9 @@ def change_user_data(user_id, input_dictionary):
     if 'new_password' in input_dictionary:
         new_password = input_dictionary['new_password']
 
+    if 'new_username' in input_dictionary:
+        new_username = input_dictionary['new_username']
+
     try:
         user = session.query(User).filter((User.id == user_id)).first()
         if user is not None:
@@ -151,6 +154,8 @@ def change_user_data(user_id, input_dictionary):
                 if new_password is not None:
                     password_hash = pbkdf2_sha256.using(salt_size=16).hash(new_password)
                     user.password_hash = password_hash
+                if new_username is not None:
+                    user.name = new_username
                 create_log_entry(user.id, 'User changed personal data', None, None, session)
                 session.commit()
                 return user.serialize()

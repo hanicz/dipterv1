@@ -166,7 +166,7 @@ def get_images_from_travel(user_id, travel_id):
     session = DBSession()
     try:
         photos = session.query(TravelPhoto).join(Travel).filter((Travel.user_id == user_id) & (Travel.id == travel_id) & (Travel.id == TravelPhoto.travel_id)
-                & (TravelPhoto.delete_date == None) & (Travel.delete_date == None))
+                & (TravelPhoto.delete_date == None) & (Travel.delete_date == None)).order_by(TravelPhoto.file_name.asc())
 
         if photos is not None:
             data = []
