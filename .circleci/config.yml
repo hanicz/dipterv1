@@ -9,7 +9,6 @@ jobs:
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "backend/requirements.txt" }}
-           fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
       - run:
@@ -45,8 +44,8 @@ jobs:
           command: npm install @angular/cli@latest -g
         
       - run:
-        name: Build
-        command: ng build
+          name: Build
+          command: ng build
 
       - store_artifacts:
           path: test-reports
