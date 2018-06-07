@@ -3,9 +3,14 @@ jobs:
   build:
     docker:
       - image: circleci/python:3.6.1
-      - image: circleci/node:10-browsers
     steps:
       - checkout
+
+      - run: 
+          name: Install npm
+          command: |
+            curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+            apt-get install -y nodejs
 
       - restore_cache:
           keys:
