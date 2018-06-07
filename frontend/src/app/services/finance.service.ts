@@ -15,7 +15,8 @@ export class FinanceService {
         'Accept': 'application/json'
     });
 
-    private userUrl = 'http://localhost:5000/resources/finances';
+    //private userUrl = 'http://localhost:5000/resources/finances';
+    private userUrl = '/resources/finances';
 
     constructor(private datePipe: DatePipe, private http: Http) { }
 
@@ -52,8 +53,17 @@ export class FinanceService {
     }
 
     update_finance(finance: Finance) {
+
+        var data = {
+            'finance_id': finance.id,
+            'amount': finance.amount,
+            'comment': finance.comment,
+            'finance_date': this.datePipe.transform(finance.finance_date, 'yyyy-MM-dd'),
+            'finance_type_id': finance.finance_type_id
+        }
+
         const url = `${this.userUrl}/finance`;
-        return this.http.post(url, JSON.stringify(finance), {
+        return this.http.post(url, JSON.stringify(data), {
             headers: this.headers,
             withCredentials: true
         })

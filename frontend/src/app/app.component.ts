@@ -31,6 +31,17 @@ export class AppComponent {
     {text: 'Delete account', icon: 'fas fa-trash-alt', router: 'delete'}
   ];
 
+  financemenuitems = [
+    {text: 'Chart', icon: 'fas fa-chart-pie', router: 'finance-chart'},
+    {text: 'Table', icon: 'far fa-money-bill-alt', router: 'finance'}
+  ];
+
+  travelmenuitems = [
+    {text: 'Travels', icon: 'far fa-map', router: 'travel'},
+    {text: 'Images', icon: 'far fa-images', router: 'travel-images'},
+    {text: 'Plans', icon: 'fas fa-map-marker', router: 'travel-plan'}
+  ];
+
   selectedList = [];
 
   constructor(
@@ -45,6 +56,8 @@ export class AppComponent {
         if((['/files','/shared-with-me', '/deleted-files'].indexOf(location.path()) > -1)) this.selectedList = this.filemenuitems;
         else if((['/notes','/shared-notes'].indexOf(location.path()) > -1)) this.selectedList = this.notemenuitems;
         else if((['/settings','/dropbox', '/logs'].indexOf(location.path()) > -1)) this.selectedList = this.usermenuitems;
+        else if((['/finance','/finance-chart'].indexOf(location.path()) > -1)) this.selectedList = this.financemenuitems;
+        else if((['/travel','/travel-plan', '/travel-images'].indexOf(location.path()) > -1)) this.selectedList = this.travelmenuitems;
         else this.selectedList = [];
       }
   });
@@ -68,7 +81,7 @@ export class AppComponent {
   }
 
   delete(): void{
-    var del = window.confirm('Are you sure you want to delete your account ?')
+    var del = window.confirm('Are you sure you want to delete your account?')
     if (del == true) {
       this.userService
       .delete().subscribe((json: Object) => {

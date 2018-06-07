@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, BLOB, ForeignKey, TEXT, create_engine
+from sqlalchemy import Column, Integer, String, Float, DateTime, BLOB, ForeignKey, TEXT, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 
@@ -26,6 +26,8 @@ class User(Base):
     fileShares = relationship("FileShare", cascade="all, delete-orphan")
     folders = relationship("Folder", cascade="all, delete-orphan")
     finances = relationship("Finance", cascade="all, delete-orphan")
+    travels = relationship("Travel", cascade="all, delete-orphan")
+    travel_plans = relationship("TravelPlan", cascade="all, delete-orphan")
 
     def __repr__(self):
         return "User: (id='%i', name='%s', email='%s', password_hash='%s', created='%s')" \
@@ -228,6 +230,74 @@ class Finance(Base):
             'finance_type_id': self.finance_type_id,
             'finance_date': self.finance_date,
             'comment': self.comment
+        }
+
+
+class Travel(Base):
+    __tablename__ = 'travel'
+
+    id = Column(Integer, primary_key=True)
+    travel_date = Column(DateTime, nullable=False)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
+    description = Column(String(250), nullable=False)
+    delete_date = Column(DateTime, nullable=True)
+
+    photos = relationship("TravelPhoto", cascade="all, delete-orphan")
+
+    def __repr__(self):
+        return "Travel: (id='%i', travel_date='%s', user_id='%i', description='%s')" \
+                % (self.id, str(self.travel_date), self.user_id, self.description)
+
+    def serialize(self):
+        return{
+            'id': self.id,
+            'travelDate': self.travel_date,
+            'description': self.description,
+            'deleteDate': self.delete_date
+        }
+
+
+class TravelPhoto(Base):
+    __tablename__ = 'travel_photo'
+
+    id = Column(Integer, primary_key=True)
+    file_name = Column(String(250), nullable=True)
+    system_file_name = Column(String(250), nullable=True)
+    delete_date = Column(DateTime, nullable=True)
+    comment = Column(String(250), nullable=True)
+    travel_id = Column(Integer, ForeignKey('travel.id'))
+    travel = relationship(Travel)
+
+    def __repr__(self):
+        return "Travel Photo: (id='%i', file_name='%s', system_file_name='%s', delete_date='%s', comment='%s', travel_id='%i')" \
+                % (self.id, self.file_name, self.system_file_name, str(self.delete_date), self.comment, self.travel_id)
+
+    def serialize(self):
+        return{
+            'id': self.id,
+            'file_name': self.file_name,
+            'comment': self.comment,
+            'delete_date': self.delete_date
+        }
+
+
+class TravelPlan(Base):
+    __tablename__ = 'travel_plan'
+
+    id = Column(Integer, primary_key=True)
+    lat = Column(Float, nullable=False)
+    lng = Column(Float, nullable=False)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
+    label = Column(String(250), nullable=True)
+
+    def serialize(self):
+        return{
+            'id': self.id,
+            'lat': self.lat,
+            'lng': self.lng,
+            'label': self.label
         }
 
 

@@ -4,9 +4,9 @@ backend/**/server_log.log
 
 backend/.idea/**/workspace.xml
 backend/.idea/**/tasks.xml
+backend/.idea/**/backend.iml
+backend/.idea/**/misc.xml
 backend/.idea/dictionaries
-backend/.idea/backend.iml
-backend/.idea/misc.xml
 
 frontend/.idea/**/workspace.xml
 frontend/.idea/**/tasks.xml

@@ -26,6 +26,24 @@ def create_finance_record(user_id, input_dictionary):
         session.close()
 
 
+def check_for_existing_record(user_id, input_dictionary):
+    session = DBSession()
+    try:
+        existing_finance = session.query(Finance).filter((Finance.user_id == user_id) & (Finance.amount == input_dictionary['amount'])
+                                                         & (Finance.finance_date == datetime.datetime.strptime(input_dictionary['finance_date'], '%Y-%m-%d'))
+                                                         & (Finance.finance_type_id == input_dictionary['finance_type_id']))\
+                                                 .first()
+        if existing_finance is not None:
+            return True
+        return False
+    except exc.SQLAlchemyError as e:
+        print(e.__context__)
+        session.rollback()
+        return False
+    finally:
+        session.close()
+
+
 def delete_finance_record(user_id, finance_id):
     session = DBSession()
     try:
@@ -54,7 +72,7 @@ def update_finance_record(user_id, input_dictionary):
 
             if finance is not None:
                 finance.amount = input_dictionary['amount']
-                finance.finance_date = input_dictionary['finance_date']
+                finance.finance_date = datetime.datetime.strptime(input_dictionary['finance_date'], '%Y-%m-%d')
                 finance.finance_type_id = input_dictionary['finance_type_id']
                 finance.comment = input_dictionary['comment']
                 session.commit()
@@ -72,7 +90,8 @@ def get_finance_records_by_year(user_id, year):
     session = DBSession()
     try:
         finances = session.query(Finance).filter((Finance.user_id == user_id) &
-                                                 (extract('year', Finance.finance_date) == year))
+                                                 (extract('year', Finance.finance_date) == year))\
+                                         .order_by(Finance.finance_date.asc())
         if finances is not None:
             return [f.serialize() for f in finances]
         
@@ -90,7 +109,8 @@ def get_finance_records_by_month(user_id, input_dictionary):
     try:
         finances = session.query(Finance).filter((Finance.user_id == user_id) &
                                                  (extract('month', Finance.finance_date) == input_dictionary['month']) &
-                                                 (extract('year', Finance.finance_date) == input_dictionary['year']))
+                                                 (extract('year', Finance.finance_date) == input_dictionary['year']))\
+                                         .order_by(Finance.finance_date.asc())
         if finances is not None:
             return [f.serialize() for f in finances]
 

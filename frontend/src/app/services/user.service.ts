@@ -19,16 +19,13 @@ export class UserService {
     'Content-Type': 'application/json',
     'Accept': 'application/json'
   });
-  private userUrl = 'http://localhost:5000/resources/users';
+
+  //private userUrl = 'http://localhost:5000/resources/users';
+  private userUrl = '/resources/users';
 
   constructor(private http: Http) { }
 
   login_user(user: User) {
-
-    /* let params: URLSearchParams = new URLSearchParams();
-     params.set('username', username);
-     params.set('password', password);*/
-
     const url = `${this.userUrl}/login`;
     return this.http.post(url, JSON.stringify(user), {
       headers: this.headers,

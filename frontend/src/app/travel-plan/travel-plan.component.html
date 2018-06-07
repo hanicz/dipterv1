@@ -1,0 +1,24 @@
+<div class="travel-plan">
+  <mat-list>
+    <h3 mat-subheader>Travel Plans</h3>
+    <mat-list-item *ngFor="let travel of markers" style="display:inline-block;" (click)="onSelectPlan(travel)">
+      <mat-icon mat-list-icon>
+        <i class="fas fa-map-marker"></i>
+      </mat-icon>
+      <h4 mat-line> {{travel.label | limitTo: 27}} </h4>
+      <p mat-line> {{travel.lat.toString() | limitTo: 6}}{{ travel.lng.toString() | limitTo: 6 }} </p>
+      <span (click)="updatePlan(travel);"> <i class="far fa-edit"> </i></span> <span (click)="deletePlan(travel);"><i class="fas fa-trash-alt"></i></span>
+    </mat-list-item>
+  </mat-list>
+  <mat-divider></mat-divider>
+  <br>
+  <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false" (mapClick)="mapClicked($event)">
+
+    <agm-marker *ngFor="let m of markers" [latitude]="m.lat" [longitude]="m.lng"
+      [markerDraggable]="false">
+      <agm-info-window>
+        <strong>{{m.label}}</strong>
+      </agm-info-window>
+    </agm-marker>
+  </agm-map>
+</div>

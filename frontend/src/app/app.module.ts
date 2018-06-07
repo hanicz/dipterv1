@@ -5,6 +5,8 @@ import { HttpModule }    from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { AgmCoreModule } from '@agm/core';
+
 import { AppComponent }  from './app.component';
 import { UserService} from './services/user.service';
 import { FileService} from './services/file.service';
@@ -36,6 +38,7 @@ import { DropboxComponent } from './dropbox/dropbox.component';
 import { TruncatePipe }   from './entities/pipe';
 import { DatePipe } from '@angular/common';
 import { LoginComponent }  from './login/login.component';
+import { TravelImagesDialog } from './travel-images/travel-images.component';
 
 import {
   MatAutocompleteModule,
@@ -74,6 +77,14 @@ import {
 } from '@angular/material';
 import { TravelComponent } from './travel/travel.component';
 import { FileDirective } from './directives/file.directive';
+import { TravelService } from './services/travel.service';
+import { FinanceChartComponent } from './finance-chart/finance-chart.component';
+import { TravelDialogComponent } from './travel-dialog/travel-dialog.component';
+import { TravelPlanComponent } from './travel-plan/travel-plan.component';
+import { TravelPlanDialogComponent } from './travel-plan-dialog/travel-plan-dialog.component';
+import { ToDoFlowComponent } from './to-do-flow/to-do-flow.component';
+import { TravelImagesComponent } from './travel-images/travel-images.component';
+import { ImageDirective } from './directives/image.directive';
 
 
 @NgModule({
@@ -113,7 +124,10 @@ import { FileDirective } from './directives/file.directive';
                   MatTableModule,
                   MatTabsModule,
                   MatToolbarModule,
-                  MatTooltipModule],
+                  MatTooltipModule,
+                  AgmCoreModule.forRoot({
+                    apiKey: 'AIzaSyAeER-KF8qM-2hfCpNB6CHTJBtfMVg0Glg'
+                  })],
   declarations: [ AppComponent,
                   RegisterComponent,
                   ActivateComponent,
@@ -137,7 +151,15 @@ import { FileDirective } from './directives/file.directive';
                   TravelComponent,
                   LoginComponent,
                   DropboxComponent,
-                  FileDirective],
+                  FileDirective,
+                  FinanceChartComponent,
+                  TravelDialogComponent,
+                  TravelPlanComponent,
+                  TravelPlanDialogComponent,
+                  ToDoFlowComponent,
+                  TravelImagesComponent,
+                  TravelImagesDialog,
+                  ImageDirective],
   bootstrap:    [ AppComponent ],
   providers: [ UserService,
                 FileService,
@@ -147,6 +169,7 @@ import { FileDirective } from './directives/file.directive';
                 NoteService,
                 DropboxService,
                 FinanceService,
-                DatePipe ],
+                DatePipe,
+                TravelService ],
 })
 export class AppModule { }

@@ -6,7 +6,7 @@ from exception import InvalidParametersException
 notes_api = Blueprint('notes_api', __name__)
 
 @notes_api.route("/note", methods=['PUT'])
-#@limit_content_length(300)
+@limit_content_length(5000)
 def create_notes():
     input_dictionary = request.get_json()
     validation_dictionary = {'content': None, 'fileName': None}
@@ -21,7 +21,7 @@ def create_notes():
 
 
 @notes_api.route("/update", methods=['POST'])
-#@limit_content_length(300)
+@limit_content_length(5000)
 def update_notes():
     input_dictionary = request.get_json()
     validation_dictionary = {'content': None, 'fileName': None,

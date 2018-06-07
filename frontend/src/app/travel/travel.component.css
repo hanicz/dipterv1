@@ -1,9 +1,13 @@
 .travel {
-    background: #FFFFFF;
-    position: relative;
-    width: 50%;
-    margin: auto;
-    padding: 2%;
-    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 15px 20px 0 rgba(0, 0, 0, 0.6);
-    list-style-type: none;
-  }
+  background: #FFFFFF;
+  width: 100%;
+  padding: 10px;
+  list-style-type: none;
+}
+
+.mat-list-item:hover {
+  color: #607D8B;
+  background-color: #DDD;
+  cursor: pointer;
+  user-select: none;
+}

@@ -1,7 +1,7 @@
 /**
  * Created by Hanicz on 2/19/2017.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Headers, Http, URLSearchParams } from '@angular/http';
 import { UserService } from '../services/user.service'
 import { User } from '../utils/user'
@@ -27,6 +27,13 @@ export class RegisterComponent {
   constructor(
     private userService: UserService, private router: Router
   ) { }
+
+  @HostListener('window:keydown', ['$event'])
+  keyboardInput(event: KeyboardEvent) {
+    if(event.keyCode == 13){
+      this.register();
+    }
+  }
 
   register(): void {
     if (this.username.valid && this.password.valid && this.email.valid) {

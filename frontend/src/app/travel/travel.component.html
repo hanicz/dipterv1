@@ -1,2 +1,15 @@
 <div class="travel">
+    <button mat-raised-button color="primary" (click)="openDialog()">New</button>
+
+    <mat-list>
+        <h3 mat-subheader>Travels</h3>
+        <mat-list-item *ngFor="let travel of travels" style="display:inline-block;">
+            <mat-icon mat-list-icon>
+                <i class="far fa-map"></i>
+            </mat-icon>
+            <h4 mat-line> {{travel.description | limitTo: 27}} </h4>
+            <p mat-line> {{travel.travelDate | date:'yyyy-MM-dd'}} </p>
+            <span (click)="updateTravel(travel);"> <i class="far fa-edit"> </i></span> <span (click)="deleteTravel(travel);"><i class="fas fa-trash-alt"></i></span>
+        </mat-list-item>
+    </mat-list>
 </div>

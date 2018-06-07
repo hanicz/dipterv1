@@ -1,0 +1,10 @@
+<div mat-dialog-content style="max-height: 80vh">
+    <div layout="row">{{image.title}}
+    </div>
+    <img [src]="image.src" id="image">
+</div>
+<div mat-dialog-actions style="float: right;">
+    <button mat-raised-button color="primary" (click)="rotate()">Rotate</button>
+    <button mat-raised-button color="primary" (click)="delete()">Delete</button>
+    <button mat-raised-button color="primary" [mat-dialog-close] cdkFocusInitial>Close</button>
+</div>

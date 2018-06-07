@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router'
 import { UserService } from '../services/user.service'
 import { CustomResponse } from '../utils/customResponse'
@@ -27,6 +27,13 @@ export class LoginComponent {
   ) { }
 
   ngOnInit() {
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  keyboardInput(event: KeyboardEvent) {
+    if(event.keyCode == 13){
+      this.login();
+    }
   }
 
   login(): void {
