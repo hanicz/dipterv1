@@ -24,10 +24,6 @@ jobs:
             - ./venv
           key: v1-dependencies-{{ checksum "backend/requirements.txt" }}
 
-      - run:
-          name: Update npm
-          command: 'sudo npm install -g npm@latest'
-
       - restore_cache:
           key: dependency-cache-{{ checksum "frontend/package.json" }}
 
@@ -42,7 +38,9 @@ jobs:
         
       - run:
           name: Build
-          command: ng build
+          command: |
+            cd frontend
+            ng build
 
       - store_artifacts:
           path: test-reports
