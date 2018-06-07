@@ -3,6 +3,7 @@ jobs:
   build:
     docker:
       - image: circleci/python:3.6.1
+      - image: circleci/node:10-browsers
     steps:
       - checkout
 
@@ -29,10 +30,6 @@ jobs:
 
       - restore_cache:
           key: dependency-cache-{{ checksum "frontend/package.json" }}
-
-      - run:
-          name: Install npm wee
-          command: npm install
 
       - save_cache:
           key: dependency-cache-{{ checksum "frontend/package.json" }}
