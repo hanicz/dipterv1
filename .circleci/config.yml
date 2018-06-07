@@ -10,7 +10,7 @@ jobs:
           name: Install npm
           command: |
             curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
-            apt-get install -y nodejs
+            sudo apt-get install -y nodejs
 
       - restore_cache:
           keys:
