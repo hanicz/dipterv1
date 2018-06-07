@@ -39,13 +39,13 @@ jobs:
 
       - run:
           name: Angular CLI
-          command: npm install @angular/cli@latest -g
+          command: sudo npm install @angular/cli@latest -g
         
       - run:
           name: Build
           command: |
             cd frontend
-            ng build
+            sudo ng build
 
       - store_artifacts:
           path: test-reports
