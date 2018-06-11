@@ -9,7 +9,7 @@ from passlib.hash import pbkdf2_sha256
 from sqlalchemy import exc
 from .db import DBSession, User, Folder
 from .tokensModel import encode_token
-from utils import send_activate_email, reset_password_email, UPLOAD_FOLDER
+from utils import send_activate_email, reset_password_email, UPLOAD_FOLDER, send_email
 from models import create_log_entry
 
 
@@ -48,10 +48,12 @@ def register_user(username, user_password, email):
     activation_link = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
     session = DBSession()
     try:
+        print(password_hash)
         new_user = User(name=username, password_hash=password_hash, failed_attempts=0,
                                          email=email, activation_link=activation_link, created=datetime.datetime.now())
         session.add(new_user)
-        send_activate_email(email, activation_link)
+        if send_email :
+            send_activate_email(email, activation_link)
         create_log_entry(new_user.id, 'User registered', None, None, session)
         session.commit()
         return new_user.serialize()

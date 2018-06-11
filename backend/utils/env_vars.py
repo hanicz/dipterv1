@@ -11,6 +11,7 @@ DB_ECHO = True
 log_level = LEVEL.INFO
 url = 'http://localhost:3000'
 auth = True
+send_email = True
 
 #HTTP response
 HTTP_OK = 200

@@ -1,10 +1,8 @@
-from flask import Blueprint, request, jsonify, session, make_response, session
-import jwt
-from logger import log_message
+from flask import Blueprint, request, jsonify, make_response, session
 
 from utils import validate, HTTP_OK, HTTP_BAD_REQUEST, HTTP_UNAUTHORIZED, HTTP_CREATED, HTTP_CONFLICT, LEVEL
 from models import login_user, register_user, activate_user, reset_user, delete_user, decode_token, change_user_data
-from exception import InvalidFileException, InvalidParametersException
+from exception import InvalidParametersException
 
 users_api = Blueprint('users_api', __name__)
 
