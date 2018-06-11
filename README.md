@@ -4,7 +4,7 @@ HW specs:
 * Raspberry Pi 3 B model
 * Quad Core 1.2GHz BCM2837 CPU - 64bit
 * 1GB SDRAM
-* 16GB-os C10-es microSD card
+* 16GB C10 microSD card
 * Raspbian OS
 
 SW specs:
