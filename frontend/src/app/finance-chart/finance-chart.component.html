@@ -6,7 +6,7 @@
     <mat-form-field class="ym">
       <input matInput placeholder="Month" type="number" [(ngModel)]="aggr_month" class="ym-input">
     </mat-form-field>
-    <button mat-raised-button color="primary" (click)="fill_chart()">Report</button>
+    <button mat-raised-button color="primary" (click)="fill_chart()" style="margin-left: 1%;">Report</button>
   </div>
   <mat-divider></mat-divider>
   <mat-table #table [dataSource]="dataSource" style="overflow: auto; max-height: 500px;">

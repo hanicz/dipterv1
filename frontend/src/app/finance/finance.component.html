@@ -1,6 +1,4 @@
 <div class="finance">
-    <button mat-raised-button color="primary" (click)="openDialog()" style="margin-bottom: 1%;">New</button>
-    <br>
     <div class="example-container">
         <div class="year-month-filter">
             <mat-form-field class="ym">
@@ -9,9 +7,10 @@
             <mat-form-field class="ym">
                 <input matInput placeholder="Month" type="number" [(ngModel)]="month" class="ym-input">
             </mat-form-field>
-            <button mat-raised-button color="primary" (click)="fillTable()">Search</button>
+            <button mat-raised-button color="primary" (click)="fillTable()" style="margin-left: 1%;">Search</button>
+            <button mat-raised-button color="primary" (click)="openDialog()" style="float: right; padding-top: 0px;">New</button>
         </div>
-        <div class="example-header">
+        <div class="finance-table-header">
             <mat-form-field>
                 <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Table Filter">
             </mat-form-field>
