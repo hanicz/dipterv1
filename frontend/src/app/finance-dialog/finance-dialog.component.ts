@@ -46,7 +46,7 @@ export class FinanceDialog {
         let extraClasses = ['background-green'];
         this.snackBar.open("Finance record successfully created", null, {
           duration: 1000,
-          extraClasses: extraClasses
+          panelClass: extraClasses
         });
         this.dialogRef.close();
       },
@@ -55,7 +55,7 @@ export class FinanceDialog {
             let extraClasses = ['background-red'];
             this.snackBar.open("Finance record already exists", null, {
               duration: 1000,
-              extraClasses: extraClasses
+              panelClass: extraClasses
             });
           }
         }
@@ -67,7 +67,7 @@ export class FinanceDialog {
         let extraClasses = ['background-green'];
         this.snackBar.open("Finance record successfully updated", null, {
           duration: 1000,
-          extraClasses: extraClasses
+          panelClass: extraClasses
         });
         this.dialogRef.close();
       },
@@ -75,7 +75,7 @@ export class FinanceDialog {
           let extraClasses = ['background-red'];
           this.snackBar.open("Finance record update failed", null, {
             duration: 1000,
-            extraClasses: extraClasses
+            panelClass: extraClasses
           });
         }
       );

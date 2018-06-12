@@ -48,7 +48,6 @@ def register_user(username, user_password, email):
     activation_link = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
     session = DBSession()
     try:
-        print(password_hash)
         new_user = User(name=username, password_hash=password_hash, failed_attempts=0,
                                          email=email, activation_link=activation_link, created=datetime.datetime.now())
         session.add(new_user)

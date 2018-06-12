@@ -3,9 +3,7 @@
  */
 import { Injectable } from '@angular/core';
 import { Headers, Http, URLSearchParams, Response } from '@angular/http';
-import { CustomResponse } from '../utils/customResponse'
-
-import 'rxjs/add/operator/map';
+import { map } from "rxjs/operators";
 
 
 
@@ -26,8 +24,8 @@ export class RoleService {
     const url = `${this.userUrl}`;
     return this.http.get(url, {
       withCredentials: true
-    })
-      .map((res: Response) => res.json());
+    }).pipe(
+      map((res: Response) => res.json()));
   }
 
 }

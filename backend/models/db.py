@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, Float, DateTime, BLOB, ForeignKe
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 
-engine = create_engine('sqlite:///test.db', echo=True)
+engine = create_engine('postgres://fileshare:fileshare@localhost:5432/postgres', echo=True)
 DBSession = sessionmaker(bind=engine)
 
 Base = declarative_base()

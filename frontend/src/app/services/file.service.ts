@@ -3,12 +3,10 @@
  */
 import { Injectable } from '@angular/core';
 import { Headers, Http, URLSearchParams, Response } from '@angular/http';
-import { CustomResponse } from '../utils/customResponse'
 import { MyFile } from '../entities/file';
 import { Folder } from '../entities/folder';
 import { ResponseContentType, RequestOptions } from '@angular/http';
-
-import 'rxjs/add/operator/map';
+import { map } from "rxjs/operators";
 
 
 
@@ -42,15 +40,15 @@ export class FileService {
     const url = `${this.userUrl}/file/${folder_id}`;
     return this.http.post(url, formData, {
       withCredentials: true
-    })
-      .map((res: Response) => res.json());
+    }).pipe(
+      map((res: Response) => res.json()));
   }
 
   download(file_id: Number){
     const url = `${this.userUrl}/download/${file_id}`;
     let options = new RequestOptions({responseType: ResponseContentType.Blob,
                                       withCredentials: true});
-    return this.http.get(url,options).map(res => res.blob());
+    return this.http.get(url,options).pipe(map(res => res.blob()));
 
   }
 
@@ -58,32 +56,32 @@ export class FileService {
     const url = `${this.userUrl}/file/${folder_id}`;
     return this.http.get(url, {
       withCredentials: true
-    })
-      .map((res: Response) => res.json());
+    }).pipe(
+      map((res: Response) => res.json()));
   }
 
   get_deleted_files() {
     const url = `${this.userUrl}/file/deleted`;
     return this.http.get(url, {
       withCredentials: true
-    })
-      .map((res: Response) => res.json());
+    }).pipe(
+      map((res: Response) => res.json()));
   }
 
   get_folders(folder_id: Number) {
     const url = `${this.userUrl}/folder/${folder_id}`;
     return this.http.get(url, {
       withCredentials: true
-    })
-      .map((res: Response) => res.json());
+    }).pipe(
+      map((res: Response) => res.json()));
   }
 
   get_deleted_folders() {
     const url = `${this.userUrl}/folder/deleted`;
     return this.http.get(url, {
       withCredentials: true
-    })
-      .map((res: Response) => res.json());
+    }).pipe(
+      map((res: Response) => res.json()));
   }
 
   rename_file(file: MyFile) {
@@ -91,8 +89,8 @@ export class FileService {
     return this.http.put(url, JSON.stringify(file), {
       headers: this.jsonHeaders,
       withCredentials: true
-    })
-      .map((res: Response) => res.json());
+    }).pipe(
+      map((res: Response) => res.json()));
   }
 
   rename_folder(folder: Folder) {
@@ -100,29 +98,29 @@ export class FileService {
     return this.http.put(url, JSON.stringify(folder), {
       headers: this.jsonHeaders,
       withCredentials: true
-    })
-      .map((res: Response) => res.json());
+    }).pipe(
+      map((res: Response) => res.json()));
   }
 
   remove_file(id: Number) {
     const url = `${this.userUrl}/file/${id}`;
     return this.http.delete(url, {
       withCredentials: true
-    }).map((res: Response) => res.json());
+    }).pipe(map((res: Response) => res.json()));
   }
 
   remove_folder(id: Number) {
     const url = `${this.userUrl}/folder/${id}`;
     return this.http.delete(url, {
       withCredentials: true
-    }).map((res: Response) => res.json());
+    }).pipe(map((res: Response) => res.json()));
   }
 
   get_folder_list() {
     const url = `${this.userUrl}/folder/list`;
     return this.http.get(url, {
       withCredentials: true
-    }).map((res: Response) => res.json());
+    }).pipe(map((res: Response) => res.json()));
   }
 
   move_file(folder_id: Number, file_id: Number) {
@@ -135,7 +133,7 @@ export class FileService {
     return this.http.put(url, JSON.stringify(data), {
       headers: this.jsonHeaders,
       withCredentials: true
-    }).map((res: Response) => res.json());
+    }).pipe(map((res: Response) => res.json()));
   }
 
   move_folder(folder_id: Number, parent_id: Number) {
@@ -148,21 +146,21 @@ export class FileService {
     return this.http.put(url, JSON.stringify(data), {
       headers: this.jsonHeaders,
       withCredentials: true
-    }).map((res: Response) => res.json());
+    }).pipe(map((res: Response) => res.json()));
   }
 
   restore_file(file_id: Number) {
     const url = `${this.userUrl}/file/restore/${file_id}`;
     return this.http.put(url, null, {
       withCredentials: true
-    }).map((res: Response) => res.json());
+    }).pipe(map((res: Response) => res.json()));
   }
 
   restore_folder(folder_id: Number) {
     const url = `${this.userUrl}/folder/restore/${folder_id}`;
     return this.http.put(url, null, {
       withCredentials: true
-    }).map((res: Response) => res.json());
+    }).pipe(map((res: Response) => res.json()));
   }
 
   create_folder(folder: Folder) {
@@ -176,22 +174,20 @@ export class FileService {
     return this.http.post(url, JSON.stringify(data), {
       headers: this.jsonHeaders,
       withCredentials: true
-    }).map((res: Response) => res.json());
+    }).pipe(map((res: Response) => res.json()));
   }
 
   get_shared_with_me_files() {
     const url = `${this.userUrl}/shared`;
     return this.http.get(url, {
       withCredentials: true
-    })
-      .map((res: Response) => res.json());
+    }).pipe(map((res: Response) => res.json()));
   }
 
   search_files(file_name: String) {
     const url = `${this.userUrl}/search/${file_name}`;
     return this.http.get(url, {
       withCredentials: true
-    })
-      .map((res: Response) => res.json());
+    }).pipe(map((res: Response) => res.json()));
   }
 }

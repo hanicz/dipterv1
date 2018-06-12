@@ -3,10 +3,7 @@
  */
 import { Injectable } from '@angular/core';
 import { Headers, Http, URLSearchParams, Response } from '@angular/http';
-import { CustomResponse } from '../utils/customResponse'
-
-import 'rxjs/add/operator/map';
-
+import { map } from "rxjs/operators";
 import { User } from '../utils/user'
 import { ResetUser } from '../entities/reset-user'
 import { ChangeUser } from '../entities/changeuser'
@@ -30,27 +27,27 @@ export class UserService {
     return this.http.post(url, JSON.stringify(user), {
       headers: this.headers,
       withCredentials: true
-    })
-      .map((res: Response) => res.json());
+    }).pipe(
+      map((res: Response) => res.json()));
   }
 
   register_user(user: User) {
 
     const url = `${this.userUrl}/register`;
-    return this.http.post(url, JSON.stringify(user), { headers: this.headers })
-      .map((res: Response) => res.json());
+    return this.http.post(url, JSON.stringify(user), { headers: this.headers }).pipe(
+      map((res: Response) => res.json()));
   }
 
   activate_user(token: String) {
     const url = `${this.userUrl}/activate/${token}`;
-    return this.http.put(url, '', { headers: this.headers })
-      .map((res: Response) => res.json());
+    return this.http.put(url, '', { headers: this.headers }).pipe(
+      map((res: Response) => res.json()));
   }
 
   reset_user(user: ResetUser) {
     const url = `${this.userUrl}/reset`;
-    return this.http.put(url, JSON.stringify(user), { headers: this.headers })
-      .map((res: Response) => res.json());
+    return this.http.put(url, JSON.stringify(user), { headers: this.headers }).pipe(
+      map((res: Response) => res.json()));
   }
 
   changedata(user: ChangeUser) {
@@ -58,23 +55,23 @@ export class UserService {
     return this.http.put(url, JSON.stringify(user), {
       headers: this.headers,
       withCredentials: true
-    })
-      .map((res: Response) => res.json());
+    }).pipe(
+      map((res: Response) => res.json()));
   }
 
   logout() {
     const url = `${this.userUrl}/logout`;
     return this.http.put(url, null, {
       withCredentials: true
-    })
-      .map((res: Response) => res.json());
+    }).pipe(
+      map((res: Response) => res.json()));
   }
 
   delete() {
     const url = `${this.userUrl}/delete`;
     return this.http.delete(url, {
       withCredentials: true
-    })
-      .map((res: Response) => res.json());
+    }).pipe(
+      map((res: Response) => res.json()));
   }
 }

@@ -3,10 +3,7 @@
  */
 import { Injectable } from '@angular/core';
 import { Headers, Http, URLSearchParams, Response } from '@angular/http';
-import { CustomResponse } from '../utils/customResponse';
-import { FileShare } from '../entities/FileShare';
-
-import 'rxjs/add/operator/map';
+import { map } from "rxjs/operators";
 
 
 
@@ -29,8 +26,8 @@ export class ShareService {
         const url = `${this.userUrl}/public/${file_id}`;
         return this.http.put(url, null, {
             withCredentials: true
-        })
-            .map((res: Response) => res.json());
+        }).pipe(
+            map((res: Response) => res.json()));
     }
 
     revokePublic(file_id: Number) {
@@ -38,8 +35,8 @@ export class ShareService {
         const url = `${this.userUrl}/private/${file_id}`;
         return this.http.put(url, null, {
             withCredentials: true
-        })
-            .map((res: Response) => res.json());
+        }).pipe(
+            map((res: Response) => res.json()));
     }
 
     shareFile(file_id: Number, role_id: Number, to: String) {
@@ -54,22 +51,22 @@ export class ShareService {
         return this.http.post(url, JSON.stringify(data), {
             headers: this.headers,
             withCredentials: true
-        }).map((res: Response) => res.json());
+        }).pipe(map((res: Response) => res.json()));
     }
 
     get_shares(file_id: Number) {
         const url = `${this.userUrl}/${file_id}`;
         return this.http.get(url, {
             withCredentials: true
-        })
-            .map((res: Response) => res.json());
+        }).pipe(
+            map((res: Response) => res.json()));
     }
 
     revoke_share(share_id: Number) {
         const url = `${this.userUrl}/revoke/${share_id}`;
         return this.http.delete(url, {
             withCredentials: true
-        })
-            .map((res: Response) => res.json());
+        }).pipe(
+            map((res: Response) => res.json()));
     }
 }

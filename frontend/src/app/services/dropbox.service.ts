@@ -3,9 +3,7 @@
  */
 import { Injectable } from '@angular/core';
 import { Headers, Http, URLSearchParams, Response } from '@angular/http';
-import { CustomResponse } from '../utils/customResponse'
-
-import 'rxjs/add/operator/map';
+import { map } from "rxjs/operators";
 
 
 
@@ -26,8 +24,7 @@ export class DropboxService {
         const url = `${this.userUrl}`;
         return this.http.get(url, {
             withCredentials: true
-        })
-            .map((res: Response) => res.json());
+        }).pipe(map((res: Response) => res.json()));
     }
 
     finish_auth(token: String) {
@@ -38,14 +35,14 @@ export class DropboxService {
         return this.http.post(url, JSON.stringify(data), {
             headers: this.headers,
             withCredentials: true
-        }).map((res: Response) => res.json());
+        }).pipe(map((res: Response) => res.json()));
     }
 
     upload_to_dropbox(file_id: Number) {
         const url = `${this.userUrl}/upload/${file_id}`;
         return this.http.post(url, null, {
             withCredentials: true
-        }).map((res: Response) => res.json());
+        }).pipe(map((res: Response) => res.json()));
     }
 
     download_from_dropbox(path: String, filename: String, folder_id: Number) {
@@ -59,6 +56,6 @@ export class DropboxService {
         return this.http.post(url, JSON.stringify(data), {
             headers: this.headers,
             withCredentials: true
-        }).map((res: Response) => res.json());
+        }).pipe(map((res: Response) => res.json()));
     }
 }

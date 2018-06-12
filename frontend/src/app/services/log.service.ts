@@ -3,11 +3,7 @@
  */
 import { Injectable } from '@angular/core';
 import { Headers, Http, URLSearchParams, Response } from '@angular/http';
-import { CustomResponse } from '../utils/customResponse'
-
-import 'rxjs/add/operator/map';
-
-
+import { map } from "rxjs/operators";
 
 @Injectable()
 export class LogService {
@@ -26,24 +22,24 @@ export class LogService {
     const url = `${this.userUrl}`;
     return this.http.get(url, {
       withCredentials: true
-    })
-      .map((res: Response) => res.json());
+    }).pipe(
+      map((res: Response) => res.json()));
   }
 
   get_file_logs(file_id: Number) {
     const url = `${this.userUrl}/file/${file_id}`;
     return this.http.get(url, {
       withCredentials: true
-    })
-      .map((res: Response) => res.json());
+    }).pipe(
+      map((res: Response) => res.json()));
   }
 
   get_folder_logs(folder_id: Number) {
     const url = `${this.userUrl}/folder/${folder_id}`;
     return this.http.get(url, {
       withCredentials: true
-    })
-      .map((res: Response) => res.json());
+    }).pipe(
+      map((res: Response) => res.json()));
   }
 
 }

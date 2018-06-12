@@ -3,6 +3,7 @@ import { Headers, Http, URLSearchParams, Response } from '@angular/http';
 import { Travel } from '../entities/travel';
 import { DatePipe } from '@angular/common';
 import { TravelPlan } from '../entities/travel-plan';
+import { map } from "rxjs/operators";
 
 @Injectable()
 export class TravelService {
@@ -25,8 +26,8 @@ export class TravelService {
     const url = `${this.userUrl}`;
     return this.http.get(url, {
       withCredentials: true
-    })
-      .map((res: Response) => res.json());
+    }).pipe(
+      map((res: Response) => res.json()));
   }
 
   update_travel(travel: Travel) {
@@ -40,8 +41,8 @@ export class TravelService {
     return this.http.post(url, JSON.stringify(data), {
       headers: this.headers,
       withCredentials: true
-    })
-      .map((res: Response) => res.json());
+    }).pipe(
+      map((res: Response) => res.json()));
   }
 
   create_travel(travel: Travel) {
@@ -54,24 +55,24 @@ export class TravelService {
     return this.http.put(url, JSON.stringify(data), {
       headers: this.headers,
       withCredentials: true
-    })
-      .map((res: Response) => res.json());
+    }).pipe(
+      map((res: Response) => res.json()));
   }
 
   delete_travel(travelId: Number) {
     const url = `${this.userUrl}/${travelId}`;
     return this.http.delete(url, {
       withCredentials: true
-    })
-      .map((res: Response) => res.json());
+    }).pipe(
+      map((res: Response) => res.json()));
   }
 
   get_travel_plans() {
     const url = `${this.userUrl}/plan`;
     return this.http.get(url, {
       withCredentials: true
-    })
-      .map((res: Response) => res.json());
+    }).pipe(
+      map((res: Response) => res.json()));
   }
 
   create_travel_plan(plan: TravelPlan) {
@@ -79,8 +80,8 @@ export class TravelService {
     return this.http.put(url, JSON.stringify(plan), {
       headers: this.headers,
       withCredentials: true
-    })
-      .map((res: Response) => res.json());
+    }).pipe(
+      map((res: Response) => res.json()));
   }
 
   update_travel_plan(travel: TravelPlan) {
@@ -88,16 +89,16 @@ export class TravelService {
     return this.http.post(url, JSON.stringify(travel), {
       headers: this.headers,
       withCredentials: true
-    })
-      .map((res: Response) => res.json());
+    }).pipe(
+      map((res: Response) => res.json()));
   }
 
   delete_travel_plan(travelPlanId: Number) {
     const url = `${this.userUrl}/plan/${travelPlanId}`;
     return this.http.delete(url, {
       withCredentials: true
-    })
-      .map((res: Response) => res.json());
+    }).pipe(
+      map((res: Response) => res.json()));
   }
 
   uploadImage(file: File[], travelId: Number) {
@@ -111,15 +112,15 @@ export class TravelService {
     const url = `${this.userUrl}/image/${travelId}`;
     return this.http.post(url, formData, {
       withCredentials: true
-    })
-      .map((res: Response) => res.json());
+    }).pipe(
+      map((res: Response) => res.json()));
   }
 
   get_image_src(travelId: Number){
     const url = `${this.userUrl}/images/${travelId}`;
     return this.http.get(url, {
       withCredentials: true
-    })
-      .map((res: Response) => res.json());
+    }).pipe(
+      map((res: Response) => res.json()));
   }
 }

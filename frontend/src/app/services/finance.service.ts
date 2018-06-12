@@ -4,7 +4,7 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http, URLSearchParams, Response } from '@angular/http';
 import { Finance } from '../entities/Finance';
-import 'rxjs/add/operator/map';
+import { map } from "rxjs/operators";
 import { DatePipe } from '@angular/common';
 
 @Injectable()
@@ -24,32 +24,32 @@ export class FinanceService {
         const url = `${this.userUrl}/year/${year}`;
         return this.http.get(url, {
             withCredentials: true
-        })
-            .map((res: Response) => res.json());
+        }).pipe(
+            map((res: Response) => res.json()));
     }
 
     get_finances_by_month(year: Number, month: Number) {
         const url = `${this.userUrl}/month?year=${year}&month=${month}`;
         return this.http.get(url, {
             withCredentials: true,
-        })
-            .map((res: Response) => res.json());
+        }).pipe(
+            map((res: Response) => res.json()));
     }
 
     get_finances_by_month_aggregated(year: Number, month: Number) {
         const url = `${this.userUrl}/month/aggregated?year=${year}&month=${month}`;
         return this.http.get(url, {
             withCredentials: true,
-        })
-            .map((res: Response) => res.json());
+        }).pipe(
+            map((res: Response) => res.json()));
     }
 
     get_finances_by_year_aggregated(year: Number) {
         const url = `${this.userUrl}/year/aggregated/${year}`;
         return this.http.get(url, {
             withCredentials: true,
-        })
-            .map((res: Response) => res.json());
+        }).pipe(
+            map((res: Response) => res.json()));
     }
 
     update_finance(finance: Finance) {
@@ -66,16 +66,16 @@ export class FinanceService {
         return this.http.post(url, JSON.stringify(data), {
             headers: this.headers,
             withCredentials: true
-        })
-            .map((res: Response) => res.json());
+        }).pipe(
+            map((res: Response) => res.json()));
     }
 
     delete_finance(id: Number) {
         const url = `${this.userUrl}/finance/${id}`;
         return this.http.delete(url, {
             withCredentials: true
-        })
-            .map((res: Response) => res.json());
+        }).pipe(
+            map((res: Response) => res.json()));
     }
 
     new_finance(finance: Finance) {
@@ -91,16 +91,16 @@ export class FinanceService {
         return this.http.put(url, JSON.stringify(data), {
             headers: this.headers,
             withCredentials: true
-        })
-            .map((res: Response) => res.json());
+        }).pipe(
+            map((res: Response) => res.json()));
     }
 
     get_finance_types() {
         const url = `${this.userUrl}/types`;
         return this.http.get(url, {
             withCredentials: true,
-        })
-            .map((res: Response) => res.json());
+        }).pipe(
+            map((res: Response) => res.json()));
     }
 
     new_finance_type(name: String) {
@@ -109,7 +109,7 @@ export class FinanceService {
         return this.http.put(url, null, {
             headers: this.headers,
             withCredentials: true
-        })
-            .map((res: Response) => res.json());
+        }).pipe(
+            map((res: Response) => res.json()));
     }
 }

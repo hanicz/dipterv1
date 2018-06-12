@@ -10,8 +10,6 @@ import { LogService } from '../services/log.service';
 import { Log } from '../entities/log';
 import { DropboxService } from '../services/dropbox.service';
 
-import 'rxjs/add/operator/toPromise';
-
 @Component({
   moduleId: module.id,
   selector: 'file-detail',

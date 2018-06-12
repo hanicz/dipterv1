@@ -3,7 +3,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import 'rxjs/add/operator/switchMap';
+import { switchMap } from "rxjs/operators";
 import { UserService } from '../services/user.service'
 import { CustomResponse } from '../utils/customResponse'
 
@@ -23,8 +23,8 @@ export class ActivateComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.route.params
-      .switchMap((params: Params) => this.userService.activate_user(params['token']))
+    this.route.params.pipe(
+      switchMap((params: Params) => this.userService.activate_user(params['token'])))
       .subscribe(
         (json: Object) => {
           this.custResp = new CustomResponse().fromJSON(json);

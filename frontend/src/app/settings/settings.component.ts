@@ -2,12 +2,9 @@
  * Created by Hanicz on 2/19/2017.
  */
 import { Component, OnInit } from '@angular/core';
-import { Headers, Http, URLSearchParams } from '@angular/http';
-import 'rxjs/add/operator/toPromise';
 import { UserService } from '../services/user.service'
 import { Router } from '@angular/router';
 import { ChangeUser } from '../entities/changeuser';
-import { CustomResponse } from '../utils/customResponse';
 import { FormControl, Validators } from '@angular/forms';
 
 @Component({
