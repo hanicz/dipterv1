@@ -32,6 +32,10 @@ export class FinanceChartComponent implements OnInit {
     this.colors = [];
   }
 
+  get_formatted_number(number: String){
+    return number.replace(/,/g,".");
+  }
+
   fill_chart() {
     if (this.aggr_year != null) {
       if (this.aggr_month != null) {

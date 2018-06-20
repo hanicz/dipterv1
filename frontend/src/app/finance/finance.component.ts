@@ -1,9 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
+import { getLocaleNumberFormat } from '@angular/common' ;
 import { FinanceService } from '../services/finance.service';
 import { Finance } from '../entities/Finance';
 import { FinanceType } from '../entities/finance-type';
 import { AggrFinance} from '../entities/aggrfinance';
-import { forEach } from '@angular/router/src/utils/collection';
 import { MatTableDataSource } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FinanceDialog } from '../finance-dialog/finance-dialog.component';
@@ -40,6 +40,10 @@ export class FinanceComponent {
 
   get_formatted_date(date: Date){
     return this.datePipe.transform(date, 'yyyy-MM-dd');
+  }
+
+  get_formatted_number(number: String){
+    return number.replace(/,/g,".");
   }
 
   get_finance_type_name(id: Number) {

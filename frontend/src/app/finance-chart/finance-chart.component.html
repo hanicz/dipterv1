@@ -18,13 +18,13 @@
 
     <ng-container matColumnDef="amount">
       <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{ element.sum }} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{ get_formatted_number(element.sum | number) }} HUF</mat-cell>
     </ng-container>
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
 
-  <h3 mat-subheader>Total spent: {{ totalSpent }} HUF</h3>
+  <h3 mat-subheader>Total spent: {{ get_formatted_number(totalSpent | number) }} HUF</h3>
   <mat-divider></mat-divider>
   <canvas hidden id="canvas">{{ chart }}</canvas>
 </div>
