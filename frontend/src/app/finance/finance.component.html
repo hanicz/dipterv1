@@ -16,35 +16,91 @@
             </mat-form-field>
         </div>
 
-        <mat-table #table [dataSource]="dataSource" style="overflow: auto; max-height: 500px;">
+        <mat-table #table [dataSource]="dataSource" matSort style="overflow: auto; max-height: 500px;">
 
             <ng-container matColumnDef="type">
                 <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{ get_finance_type_name(element.finance_type_id) }} </mat-cell>
+                <mat-footer-cell *matFooterCellDef> Total </mat-footer-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="newType">
+                <mat-header-cell *matHeaderCellDef>
+                    <mat-form-field style="max-width: 80%;">
+                        <mat-select placeholder="Type" [(ngModel)]="selectedType">
+                            <mat-option *ngFor="let ftype of financeTypes" [value]="ftype">{{ ftype.name }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-header-cell>
             </ng-container>
 
             <ng-container matColumnDef="amount">
-                <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Amount </mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{ get_formatted_number(element.amount | number)}} HUF</mat-cell>
+                <mat-footer-cell *matFooterCellDef> {{ get_formatted_number(getTotalAmount() | number) }} HUF</mat-footer-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="newAmount">
+                <mat-header-cell *matHeaderCellDef>
+                    <mat-form-field style="max-width: 80%;">
+                        <input matInput placeholder="Amount" type="number" class="amount-input" [(ngModel)]="finance.amount">
+                    </mat-form-field>
+                </mat-header-cell>
             </ng-container>
 
             <ng-container matColumnDef="comment">
                 <mat-header-cell *matHeaderCellDef> Comment </mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{element.comment}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="newComment">
+                <mat-header-cell *matHeaderCellDef>
+                    <mat-form-field style="max-width: 80%;">
+                        <input matInput placeholder="Comment" [(ngModel)]="finance.comment">
+                    </mat-form-field>
+                </mat-header-cell>
             </ng-container>
 
             <ng-container matColumnDef="date">
                 <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{ get_formatted_date(element.finance_date) }} </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="newDate">
+                <mat-header-cell *matHeaderCellDef>
+                    <mat-form-field style="max-width: 80%;">
+                        <input matInput [matDatepicker]="picker" placeholder="Date" [(ngModel)]="finance.finance_date">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </mat-header-cell>
             </ng-container>
 
             <ng-container matColumnDef="update">
-                    <mat-header-cell *matHeaderCellDef> Update </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> <span (click)="updateFinance(element);"><i class="far fa-edit"> </i></span> <span (click)="deleteFinance(element);"><i class="fas fa-trash-alt"></i></span></mat-cell>
-                </ng-container>
+                <mat-header-cell *matHeaderCellDef> Update </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span (click)="updateFinance(element);">
+                        <i class="far fa-edit"> </i>
+                    </span>
+                    <span (click)="deleteFinance(element);">
+                        <i class="fas fa-trash-alt"></i>
+                    </span>
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
 
+            <ng-container matColumnDef="createNew">
+                <mat-header-cell *matHeaderCellDef>
+                    <button mat-raised-button color="primary" (click)="createRecord()" style="margin-bottom: 8%;">Create</button>
+                </mat-header-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="['newType','newAmount','newComment','newDate','createNew']"></mat-header-row>
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            <mat-footer-row *matFooterRowDef="displayedColumns" class="table-footer-row"></mat-footer-row>
         </mat-table>
     </div>
 </div>

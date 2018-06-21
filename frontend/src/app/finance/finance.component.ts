@@ -1,11 +1,10 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { getLocaleNumberFormat } from '@angular/common' ;
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { FinanceService } from '../services/finance.service';
 import { Finance } from '../entities/Finance';
 import { FinanceType } from '../entities/finance-type';
 import { AggrFinance} from '../entities/aggrfinance';
 import { MatTableDataSource } from '@angular/material';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSort, MatSnackBar } from '@angular/material';
 import { FinanceDialog } from '../finance-dialog/finance-dialog.component';
 import { DatePipe } from '@angular/common';
 
@@ -15,23 +14,30 @@ import { DatePipe } from '@angular/common';
   templateUrl: './finance.component.html',
   styleUrls: ['./finance.component.css']
 })
-export class FinanceComponent {
+export class FinanceComponent implements OnInit{
 
   finances: Finance[];
   financeTypes: FinanceType[];
   chartFinances: AggrFinance[];
 
+  selectedType: FinanceType;
+
   year: Number;
   month: Number;
+  finance: Finance;
 
   displayedColumns = ['type', 'amount', 'comment', 'date', 'update'];
   dataSource = new MatTableDataSource(this.finances);
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     private financeService: FinanceService,
     public dialog: MatDialog,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    public snackBar: MatSnackBar
   ) { 
+    this.finance = new Finance();
+    this.finance.finance_date = new Date();
    }
 
   ngOnInit() {
@@ -46,6 +52,30 @@ export class FinanceComponent {
     return number.replace(/,/g,".");
   }
 
+  createRecord(): void {
+      this.finance.finance_type_id = this.selectedType.id;
+      this.financeService.new_finance(this.finance).subscribe((json: Object) => {
+        let extraClasses = ['background-green'];
+        this.snackBar.open("Finance record successfully created", null, {
+          duration: 1000,
+          panelClass: extraClasses
+        });
+        this.fillTable();
+        this.finance = new Finance();
+        this.finance.finance_date = new Date();
+      },
+        error => {
+          if (error.status == 409) {
+            let extraClasses = ['background-red'];
+            this.snackBar.open("Finance record already exists", null, {
+              duration: 1000,
+              panelClass: extraClasses
+            });
+          }
+        }
+      );
+    }
+
   get_finance_type_name(id: Number) {
     let retVal;
     this.financeTypes.forEach((f) => {
@@ -58,7 +88,6 @@ export class FinanceComponent {
 
   fill_finance_types(){
     this.financeService.get_finance_types().subscribe((json: Object) => {
-      console.log(json);
       this.financeTypes = json as FinanceType[];
     },
       error => console.error('Error: ' + error)
@@ -98,22 +127,27 @@ export class FinanceComponent {
     if (this.year != null) {
       if (this.month == null) {
         this.financeService.get_finances_by_year(this.year).subscribe((json: Object) => {
-          console.log(json);
           this.finances = json as Finance[];
           this.dataSource = new MatTableDataSource(this.finances);
+          this.dataSource.sort = this.sort;
         },
           error => console.error('Error: ' + error)
         );
       } else {
         this.financeService.get_finances_by_month(this.year, this.month).subscribe((json: Object) => {
-          console.log(json);
           this.finances = json as Finance[];
           this.dataSource = new MatTableDataSource(this.finances);
+          this.dataSource.sort = this.sort;
         },
           error => console.error('Error: ' + error)
         );
       }
     }
+  }
+
+  getTotalAmount() {
+    if(this.finances == undefined) return 0;
+    return this.finances.map(t => t.amount).reduce((acc, value) => acc + value, 0);
   }
 
   deleteFinance(finance: Finance){
