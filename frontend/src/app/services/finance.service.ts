@@ -15,8 +15,8 @@ export class FinanceService {
         'Accept': 'application/json'
     });
 
-    private userUrl = 'http://localhost:5000/resources/finances';
-    //private userUrl = '/resources/finances';
+    //private userUrl = 'http://localhost:5000/resources/finances';
+    private userUrl = '/resources/finances';
 
     constructor(private datePipe: DatePipe, private http: Http) { }
 
