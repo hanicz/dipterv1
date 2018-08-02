@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, BLOB, ForeignKey, TEXT, create_engine
+from sqlalchemy import Column, Integer, String, Float, DateTime, BLOB, ForeignKey, TEXT, create_engine, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 
@@ -266,6 +266,7 @@ class TravelPhoto(Base):
     system_file_name = Column(String(250), nullable=True)
     delete_date = Column(DateTime, nullable=True)
     comment = Column(String(250), nullable=True)
+    thumbnail = Column(Boolean, nullable=False, default=False)
     travel_id = Column(Integer, ForeignKey('travel.id'))
     travel = relationship(Travel)
 

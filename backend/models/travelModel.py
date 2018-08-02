@@ -7,6 +7,9 @@ import flask
 
 from .db import DBSession, Travel, TravelPhoto, User
 from sqlalchemy import exc
+from PIL import Image, ImageOps
+from tempfile import NamedTemporaryFile
+from shutil import copyfileobj
 from models import create_log_entry
 from utils import UPLOAD_FOLDER, IMAGE_EXTENSIONS
 from werkzeug.utils import secure_filename
@@ -95,6 +98,7 @@ def allowed_file(filename):
 def upload_travel_image(user_id, travel_id):
     path = ''
     session = DBSession()
+    sys_f_name = ''
 
     try:
         session = DBSession()
@@ -145,14 +149,22 @@ def create_image(user_id, filename, sys_fname, travel_id):
         session.close()
 
 
-def get_image_data(user_id, image_id):
+def get_thumbnail_data(user_id, image_id):
     session = DBSession()
     try:
         photo, travel = session.query(TravelPhoto, Travel)\
             .filter((Travel.user_id == user_id) & (TravelPhoto.id == image_id) & (Travel.id == TravelPhoto.travel_id)
                      & (TravelPhoto.delete_date == None) & (Travel.delete_date == None)).first()
         if photo is not None and travel is not None:
-            return UPLOAD_FOLDER + str(user_id) + '/travel/' + str(travel.id) + '/', photo.system_file_name, photo.file_name
+            outfile = os.path.splitext(UPLOAD_FOLDER + str(user_id) + '/travel/' + str(travel.id) + '/' + photo.system_file_name)[0] + ".thumbnail"
+            if not photo.thumbnail:
+                size = 200, 200
+                im = Image.open(UPLOAD_FOLDER + str(user_id) + '/travel/' + str(travel.id) + '/' + photo.system_file_name)
+                im.thumbnail(size)
+                im.save(outfile, "JPEG")
+                photo.thumbnail = True
+                session.commit()
+            return UPLOAD_FOLDER + str(user_id) + '/travel/' + str(travel.id) + '/', photo.system_file_name + ".thumbnail", photo.file_name
         return None
     except exc.SQLAlchemyError as e:
         print(e.__context__)
@@ -177,7 +189,7 @@ def get_images_from_travel(user_id, travel_id):
                     "id": photo.id,
                     "rows": row,
                     "cols": col,
-                    "src": "http://localhost:5000/resources/travels/download/" + str(photo.id),
+                    "src": "http://localhost:5000/resources/travels/thumbnail/" + str(photo.id),
                     "title": photo.file_name
                 }
                 data.append(result)

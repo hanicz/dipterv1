@@ -56,8 +56,10 @@ export class TravelImagesComponent implements OnInit {
     this.travelService.get_image_src(this.selectedTravel.id).subscribe((json: Object) => {
       this.images = json as TravelImage[];
       this.paginatedImages = [];
-      for (let i = 0; i < 12; i++) {
+      var maxIndex = (this.images.length > 12) ? 12 : this.images.length;
+      for (let i = 0; i < maxIndex; i++) {
         this.paginatedImages.push(this.images[i]);
+        console.log(this.paginatedImages[i]);
       }
       this.index = 12;
       this.numberOfPictures = this.images.length;

@@ -1,8 +1,8 @@
-from flask import Blueprint, request, jsonify, send_from_directory
+from flask import Blueprint, request, jsonify, send_from_directory, send_file
 from utils import validate, HTTP_OK, HTTP_BAD_REQUEST, HTTP_CREATED, HTTP_NOT_FOUND, HTTP_UNAUTHORIZED
 from exception import InvalidFileException
 from models import delete_travel, create_travel, decode_token, update_travel, get_all_travels, get_all_travel_plans,\
-    create_travel_plan, delete_travel_plan, update_travel_plan, upload_travel_image, get_image_data, get_images_from_travel
+    create_travel_plan, delete_travel_plan, update_travel_plan, upload_travel_image, get_thumbnail_data, get_images_from_travel
 from exception import InvalidParametersException
 
 travel_api = Blueprint('travel_api', __name__)
@@ -115,11 +115,21 @@ def get_images_for_travel(travel_id):
     data = get_images_from_travel(decode_token(request.cookies.get('token')), travel_id)
     return jsonify(data), HTTP_OK
 
-@travel_api.route("/download/<image_id>", methods=['GET'])
-def get_file(image_id):
-    path, system_filename, original_filename = get_image_data(decode_token(request.cookies.get('token')), image_id)
+
+@travel_api.route("/thumbnail/<image_id>", methods=['GET'])
+def get_thumbnail(image_id):
+    path, system_filename, original_filename = get_thumbnail_data(decode_token(request.cookies.get('token')), image_id)
     if None not in (path, system_filename, original_filename):
-        return send_from_directory(path, system_filename, mimetype='multipart/form-data',
-                                   attachment_filename=original_filename, as_attachment=True)
+        return send_from_directory(path, system_filename, mimetype='multipart/form-data',attachment_filename=original_filename, as_attachment=True)
+    else:
+        return jsonify({'Response': 'Error downloading file'}), HTTP_UNAUTHORIZED
+
+
+@travel_api.route("/download/<image_id>", methods=['GET'])
+def get_whole_image(image_id):
+    path, system_filename, original_filename = get_thumbnail_data(decode_token(request.cookies.get('token')), image_id)
+    if None not in (path, system_filename, original_filename):
+        system_filename.replace(".thumbnail", "")
+        return send_from_directory(path, system_filename, mimetype='multipart/form-data',attachment_filename=original_filename, as_attachment=True)
     else:
         return jsonify({'Response': 'Error downloading file'}), HTTP_UNAUTHORIZED
