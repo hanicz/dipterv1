@@ -56,12 +56,12 @@ export class TravelImagesComponent implements OnInit {
     this.travelService.get_image_src(this.selectedTravel.id).subscribe((json: Object) => {
       this.images = json as TravelImage[];
       this.paginatedImages = [];
-      var maxIndex = (this.images.length > 12) ? 12 : this.images.length;
+      var maxIndex = (this.images.length > 32) ? 32 : this.images.length;
       for (let i = 0; i < maxIndex; i++) {
         this.paginatedImages.push(this.images[i]);
         console.log(this.paginatedImages[i]);
       }
-      this.index = 12;
+      this.index = 32;
       this.numberOfPictures = this.images.length;
     },
       error => console.error('Error: ' + error)
@@ -71,23 +71,23 @@ export class TravelImagesComponent implements OnInit {
   next() {
     if (this.index < this.images.length) {
       this.paginatedImages = [];
-      let limit = (this.index + 12 < this.images.length) ? this.index + 12 : this.images.length;
+      let limit = (this.index + 32 < this.images.length) ? this.index + 32 : this.images.length;
       for (let i = this.index; i < limit; i++) {
         this.paginatedImages.push(this.images[i]);
       }
-      this.index += 12;
+      this.index += 32;
     }
   }
 
   previous() {
-    if (this.index - 12 > 0) {
+    if (this.index - 32 > 0) {
       this.paginatedImages = [];
-      let limit = (this.index - 24 > 0) ? (this.index - 24) : 0;
+      let limit = (this.index - 64 > 0) ? (this.index - 64) : 0;
 
-      for (let i = limit; i < limit + 12; i++) {
+      for (let i = limit; i < limit + 32; i++) {
         this.paginatedImages.push(this.images[i]);
       }
-      this.index -= 12;
+      this.index -= 32;
     }
   }
 
@@ -106,7 +106,9 @@ export class TravelImagesDialog {
   constructor(
     public dialogRef: MatDialogRef<TravelImagesDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
-    this.image = data.image;
+    var downloadImage = data.image;
+    downloadImage.src = downloadImage.src.replace("thumbnail","download");
+    this.image = downloadImage;
   }
 
   delete(): void {

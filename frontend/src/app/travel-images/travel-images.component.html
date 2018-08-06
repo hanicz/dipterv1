@@ -23,11 +23,11 @@
     </div>
     <div layout="row" style="margin-top: 5px; margin-bottom: 5px; text-align: center;">
             <span (click)="previous()"><i class="fas fa-angle-left"></i></span>
-            {{ index -12 }} - {{index}}
+            {{ index - 32 }} - {{index}}
             <span (click)="next()"><i class="fas fa-angle-right"></i></span>
     </div>
     <div style="overflow-y: auto; max-height: 80vh;">
-        <mat-grid-list cols="4" rowHeight="200px" rowWidth="200px">
+        <mat-grid-list cols="8" rowHeight="150px" rowWidth="150px">
             <mat-grid-tile *ngFor="let image of paginatedImages" [colspan]="image.cols" [rowspan]="image.rows">
                 <img [src]="image.src" height="100%" width="100%" (click)="openDialog(image)">
             </mat-grid-tile>

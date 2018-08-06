@@ -129,7 +129,7 @@ def get_thumbnail(image_id):
 def get_whole_image(image_id):
     path, system_filename, original_filename = get_thumbnail_data(decode_token(request.cookies.get('token')), image_id)
     if None not in (path, system_filename, original_filename):
-        system_filename.replace(".thumbnail", "")
+        system_filename = system_filename.replace(".thumbnail", "")
         return send_from_directory(path, system_filename, mimetype='multipart/form-data',attachment_filename=original_filename, as_attachment=True)
     else:
         return jsonify({'Response': 'Error downloading file'}), HTTP_UNAUTHORIZED
