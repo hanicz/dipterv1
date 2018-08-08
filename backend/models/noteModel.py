@@ -69,24 +69,6 @@ def update_note(user_id, input_dictionary):
         session.close()
 
 
-'''def get_note(user_id, note_id):
-    session = DBSession()
-    try:
-        note = session.query(File).outerjoin(FileShare, File.id == FileShare.file_id). \
-            outerjoin(Role).filter(
-            ((File.user_id == user_id) | ((FileShare.user_id == user_id) & (Role.priority >= 1))) & (
-                File.id == note_id) & (File.content != None)).first()
-        if note is not None:
-            return note.serialize()
-        return None
-    except exc.SQLAlchemyError as e:
-        print(e.__context__)
-        session.rollback()
-        return None
-    finally:
-        session.close()'''
-
-
 def get_all_notes(user_id):
     session = DBSession()
     try:

@@ -193,7 +193,7 @@ def get_images_from_travel(user_id, travel_id):
                     "title": photo.file_name
                 }
                 data.append(result)
-                if col == 4:
+                if col == 8:
                     row += 1
                     col = 1
             return data

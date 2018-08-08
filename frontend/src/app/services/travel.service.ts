@@ -13,8 +13,8 @@ export class TravelService {
     'Accept': 'application/json'
   });
 
-  //private userUrl = 'http://localhost:5000/resources/travels';
-  private userUrl = '/resources/travels';
+  private userUrl = 'http://localhost:5000/resources/travels';
+  //private userUrl = '/resources/travels';
 
 
   constructor(

@@ -91,7 +91,7 @@ def get_finance_records_by_year(user_id, year):
     try:
         finances = session.query(Finance).filter((Finance.user_id == user_id) &
                                                  (extract('year', Finance.finance_date) == year))\
-                                         .order_by(Finance.finance_date.asc())
+                                         .order_by(Finance.finance_date.desc())
         if finances is not None:
             return [f.serialize() for f in finances]
         

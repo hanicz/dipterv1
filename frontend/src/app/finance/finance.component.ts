@@ -63,6 +63,7 @@ export class FinanceComponent implements OnInit{
         this.fillTable();
         this.finance = new Finance();
         this.finance.finance_date = new Date();
+        this.selectedType = new FinanceType();
       },
         error => {
           if (error.status == 409) {
