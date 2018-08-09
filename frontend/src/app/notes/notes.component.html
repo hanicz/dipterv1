@@ -14,10 +14,10 @@
             <input matInput placeholder="Name" [(ngModel)]="selectedNote.fileName" id="noteFileName">
         </mat-form-field>
 
-        <button mat-raised-button color="primary" (click)="new_note()">New</button>
-        <button mat-raised-button color="primary" (click)="update_note()" [disabled]="!isValid()">Update</button>
-        <button mat-raised-button color="primary" (click)="delete_note()" [disabled]="!isValid()">Delete</button>
-        <button mat-raised-button color="primary" (click)="showShare()" [disabled]="!isValid()">Share</button>
+        <button mat-raised-button color="primary" (click)="new_note()" style="margin-right: 2px;">New</button>
+        <button mat-raised-button color="primary" (click)="update_note()" [disabled]="!isValid()" style="margin-right: 2px;">Update</button>
+        <button mat-raised-button color="primary" (click)="delete_note()" [disabled]="!isValid()" style="margin-right: 2px;">Delete</button>
+        <button mat-raised-button color="primary" (click)="showShare()" [disabled]="!isValid()" style="margin-right: 2px;">Share</button>
     </div>
     <textarea class="form-control" style="resize: none;" [(ngModel)]="selectedNote.content" rows="25"></textarea>
     <share [hidden]="notesShare" (closeEvent)="notesShare = true;" [file]="selectedNote"></share>

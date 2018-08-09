@@ -32,7 +32,7 @@ export class TravelImagesComponent implements OnInit {
   openDialog(image: TravelImage): void {
     let dialogRef = this.dialog.open(TravelImagesDialog, {
       height: '90vh',
-      width: '160vh',
+      width: '105vh',
       data: { image: image }
     });
 

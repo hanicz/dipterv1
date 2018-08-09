@@ -134,6 +134,7 @@ def delete_user(user_id):
 def change_user_data(user_id, input_dictionary):
     new_password = None
     new_email = None
+    new_username = None
 
     session = DBSession()
 

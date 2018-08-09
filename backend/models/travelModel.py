@@ -5,11 +5,9 @@ import os
 import werkzeug
 import flask
 
-from .db import DBSession, Travel, TravelPhoto, User
+from .db import DBSession, Travel, TravelPhoto
 from sqlalchemy import exc
-from PIL import Image, ImageOps
-from tempfile import NamedTemporaryFile
-from shutil import copyfileobj
+from PIL import Image
 from models import create_log_entry
 from utils import UPLOAD_FOLDER, IMAGE_EXTENSIONS
 from werkzeug.utils import secure_filename
