@@ -187,7 +187,7 @@ def get_images_from_travel(user_id, travel_id):
                     "id": photo.id,
                     "rows": row,
                     "cols": col,
-                    "src": "http://localhost:5000/resources/travels/thumbnail/" + str(photo.id),
+                    "src": "/resources/travels/thumbnail/" + str(photo.id),
                     "title": photo.file_name
                 }
                 data.append(result)

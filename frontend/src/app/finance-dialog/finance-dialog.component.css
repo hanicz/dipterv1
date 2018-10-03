@@ -9,3 +9,7 @@
     font-size: 14px;
     width: 100%;
   }
+
+  input.amount-input::-webkit-inner-spin-button {
+    display: none;
+  }

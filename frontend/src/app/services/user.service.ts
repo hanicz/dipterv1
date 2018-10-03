@@ -17,8 +17,8 @@ export class UserService {
     'Accept': 'application/json'
   });
 
-  private userUrl = 'http://localhost:5000/resources/users';
-  //private userUrl = '/resources/users';
+  //private userUrl = 'http://localhost:5000/resources/users';
+  private userUrl = '/resources/users';
 
   constructor(private http: Http) { }
 

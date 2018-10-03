@@ -24,6 +24,10 @@ input.ym-input::-webkit-inner-spin-button {
   display: none;
 }
 
+input.amount-input::-webkit-inner-spin-button {
+  display: none;
+}
+
 .year-month-filter{
   min-height: 64px;
   padding: 8px 24px 0;
